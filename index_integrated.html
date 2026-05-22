@@ -1,0 +1,945 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="CUE CRAFT 3D ??Premium WebGL Billiards Simulator. Pocket Ball & 3-Cushion modes. Play online against global AI rivals.">
+    <title>CUE CRAFT 3D ??Premium Billiards Suite</title>
+
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   CUE CRAFT 3D ??Phase 3 Design System
+   Premium Glassmorphism + Mobile-First Responsive
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+
+/* ???? Design Tokens ???? */
+:root {
+    --font-primary: 'Outfit', system-ui, -apple-system, sans-serif;
+    --bg-body: #05070a;
+    --bg-panel: rgba(12, 14, 20, 0.82);
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --color-text-primary: #e8eaed;
+    --color-text-secondary: rgba(255, 255, 255, 0.55);
+    --color-accent-gold: #e2b744;
+    --color-accent-emerald: #0d8a5b;
+    --color-danger: #ef4444;
+    --shadow-panel: 0 12px 48px rgba(0,0,0,0.6);
+    --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-quick: all 0.18s ease;
+}
+
+/* ???? Reset ???? */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { 
+    width: 100%; height: 100%; overflow: hidden; font-family: var(--font-primary); 
+    background: linear-gradient(rgba(5, 7, 10, 0.75), rgba(5, 7, 10, 0.9)), url('bg-premium.png') center center / cover no-repeat fixed;
+    color: var(--color-text-primary); 
+}
+button { font-family: var(--font-primary); cursor: pointer; border: none; background: none; color: inherit; }
+input[type="range"] { -webkit-appearance: none; appearance: none; }
+
+/* ???? WebGL Canvas ???? */
+#canvas-container { position: fixed; inset: 0; z-index: 0; touch-action: none; }
+#canvas-container canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+
+/* ???? Glass Panel ???? */
+.glass-panel {
+    background: var(--bg-panel);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--border-glass);
+    border-radius: 14px;
+    box-shadow: var(--shadow-panel);
+}
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   HUD OVERLAY (CSS Grid)
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+#hud-overlay {
+    position: fixed; inset: 0; z-index: 10; pointer-events: none;
+    display: grid;
+    grid-template-columns: auto 1fr 380px;
+    grid-template-rows: auto 1fr auto;
+    gap: 16px;
+    padding: 20px;
+}
+#hud-overlay > * { pointer-events: auto; }
+
+/* ???? Header (top-left) ???? */
+#game-header {
+    grid-column: 1; grid-row: 1;
+    padding: 16px 22px;
+    display: flex; flex-direction: column; gap: 4px;
+    align-self: start;
+}
+.logo-area { display: flex; align-items: center; gap: 10px; }
+.logo-area h1 { font-size: 1.2rem; font-weight: 800; letter-spacing: 2px; }
+.logo-badge {
+    font-size: 0.55rem; font-weight: 800;
+    background: linear-gradient(135deg, #e2b744, #f0d060);
+    color: #111; padding: 3px 8px; border-radius: 5px; letter-spacing: 1.2px;
+}
+.subtitle { font-size: 0.72rem; color: var(--color-text-secondary); letter-spacing: 0.6px; font-weight: 300; }
+
+/* ???? Dashboard (right column, full height) ???? */
+#game-dashboard {
+    grid-column: 3; grid-row: 1 / 4;
+    padding: 20px;
+    display: flex; flex-direction: column; gap: 14px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+#game-dashboard::-webkit-scrollbar { width: 5px; }
+#game-dashboard::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+/* ???? Mobile Drawer Handle (hidden on desktop) ???? */
+.mobile-drawer-handle { display: none; }
+.drawer-bar { width: 40px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.25); }
+
+/* ???? Panel Sections ???? */
+.panel-section { padding-bottom: 12px; border-bottom: 1px solid var(--border-glass); }
+.panel-section:last-child { border-bottom: none; }
+.panel-section h3 {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 1.4px;
+    color: var(--color-accent-gold); margin-bottom: 10px; text-transform: uppercase;
+}
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   PLAYER SCOREBOARD + FLAGS
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+.player-stats { display: flex; flex-direction: column; gap: 8px; }
+
+.player-card {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 10px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: var(--transition-smooth);
+}
+.player-card.active {
+    border-color: var(--color-accent-gold);
+    background: rgba(226,183,68,0.06);
+    box-shadow: 0 0 18px rgba(226,183,68,0.12);
+}
+
+.player-flag { font-size: 1.6rem; line-height: 1; flex-shrink: 0; }
+
+.player-indicator {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: var(--transition-smooth);
+    flex-shrink: 0;
+}
+.player-card.active .player-indicator {
+    background: var(--color-accent-gold);
+    box-shadow: 0 0 10px rgba(226,183,68,0.6);
+}
+
+.player-info { display: flex; flex-direction: column; flex: 1; }
+.player-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.8px; color: var(--color-text-secondary); }
+.player-score { font-size: 1.45rem; font-weight: 800; color: var(--color-text-primary); }
+.ball-type-indicator { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.6px; color: var(--color-text-secondary); opacity: 0.6; }
+.player-divider { text-align: center; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; color: var(--color-text-secondary); }
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   STATUS BADGE
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+.status-badge {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.8px;
+    padding: 8px 14px; border-radius: 8px;
+    background: rgba(226,183,68,0.08); border: 1px solid rgba(226,183,68,0.15);
+    color: var(--color-accent-gold);
+}
+.status-desc {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-top: 6px;
+    line-height: 1.4;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    letter-spacing: 0.5px;
+}
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   CONTROLS
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+.control-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.control-group label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.6px; color: var(--color-text-secondary); }
+.power-meter-wrapper { display: flex; align-items: center; gap: 10px; }
+.power-percentage { font-size: 0.75rem; font-weight: 700; color: var(--color-accent-gold); min-width: 36px; }
+
+/* Slider */
+.premium-slider { flex: 1; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); outline: none; }
+.premium-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+    background: linear-gradient(135deg, #e2b744, #f0d060);
+    box-shadow: 0 0 10px rgba(226,183,68,0.5); cursor: pointer;
+}
+.premium-slider::-moz-range-thumb {
+    width: 20px; height: 20px; border-radius: 50%; border: none;
+    background: linear-gradient(135deg, #e2b744, #f0d060);
+    box-shadow: 0 0 10px rgba(226,183,68,0.5); cursor: pointer;
+}
+
+/* Toggle */
+.prediction-toggle-group { margin-top: 4px; }
+.toggle-container { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.72rem; }
+.toggle-container input { display: none; }
+.toggle-slider {
+    width: 36px; height: 20px; border-radius: 10px;
+    background: rgba(255,255,255,0.1); position: relative;
+    transition: var(--transition-quick); flex-shrink: 0;
+}
+.toggle-slider::after {
+    content: ''; position: absolute; top: 3px; left: 3px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #fff; transition: var(--transition-quick);
+}
+.toggle-container input:checked + .toggle-slider { background: var(--color-accent-gold); }
+.toggle-container input:checked + .toggle-slider::after { transform: translateX(16px); }
+.toggle-label { font-weight: 600; letter-spacing: 0.6px; }
+.badge-gold {
+    font-size: 0.55rem; font-weight: 800;
+    background: linear-gradient(135deg, #e2b744, #f0d060);
+    color: #111; padding: 2px 6px; border-radius: 4px; letter-spacing: 0.6px;
+}
+
+/* Buttons */
+.control-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.btn-primary {
+    width: 100%; padding: 12px 16px; border-radius: 10px;
+    background: linear-gradient(135deg, #e2b744, #d4a030);
+    color: #0a0c10; font-weight: 800; font-size: 0.78rem; letter-spacing: 1px;
+    position: relative; overflow: hidden; transition: var(--transition-smooth);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(226,183,68,0.3); }
+.btn-glow {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: translateX(-100%); animation: shimmer 2.5s infinite;
+}
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+.btn-secondary {
+    width: 100%; padding: 10px 14px; border-radius: 10px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    font-weight: 600; font-size: 0.72rem; letter-spacing: 0.6px;
+    color: var(--color-text-secondary); transition: var(--transition-smooth);
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+
+/* Chalk warning blink animation */
+@keyframes chalkWarn {
+    0%, 100% { border-color: var(--color-accent-emerald); box-shadow: 0 0 0 rgba(13,138,91,0); }
+    50%       { border-color: #ff6b35; box-shadow: 0 0 14px rgba(255,107,53,0.7); color: #ff6b35; }
+}
+.chalk-warn {
+    animation: chalkWarn 0.7s ease-in-out infinite;
+    border-color: #ff6b35 !important;
+    color: #ff6b35 !important;
+}
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   SPIN CONTROL UI
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+.spin-section { display: flex; flex-direction: column; align-items: flex-start; }
+.spin-control-wrapper { display: flex; align-items: center; gap: 14px; width: 100%; }
+
+.spin-circle {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+    border: 2px solid rgba(255,255,255,0.1);
+    position: relative; cursor: crosshair; flex-shrink: 0;
+    transition: border-color 0.2s;
+}
+.spin-circle:hover { border-color: rgba(226,183,68,0.35); }
+.spin-crosshair-h, .spin-crosshair-v {
+    position: absolute; background: rgba(255,255,255,0.12);
+}
+.spin-crosshair-h { top: 50%; left: 8px; right: 8px; height: 1px; transform: translateY(-0.5px); }
+.spin-crosshair-v { left: 50%; top: 8px; bottom: 8px; width: 1px; transform: translateX(-0.5px); }
+
+.spin-dot {
+    position: absolute; width: 14px; height: 14px; border-radius: 50%;
+    background: linear-gradient(135deg, #e2b744, #f0d060);
+    box-shadow: 0 0 10px rgba(226,183,68,0.6);
+    left: 50%; top: 50%; transform: translate(-50%, -50%);
+    pointer-events: none; transition: none;
+}
+
+.spin-label {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.8px;
+    color: var(--color-accent-gold);
+}
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   RIVAL LIST
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+.rival-list { display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto; }
+.rival-card {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-radius: 8px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: var(--transition-quick);
+}
+.rival-card:hover { border-color: rgba(226,183,68,0.2); background: rgba(226,183,68,0.04); }
+.rival-flag { font-size: 1.2rem; flex-shrink: 0; }
+.rival-info { display: flex; flex-direction: column; flex: 1; }
+.rival-name { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.4px; }
+.rival-rank { font-size: 0.58rem; font-weight: 500; color: var(--color-text-secondary); letter-spacing: 0.4px; }
+.btn-challenge {
+    padding: 5px 10px; border-radius: 6px; font-size: 0.58rem; font-weight: 800;
+    letter-spacing: 0.8px;
+    background: linear-gradient(135deg, rgba(226,183,68,0.15), rgba(226,183,68,0.08));
+    border: 1px solid rgba(226,183,68,0.2);
+    color: var(--color-accent-gold);
+    transition: var(--transition-quick);
+}
+.btn-challenge:hover {
+    background: linear-gradient(135deg, rgba(226,183,68,0.3), rgba(226,183,68,0.15));
+    box-shadow: 0 2px 12px rgba(226,183,68,0.2);
+}
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   FLOATING BUTTONS (Language + Mode + Help)
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+.lang-toggle-btn, .mode-toggle-btn, .help-toggle-btn {
+    position: fixed; z-index: 50;
+    background: var(--bg-panel);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass); border-radius: 30px;
+    padding: 8px 18px;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.8px;
+    display: flex; align-items: center; gap: 4px;
+    transition: var(--transition-smooth);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.lang-toggle-btn { top: 20px; right: 420px; }
+.mode-toggle-btn { top: 20px; right: 540px; }
+.help-toggle-btn {
+    top: 20px; right: 360px;
+    padding: 0; width: 34px; height: 34px;
+    border-radius: 50%;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.lang-toggle-btn:hover, .mode-toggle-btn:hover, .help-toggle-btn:hover {
+    border-color: var(--color-accent-gold);
+    box-shadow: 0 8px 28px rgba(226,183,68,0.22);
+    transform: translateY(-2px); color: var(--color-accent-gold);
+}
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   CUE SELECTION
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+.cue-selection-section { padding-bottom: 12px; }
+.cue-list { 
+    display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 8px 2px;
+    scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+.cue-list::-webkit-scrollbar { height: 4px; }
+.cue-list::-webkit-scrollbar-track { background: transparent; }
+.cue-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+
+.cue-item {
+    flex: 0 0 auto; width: 64px; display: flex; flex-direction: column; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px; padding: 6px; cursor: pointer; transition: all 0.2s ease;
+}
+.cue-item:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+.cue-item.active { 
+    background: rgba(226, 183, 68, 0.15); border-color: var(--color-accent-gold);
+    box-shadow: 0 0 10px rgba(226, 183, 68, 0.3) inset;
+}
+.cue-preview {
+    width: 100%; height: 6px; border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+.cue-item span { font-size: 0.65rem; color: #aaa; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; }
+.cue-item.active span { color: var(--color-accent-gold); }
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   AD PANEL
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+#ad-panel {
+    grid-column: 1; grid-row: 3; align-self: end;
+    padding: 14px 18px; max-width: 280px;
+}
+.ad-placeholder { border: 1px dashed rgba(226,183,68,0.25); }
+.ad-badge {
+    font-size: 0.55rem; font-weight: 800; letter-spacing: 1.2px;
+    color: var(--color-accent-gold); margin-bottom: 6px;
+}
+.ad-content p { font-size: 0.72rem; font-weight: 600; }
+.ad-desc { font-size: 0.62rem; color: var(--color-text-secondary); }
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   PRO SETTINGS
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+.tip-toggle-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+.btn-tip {
+    flex: 1;
+    padding: 8px 0;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--color-text-secondary);
+    transition: var(--transition-smooth);
+}
+.btn-tip:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+.btn-tip.active {
+    background: rgba(226,183,68,0.15);
+    border-color: var(--color-accent-gold);
+    color: var(--color-accent-gold);
+    box-shadow: 0 0 12px rgba(226,183,68,0.25);
+}
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   SHOT TOAST ANNOUNCEMENT
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+#shot-announcement {
+    position: fixed; top: 12%; left: 50%; transform: translateX(-50%);
+    z-index: 100; text-align: center; pointer-events: none;
+    animation: toastIn 0.35s ease-out, toastOut 0.4s ease-in 1.8s forwards;
+}
+#shot-announcement h2 {
+    font-size: 2.6rem; font-weight: 800; letter-spacing: 3px;
+    background: linear-gradient(135deg, #e2b744, #ffd700, #f0d060);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    text-shadow: none; filter: drop-shadow(0 4px 20px rgba(226,183,68,0.4));
+}
+#shot-announcement p {
+    font-size: 0.85rem; font-weight: 600; color: var(--color-text-secondary);
+    letter-spacing: 1px; margin-top: 4px;
+}
+@keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.8); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
+@keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   MODALS (Guide, Revive, Revenge)
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+.modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.modal-card { max-height: 90vh; overflow-y: auto; scrollbar-width: thin; 
+    position: relative; padding: 36px 32px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    max-width: 460px; width: 92%;
+}
+.modal-glow {
+    position: absolute; top: -40%; left: -40%; width: 180%; height: 180%;
+    background: radial-gradient(circle, rgba(226,183,68,0.06) 0%, transparent 60%);
+    pointer-events: none;
+}
+.modal-badge {
+    font-size: 0.6rem; font-weight: 800; letter-spacing: 1.5px;
+    color: var(--color-accent-gold);
+}
+.modal-card h2 { font-size: 1.35rem; font-weight: 800; letter-spacing: 1.5px; }
+.modal-desc { font-size: 0.82rem; color: var(--color-text-secondary); line-height: 1.5; }
+.modal-actions { display: flex; flex-direction: column; width: 100%; gap: 10px; }
+
+/* Ad simulation */
+.ad-stream-preview { display: none; width: 100%; text-align: center; }
+.ad-stream-preview.active { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.spinner { width: 28px; height: 28px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--color-accent-gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.progress-bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; }
+.progress-bar-fill { height: 100%; background: var(--color-accent-gold); border-radius: 2px; transition: width 0.8s; }
+.ad-countdown-text { font-size: 0.68rem; color: var(--color-text-secondary); }
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   GUIDE MODAL ??Steps + Flag Select
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+.guide-modal-card { border-color: rgba(226,183,68,0.25); max-width: 500px; }
+.guide-steps { display: flex; flex-direction: column; gap: 8px; width: 100%; text-align: left; }
+.guide-step {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px; padding: 12px 16px;
+    font-size: 0.85rem; font-weight: 500; line-height: 1.4;
+    transition: var(--transition-quick);
+}
+.guide-step:hover { background: rgba(226,183,68,0.06); border-color: rgba(226,183,68,0.15); transform: translateX(4px); }
+
+.flag-select-title {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 1.2px;
+    color: var(--color-accent-gold); margin-top: 4px;
+}
+.flag-select-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.flag-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 8px 12px; border-radius: 10px;
+    background: rgba(255,255,255,0.03); border: 2px solid rgba(255,255,255,0.06);
+    font-size: 1.6rem; transition: var(--transition-quick); cursor: pointer;
+}
+.flag-btn span { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.6px; color: var(--color-text-secondary); }
+.flag-btn:hover { border-color: rgba(226,183,68,0.3); background: rgba(226,183,68,0.05); }
+.flag-btn.selected {
+    border-color: var(--color-accent-gold);
+    background: rgba(226,183,68,0.1);
+    box-shadow: 0 0 14px rgba(226,183,68,0.2);
+}
+.flag-btn.selected span { color: var(--color-accent-gold); }
+
+/* ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??   HELP MODAL (Controls)
+   ??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??믊삳쫫??/
+.help-modal-card {
+    max-width: 440px;
+    align-items: flex-start;
+    text-align: left;
+    padding: 32px;
+}
+.help-modal-card h2 { margin-bottom: 4px; font-size: 1.25rem; }
+.help-steps {
+    display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 8px;
+}
+.help-step {
+    font-size: 0.8rem; font-weight: 500; letter-spacing: 0.4px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px; padding: 12px 16px;
+    display: flex; align-items: center;
+}
+.btn-close {
+    position: absolute; top: 18px; right: 18px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(255,255,255,0.06); font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--color-text-secondary); transition: var(--transition-quick);
+}
+.btn-close:hover {
+    background: rgba(255,255,255,0.15); color: #fff; transform: rotate(90deg);
+}
+/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   MOBILE PORTRAIT (< 768px) - Absolute Positioned HUD (True Full Screen)
+   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+@media (max-width: 768px) and (orientation: portrait) {
+    #hud-overlay {
+        display: block; /* Remove grid to allow absolute positioning */
+        padding: 0;
+        pointer-events: none;
+    }
+
+    #game-header {
+        position: fixed; top: 10px; left: 10px; z-index: 50;
+        background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+        padding: 0; pointer-events: none;
+    }
+    .logo-area h1 { font-size: 0.95rem; text-shadow: 1px 1px 4px rgba(0,0,0,0.8); }
+    .subtitle { display: none; }
+    .logo-badge { pointer-events: auto; }
+
+    #game-dashboard {
+        position: fixed; inset: 0; z-index: 40;
+        background: transparent; border: none; box-shadow: none; padding: 0; pointer-events: none;
+    }
+    
+    .panel-section {
+        position: static; 
+        background: transparent; border: none; padding: 0; margin: 0; box-shadow: none; pointer-events: none;
+    }
+    .panel-section h3 { display: none; } 
+    .mobile-drawer-handle { display: none; }
+
+    /* 1. Scoreboard */
+    .player-stats {
+        position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+        flex-direction: row; justify-content: center; gap: 8px; pointer-events: auto;
+    }
+    .player-card { flex-direction: row; padding: 4px 10px; gap: 6px; background: rgba(12,14,20,0.8); border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); width: auto; }
+    .player-info { flex-direction: row; align-items: center; gap: 6px; }
+    .player-label { display: none; }
+    .player-flag { font-size: 1.1rem; }
+    .player-score { font-size: 1rem; }
+
+    /* Status Text */
+    .status-badge { display: none; }
+    .status-desc { 
+        position: fixed; bottom: 150px; left: 50%; transform: translateX(-50%);
+        text-align: center; font-size: 0.7rem; background: rgba(0,0,0,0.7); padding: 6px 12px; border-radius: 12px; width: auto; pointer-events: none;
+    }
+
+    /* Floating top-right buttons */
+    .lang-toggle-btn { position: fixed; right: 10px; top: 10px; padding: 6px 10px; font-size: 0.65rem; pointer-events: auto; background: rgba(12,14,20,0.8); border-radius: 10px; }
+    .mode-toggle-btn { position: fixed; right: 10px; top: 45px; padding: 6px 10px; font-size: 0.65rem; pointer-events: auto; background: rgba(12,14,20,0.8); border-radius: 10px; }
+    .help-toggle-btn { position: fixed; right: 10px; top: 80px; width: 30px; height: 30px; font-size: 0.9rem; pointer-events: auto; background: rgba(12,14,20,0.8); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0; }
+
+    /* 2. Controls */
+    .control-group { position: static; pointer-events: none; display: block; }
+    .control-group label { display: none; }
+    .power-meter-wrapper {
+        position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+        width: 80%; pointer-events: auto; background: rgba(12,14,20,0.8); padding: 8px 12px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    .power-meter-wrapper input { width: 100%; }
+    .premium-slider { height: 16px; border-radius: 8px; width: 100%; }
+    .premium-slider::-webkit-slider-thumb { width: 32px; height: 32px; box-shadow: 0 0 12px rgba(226,183,68,0.8); }
+    
+    /* Strike / Reset / Chalk Actions */
+    .control-actions {
+        position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+        width: 90%; display: flex; flex-direction: row; gap: 10px; pointer-events: auto;
+    }
+    .btn-primary { padding: 16px 16px; font-size: 1.1rem; border-radius: 14px; box-shadow: 0 4px 20px rgba(226,183,68,0.5); flex: 2; width: auto; }
+    .btn-secondary { padding: 12px; font-size: 0.8rem; flex: 1; border-radius: 14px; width: auto; }
+    
+    /* Prediction toggle */
+    .prediction-toggle-group {
+        position: fixed; top: 120px; right: 10px; background: rgba(12,14,20,0.8); padding: 6px 10px; border-radius: 10px; pointer-events: auto; display: flex; align-items: center;
+    }
+    .prediction-toggle-group span { font-size: 0.65rem; margin-right: 6px; }
+
+    /* 3. Spin Control */
+    .spin-section {
+        position: fixed; bottom: 130px; left: 15px; pointer-events: auto;
+        background: rgba(12,14,20,0.8); border-radius: 50%; padding: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; width: auto;
+    }
+    .spin-circle { width: 64px; height: 64px; }
+    .spin-label { display: none; }
+
+    /* 4. Rivals (Tiny horizontal list top left below logo) */
+    .rival-section {
+        position: fixed; top: 50px; left: 10px; max-width: calc(100% - 100px); pointer-events: auto;
+        display: flex; flex-direction: column; gap: 4px;
+    }
+    .rival-section > div:first-child { display: none !important; } /* hide header & practice button */
+    .rival-list { display: flex; flex-direction: row; overflow-x: auto; max-height: none; padding-bottom: 2px; gap: 6px; }
+    .rival-card { flex: 0 0 auto; width: auto; min-width: 100px; padding: 4px 8px; background: rgba(12,14,20,0.8); border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    .rival-flag { font-size: 1rem; }
+
+    /* Hide heavy settings sections completely */
+    .pro-settings-section { display: none !important; }
+    .cue-selection-section { display: none !important; }
+
+    /* Hide ad panel on mobile entirely */
+    #ad-panel { display: none !important; }
+
+    /* Modals */
+    .modal-card { max-height: 85vh; overflow-y: auto; padding: 20px 14px; background: rgba(12,14,20,0.95); }
+    .modal-card h2 { font-size: 1.1rem; }
+    #shot-announcement h2 { font-size: 1.8rem; }
+}
+
+/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   MOBILE LANDSCAPE (< 950px width, landscape orientation)
+   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+@media (max-width: 950px) and (orientation: landscape) {
+    #hud-overlay {
+        grid-template-columns: 1fr 240px; /* Much narrower right panel! */
+        padding: 8px;
+        gap: 8px;
+        pointer-events: none;
+    }
+    
+    #game-header { 
+        position: fixed; top: 10px; left: 10px;
+        background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+        padding: 0; pointer-events: none;
+    }
+    .logo-area h1 { font-size: 0.9rem; text-shadow: 1px 1px 4px rgba(0,0,0,0.8); }
+    .subtitle { display: none; }
+    
+    #game-dashboard {
+        grid-column: 2;
+        padding: 10px;
+        background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+        pointer-events: none;
+        max-height: 100vh; overflow-y: auto;
+    }
+
+    .panel-section {
+        background: rgba(12, 14, 20, 0.65);
+        backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 8px 10px;
+        margin-bottom: 8px;
+        pointer-events: auto;
+    }
+
+    .panel-section h3 { display: none; } /* hide section titles */
+    .player-card { padding: 4px 8px; gap: 6px; }
+    .player-score { font-size: 1.1rem; }
+    .btn-primary { padding: 8px 10px; font-size: 0.7rem; }
+    .btn-secondary { padding: 6px 8px; font-size: 0.65rem; }
+    
+    /* Move floating buttons leftwards so they don't overlap the right panel */
+    .lang-toggle-btn { position: fixed; right: 260px; top: 10px; padding: 4px 8px; font-size: 0.65rem; pointer-events: auto; background: rgba(0,0,0,0.6); border-radius:8px;}
+    .mode-toggle-btn { position: fixed; right: 330px; top: 10px; padding: 4px 8px; font-size: 0.65rem; pointer-events: auto; background: rgba(0,0,0,0.6); border-radius:8px;}
+    .help-toggle-btn { position: fixed; right: 410px; top: 10px; width: 28px; height: 28px; font-size: 0.9rem; pointer-events: auto; background: rgba(0,0,0,0.6); border-radius:8px; display: flex; align-items: center; justify-content: center; padding: 0;}
+
+    .spin-circle { width: 56px; height: 56px; }
+    #ad-panel { display: none; }
+}
+
+/* Tablet tweaks */
+@media (max-width: 1024px) and (min-width: 951px) {
+    #hud-overlay { grid-template-columns: auto 1fr 300px; padding: 14px; }
+    #game-dashboard { padding: 14px; }
+    .lang-toggle-btn { right: 325px; }
+    .mode-toggle-btn { right: 440px; }
+}
+
+/* Utility */
+.hidden { display: none !important; }
+
+</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
+    <!-- Three.js r128 + OrbitControls (global scope, non-module CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+    <!-- ?먥븧??3D VIEWPORT ?먥븧??-->
+    <div id="canvas-container"></div>
+
+    <!-- ?먥븧??FLOATING TOP BUTTONS ?먥븧??-->
+    <button id="btn-lang" class="lang-toggle-btn" title="Switch Language">?뙋&nbsp;<span id="lang-label">KOR</span></button>
+    <button id="btn-mode" class="mode-toggle-btn" title="Switch Game Mode"><span id="mode-icon">?렠</span>&nbsp;<span id="mode-label" data-i18n="modePocket">POCKET BALL</span></button>
+    <button id="btn-help" class="help-toggle-btn" title="Controls Guide">?뱄툘</button>
+
+    <!-- ?먥븧??HUD OVERLAY ?먥븧??-->
+    <div id="hud-overlay">
+
+        <!-- Header (top-left) -->
+        <header id="game-header" class="glass-panel">
+            <div class="logo-area">
+                <span class="logo-badge">PRO</span>
+                <h1>CUE CRAFT 3D</h1>
+            </div>
+            <p class="subtitle" data-i18n="subtitle">Next-Gen Web Billiards Simulator</p>
+        </header>
+
+        <!-- Dashboard (right side) -->
+        <aside id="game-dashboard" class="glass-panel">
+            <!-- Mobile drawer handle -->
+            <div class="mobile-drawer-handle" id="drawer-handle"><div class="drawer-bar"></div></div>
+
+            <!-- ?? Player Scoreboard ?? -->
+            <div class="panel-section player-stats">
+                <div class="player-card active" id="player-1-card">
+                    <div class="player-flag" id="p1-flag" style="font-size:1.8rem;">?렠</div>
+                    <div class="player-indicator"></div>
+                    <div class="player-info">
+                        <span class="player-label" id="p1-name" data-i18n="player1">PLAYER 1</span>
+                        <span class="player-score" id="p1-score">0</span>
+                    </div>
+                    <div class="ball-type-indicator solids" data-i18n="solids">Solids</div>
+                </div>
+                <div class="player-divider">VS</div>
+                <div class="player-card" id="player-2-card">
+                    <div class="player-flag" id="p2-flag"><span class="fi fi-un"></span></div>
+                    <div class="player-indicator"></div>
+                    <div class="player-info">
+                        <span class="player-label" id="p2-name" data-i18n="player2">PLAYER 2</span>
+                        <span class="player-score" id="p2-score">0</span>
+                    </div>
+                    <div class="ball-type-indicator stripes" data-i18n="stripes">Stripes</div>
+                </div>
+            </div>
+
+            <!-- ?? Match Status ?? -->
+            <div class="panel-section game-status-section">
+                <h3 data-i18n="matchStatus">MATCH STATUS</h3>
+                <div id="game-status" class="status-badge">READY TO AIM</div>
+                <p class="status-desc" id="status-desc">Drag screen to adjust angle.</p>
+            </div>
+
+            <!-- ?? Cue Control ?? -->
+            <div class="panel-section physics-stats">
+                <h3 data-i18n="cueControl">CUE CONTROL</h3>
+                <div class="control-group">
+                    <label for="power-slider" data-i18n="strikePower">STRIKE POWER</label>
+                    <div class="power-meter-wrapper">
+                        <input type="range" id="power-slider" min="5" max="100" value="40" class="premium-slider">
+                        <div class="power-percentage" id="power-value">40%</div>
+                    </div>
+                </div>
+                <div class="control-group prediction-toggle-group">
+                    <label class="toggle-container">
+                        <input type="checkbox" id="toggle-prediction">
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label" data-i18n="aiPrediction">AI PREDICTION PATH</span>
+                        <span class="badge-gold" data-i18n="freeTrial">FREE TRIAL</span>
+                    </label>
+                </div>
+                <div class="control-actions">
+                    <button id="btn-chalk" class="btn-secondary" style="margin-bottom:4px;border-color:var(--color-accent-emerald);color:var(--color-accent-emerald);"><span data-i18n="chalkBtn">APPLY CHALK (C)</span></button>
+                    <button id="btn-strike" class="btn-primary"><span class="btn-glow"></span><span data-i18n="strikeBtn">STRIKE BALL (SPACE)</span></button>
+                    <button id="btn-reset" class="btn-secondary" data-i18n="resetBtn">RESET CUE BALL</button>
+                </div>
+            </div>
+
+            <!-- ?? Spin Control ?? -->
+            <div class="panel-section spin-section">
+                <h3 data-i18n="spinControl">CUE BALL SPIN</h3>
+                <div class="spin-control-wrapper">
+                    <div class="spin-circle" id="spin-circle">
+                        <div class="spin-crosshair-h"></div>
+                        <div class="spin-crosshair-v"></div>
+                        <div class="spin-dot" id="spin-dot"></div>
+                    </div>
+                    <span class="spin-label" id="spin-label" data-i18n="spinCenter">CENTER</span>
+                </div>
+            </div>
+
+            <!-- ?? Global Rivals ?? -->
+            <div class="panel-section rival-section">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <h3 data-i18n="globalRivals" style="margin:0;">GLOBAL RIVALS</h3>
+                    <button id="btn-practice" class="btn-primary" style="font-size:0.6rem; padding:4px 8px; width:auto;"><span data-i18n="btnPractice">FREE PRACTICE</span></button>
+                </div>
+                <div class="rival-list" id="rival-list"><!-- JS generates --></div>
+            </div>
+
+            <!-- ?? PRO Settings ?? -->
+            <div class="panel-section pro-settings-section">
+                <h3 data-i18n="proSettings">PRO SETTINGS</h3>
+                <div class="control-group">
+                    <label for="cue-mass-slider" data-i18n="cueMass">CUE MASS</label>
+                    <div class="power-meter-wrapper">
+                        <input type="range" id="cue-mass-slider" min="520" max="540" value="530" step="1" class="premium-slider">
+                        <div class="power-percentage" id="cue-mass-value" style="min-width:40px;">530g</div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label data-i18n="tipHardness">TIP HARDNESS</label>
+                    <div class="tip-toggle-group" id="tip-hardness-group">
+                        <button class="btn-tip active" data-val="H">HARD</button>
+                        <button class="btn-tip" data-val="M">MID</button>
+                        <button class="btn-tip" data-val="S">SOFT</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="humidity-slider" data-i18n="tableHumidity">TABLE HUMIDITY</label>
+                    <div class="power-meter-wrapper">
+                        <input type="range" id="humidity-slider" min="50" max="80" value="65" step="1" class="premium-slider">
+                        <div class="power-percentage" id="humidity-value" style="min-width:40px;">65%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ?? CUE SELECTION ?? -->
+            <div class="panel-section cue-selection-section">
+                <h3 data-i18n="cueSelection">CUE COLLECTION</h3>
+                <div class="cue-list">
+                    <div class="cue-item active" data-index="0">
+                        <div class="cue-preview" style="background: linear-gradient(to right, #e4c698 0%, #f3ddb3 50%, #4a2e15 80%, #bbb 100%);"></div>
+                        <span>Classic</span>
+                    </div>
+                    <div class="cue-item" data-index="1">
+                        <div class="cue-preview" style="background: linear-gradient(to right, #333 0%, #555 50%, #111 80%, #1e293b 100%);"></div>
+                        <span>Carbon</span>
+                    </div>
+                    <div class="cue-item" data-index="2">
+                        <div class="cue-preview" style="background: linear-gradient(to right, #d1d5db 0%, #f3f4f6 50%, #1e3a8a 80%, #f8fafc 100%);"></div>
+                        <span>Sapphire</span>
+                    </div>
+                    <div class="cue-item" data-index="3">
+                        <div class="cue-preview" style="background: linear-gradient(to right, #e4c698 0%, #f3ddb3 50%, #7f1d1d 80%, #111827 100%);"></div>
+                        <span>Crimson</span>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Ad Panel (bottom-left) -->
+        <div id="ad-panel" class="glass-panel ad-placeholder" style="display: none;">
+            <div class="ad-badge" data-i18n="sponsored">SPONSORED</div>
+            <div class="ad-content">
+                <p data-i18n="adSlot">Premium Billiards Arena Ad Slot</p>
+                <span class="ad-desc" data-i18n="adDesc">Future Google AdSense Placement</span>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- ?먥븧??SHOT TOAST ?먥븧??-->
+    <div id="shot-announcement" class="hidden">
+        <h2 id="announcement-title">FANTASTIC!</h2>
+        <p id="announcement-subtitle">3-Cushion Combo</p>
+    </div>
+
+    <!-- ?먥븧??WELCOME GUIDE MODAL ?먥븧??-->
+    <div id="guide-modal" class="modal-overlay hidden">
+        <div class="modal-card glass-panel guide-modal-card">
+            <div class="modal-glow"></div>
+            <span class="modal-badge">?렠 CUE CRAFT 3D</span>
+            <h2 id="guide-title" data-i18n="guideTitle">HOW TO PLAY</h2>
+            <div class="lang-select-row" id="modal-lang-select" style="display:flex; justify-content:center; gap:8px; margin-bottom:16px;">
+                <button class="lang-btn" data-lang="en" style="padding:4px 8px; font-size:0.7rem; border-radius:4px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; cursor:pointer;">EN</button>
+                <button class="lang-btn" data-lang="ko" style="padding:4px 8px; font-size:0.7rem; border-radius:4px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; cursor:pointer;">KR</button>
+                <button class="lang-btn" data-lang="ja" style="padding:4px 8px; font-size:0.7rem; border-radius:4px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; cursor:pointer;">JP</button>
+                <button class="lang-btn" data-lang="zh" style="padding:4px 8px; font-size:0.7rem; border-radius:4px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; cursor:pointer;">CN</button>
+                <button class="lang-btn" data-lang="es" style="padding:4px 8px; font-size:0.7rem; border-radius:4px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; cursor:pointer;">ES</button>
+                <button class="lang-btn" data-lang="hi" style="padding:4px 8px; font-size:0.7rem; border-radius:4px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; cursor:pointer;">IN</button>
+            </div>
+            <div class="guide-steps">
+                <div class="guide-step" data-i18n="guideStep1">?뼮截? Drag the screen to aim</div>
+                <div class="guide-step" data-i18n="guideStep2">?뮞  Adjust strike power</div>
+                <div class="guide-step" data-i18n="guideStep3">?? Press STRIKE or Spacebar</div>
+                <div class="guide-step" data-i18n="guideStep4">?? Toggle AI Path for trajectory</div>
+            </div>
+
+            <button id="btn-guide-start" class="btn-primary" style="width:100%;margin-top:8px">
+                <span class="btn-glow"></span><span data-i18n="guideBtn">LET'S PLAY!</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ?먥븧??REVIVE MODAL (cue scratch) ?먥븧??-->
+    <div id="revive-modal" class="modal-overlay hidden">
+        <div class="modal-card glass-panel">
+            <div class="modal-glow"></div>
+            <span class="modal-badge" data-i18n="commercial">COMMERCIAL OPPORTUNITY</span>
+            <h2 data-i18n="chanceExpired">CHANCE EXPIRED!</h2>
+            <p class="modal-desc" data-i18n="scratchedDesc">You scratched the cue ball!</p>
+            <div class="ad-stream-preview">
+                <div class="spinner"></div>
+                <div class="progress-bar-container"><div class="progress-bar-fill" id="ad-progress"></div></div>
+                <span class="ad-countdown-text" id="ad-countdown">SIMULATING AD (3s)...</span>
+            </div>
+            <div class="modal-actions">
+                <button id="btn-watch-ad" class="btn-primary"><span class="btn-glow"></span><span data-i18n="watchAd">?렗 WATCH AD TO CONTINUE</span></button>
+                <button id="btn-skip-ad" class="btn-secondary" data-i18n="giveUp">GIVE UP &amp; RESTART</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ?먥븧??REVENGE MODAL (AI defeat) ?먥븧??-->
+    <div id="revenge-modal" class="modal-overlay hidden">
+        <div class="modal-card glass-panel">
+            <div class="modal-glow"></div>
+            <span class="modal-badge">?뷂툘 RIVAL MATCH</span>
+            <h2 data-i18n="revengeTitle">DEFEATED!</h2>
+            <p class="modal-desc" data-i18n="revengeDesc">You lost the rivalry match! Watch an ad to get a revenge shot.</p>
+            <div class="modal-actions">
+                <button id="btn-revenge-ad" class="btn-primary"><span class="btn-glow"></span><span data-i18n="revengeAd">?렗 REVENGE SHOT (WATCH AD)</span></button>
+                <button id="btn-revenge-skip" class="btn-secondary" data-i18n="revengeSkip">ACCEPT DEFEAT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ?먥븧??HELP MODAL ?먥븧??-->
+    <div id="help-modal" class="modal-overlay hidden">
+        <div class="modal-card glass-panel help-modal-card">
+            <button id="btn-help-close" class="btn-close">??/button>
+            <div class="modal-glow"></div>
+            <span class="modal-badge" data-i18n="controlsGuide">CONTROLS</span>
+            <h2 data-i18n="helpTitle">議곗옉 ?덈궡</h2>
+            <div class="help-steps">
+                <div class="help-step" data-i18n="helpNew1">?뼮截?留덉슦???쒕옒洹?: 3D ?쒖젏 ?뚯쟾</div>
+                <div class="help-step" data-i18n="helpNew2">?뼮截?留덉슦???고겢由??쒕옒洹?: ?붾㈃ ?됲뻾 ?대룞</div>
+                <div class="help-step" data-i18n="helpNew3">?숋툘 留덉슦?????ㅽ겕濡?: ?붾㈃ ?뺣?/異뺤냼 (以????꾩썐)</div>
+                <div class="help-step" data-i18n="helpNew4">?⑨툘 ?ㅽ럹?댁뒪諛?: ?먮? ?寃⑺븯湲?/div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js?v=12"></script>
+</body>
+</html>
+

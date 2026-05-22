@@ -515,72 +515,97 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
-/* ═══════════════════════════════════════════════════════════════════════════════
-   MOBILE PORTRAIT (< 768px) - Compact non-overlapping layout
+   MOBILE PORTRAIT (< 768px) - Floating HUD (Full Screen Immersive)
    ═══════════════════════════════════════════════════════════════════════════════*/
 @media (max-width: 768px) and (orientation: portrait) {
     #hud-overlay {
         grid-template-columns: 1fr;
         grid-template-rows: auto 1fr auto;
         padding: 6px;
-        gap: 6px;
+        gap: 0; /* Remove gap so elements can position themselves */
+        pointer-events: none; /* Let touches hit the 3D canvas! */
     }
 
-    /* Header: ultra compact top-left, no blur to maximize visibility */
+    /* Header: floating, no background */
     #game-header {
         grid-column: 1; grid-row: 1;
-        padding: 6px 10px;
-        max-width: calc(100vw - 80px); 
-        background: rgba(12, 14, 20, 0.4); /* Less obstructive */
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
+        padding: 10px;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+        pointer-events: none; /* Let touches pass through */
     }
-    .logo-area h1 { font-size: 0.85rem; }
-    .subtitle { font-size: 0.55rem; }
+    .logo-area { text-shadow: 1px 1px 4px rgba(0,0,0,0.8); }
+    .logo-area h1 { font-size: 0.95rem; }
+    .subtitle { display: none; } /* Hide subtitle to unclutter top */
+    .logo-badge { pointer-events: auto; }
 
-    /* Dashboard: fixed at bottom, taking minimal vertical space */
+    /* Dashboard: Container is invisible, children are floating bubbles */
     #game-dashboard {
         grid-column: 1; grid-row: 3;
         position: relative; 
-        max-height: 45vh; /* Never obscure more than bottom 45% */
-        border-radius: 14px;
-        padding: 10px;
+        max-height: 55vh; /* Allow a bit more height but it's mostly transparent now */
+        padding: 0 10px 10px 10px;
         overflow-y: auto;
-        background: rgba(12, 14, 20, 0.88); /* solid enough to read but dark */
+        /* THE MAGIC: Invisible container */
+        background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+        pointer-events: none; 
     }
     
-    /* Remove drawer handle since it's just a scrollable panel now */
+    /* Individual Sections become Floating Bubbles */
+    .panel-section {
+        background: rgba(12, 14, 20, 0.65); /* Semi-transparent dark */
+        backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        pointer-events: auto; /* Buttons inside work! */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    
+    .panel-section h3 { display: none; } /* Hide section titles to save space */
     .mobile-drawer-handle { display: none; }
 
-    /* Floating buttons: top-right, much smaller and tighter */
-    .lang-toggle-btn { right: 8px; top: 8px; padding: 4px 8px; font-size: 0.6rem; }
-    .mode-toggle-btn { right: 8px; top: 38px; padding: 4px 8px; font-size: 0.6rem; }
+    /* Scoreboard: Horizontal and compact */
+    .player-stats { flex-direction: row; justify-content: center; gap: 12px; }
+    .player-card { flex-direction: row; padding: 4px 10px; gap: 8px; background: rgba(0,0,0,0.4); border-radius: 20px; }
+    .player-info { flex-direction: row; align-items: center; gap: 8px; }
+    .player-label { display: none; } /* Hide "Player 1" text */
+    .player-flag { font-size: 1.2rem; }
+    .player-score { font-size: 1.1rem; }
 
-    /* Buttons and Sliders: Thicker touch targets */
-    .btn-primary { padding: 16px 16px; font-size: 0.9rem; border-radius: 12px; } /* Bigger STRIKE */
-    .btn-secondary { padding: 12px 14px; }
-    .premium-slider { height: 12px; border-radius: 6px; }
-    .premium-slider::-webkit-slider-thumb { width: 26px; height: 26px; }
-    .premium-slider::-moz-range-thumb { width: 26px; height: 26px; }
+    /* Hide long status text to keep screen clean */
+    .status-badge { display: none; }
+    .status-desc { text-align: center; font-size: 0.65rem; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 10px; margin: 0 auto; width: fit-content; }
+
+    /* Floating buttons: top-right */
+    .lang-toggle-btn { right: 8px; top: 8px; padding: 6px 10px; font-size: 0.65rem; pointer-events: auto; background: rgba(12,14,20,0.7); }
+    .mode-toggle-btn { right: 8px; top: 40px; padding: 6px 10px; font-size: 0.65rem; pointer-events: auto; background: rgba(12,14,20,0.7); }
+
+    /* Controls */
+    .control-group label { display: none; } /* Hide labels like "Power" */
+    .btn-primary { padding: 18px 16px; font-size: 1.1rem; border-radius: 14px; box-shadow: 0 4px 20px rgba(226,183,68,0.4); } /* Huge STRIKE */
+    .btn-secondary { padding: 14px 14px; }
+    .premium-slider { height: 14px; border-radius: 7px; }
+    .premium-slider::-webkit-slider-thumb { width: 30px; height: 30px; box-shadow: 0 0 12px rgba(226,183,68,0.8); }
+    .premium-slider::-moz-range-thumb { width: 30px; height: 30px; box-shadow: 0 0 12px rgba(226,183,68,0.8); }
 
     /* Make sections horizontal to save vertical space */
-    .rival-list { flex-direction: row; overflow-x: auto; max-height: none; padding-bottom: 6px; }
-    .rival-card { flex: 0 0 auto; width: 160px; flex-direction: column; text-align: center; padding: 6px; }
-    .rival-flag { font-size: 1.5rem; margin-bottom: 4px; }
+    .rival-list { flex-direction: row; overflow-x: auto; max-height: none; padding-bottom: 2px; }
+    .rival-card { flex: 0 0 auto; width: 140px; padding: 6px; background: rgba(0,0,0,0.4); }
+    .rival-flag { font-size: 1.2rem; }
 
     /* Hide ad panel on mobile entirely */
     #ad-panel { display: none; }
 
-    /* Modals smaller */
-    .modal-card { padding: 20px 14px; }
+    /* Modals */
+    .modal-card { padding: 20px 14px; background: rgba(12,14,20,0.9); }
     .modal-card h2 { font-size: 1.1rem; }
-    #shot-announcement h2 { font-size: 1.6rem; }
-    .flag-btn { padding: 6px 8px; font-size: 1.15rem; }
-
-    /* Spin circle fits tight */
+    #shot-announcement h2 { font-size: 1.8rem; }
+    .flag-btn { padding: 6px 8px; font-size: 1.25rem; }
     .spin-circle { width: 68px; height: 68px; }
-
-    /* Guide modal: full width */
     .guide-modal-card { max-width: 96vw; }
     .guide-step { font-size: 0.75rem; padding: 8px 10px; }
 }

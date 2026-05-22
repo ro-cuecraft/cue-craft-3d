@@ -484,6 +484,7 @@ function init(){
   createLighting();createTable();spawnBalls();createCueAndGuide();initPredictionLines();createCrosshairGrid();
   setupUIListeners();applyLanguage(currentLang);renderRivalList();
   window.addEventListener('resize',onResize);
+  window.addEventListener('orientationchange', () => setTimeout(onResize, 100));
   animate();
   setTimeout(()=>elGuideModal.classList.remove('hidden'),250);
 }
@@ -790,10 +791,10 @@ function setupSpinUI(){
     updateChalkWarning();
   }
   spinCircle.addEventListener('mousedown',e=>{dragging=true;updateSpin(e.clientX,e.clientY);e.preventDefault();});
-  window.addEventListener('mousemove',e=>{if(dragging)updateSpin(e.clientX,e.clientY);});
+  window.addEventListener('mousemove',e=>{if(dragging){updateSpin(e.clientX,e.clientY);e.preventDefault();}},{passive:false});
   window.addEventListener('mouseup',()=>{dragging=false;});
   spinCircle.addEventListener('touchstart',e=>{dragging=true;updateSpin(e.touches[0].clientX,e.touches[0].clientY);e.preventDefault();},{passive:false});
-  window.addEventListener('touchmove',e=>{if(dragging&&e.target===spinCircle)updateSpin(e.touches[0].clientX,e.touches[0].clientY);},{passive:false});
+  window.addEventListener('touchmove',e=>{if(dragging){updateSpin(e.touches[0].clientX,e.touches[0].clientY);e.preventDefault();}},{passive:false});
   window.addEventListener('touchend',()=>{dragging=false;});
   // Double-click/tap to reset to center
   spinCircle.addEventListener('dblclick',()=>{spinOffset.x=0;spinOffset.y=0;spinDot.style.left='50%';spinDot.style.top='50%';updateSpinLabel();updateChalkWarning();});
@@ -1128,12 +1129,21 @@ setupModalLangSelect();
 function setupMobileDrawer(){
   const dashboard=$('game-dashboard');const handle=$('drawer-handle');
   let startY=0,drawerDragging=false;  // renamed to avoid conflict with spin UI dragging
+  handle.addEventListener('mousedown',e=>{startY=e.clientY;drawerDragging=true;e.preventDefault();});
+  window.addEventListener('mousemove',e=>{
+    if(!drawerDragging)return;const dy=startY-e.clientY;
+    if(dy>30)dashboard.classList.add('expanded');
+    if(dy<-30)dashboard.classList.remove('expanded');
+    e.preventDefault();
+  },{passive:false});
+  window.addEventListener('mouseup',()=>{drawerDragging=false;});
   handle.addEventListener('touchstart',e=>{startY=e.touches[0].clientY;drawerDragging=true;e.preventDefault();},{passive:false});
   window.addEventListener('touchmove',e=>{
     if(!drawerDragging)return;const dy=startY-e.touches[0].clientY;
     if(dy>30)dashboard.classList.add('expanded');
     if(dy<-30)dashboard.classList.remove('expanded');
-  },{passive:true});
+    e.preventDefault();
+  },{passive:false});
   window.addEventListener('touchend',()=>{drawerDragging=false;});
   handle.addEventListener('click',()=>dashboard.classList.toggle('expanded'));
 }

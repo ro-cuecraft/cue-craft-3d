@@ -1328,7 +1328,7 @@ function init(){
   renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setClearColor(0x000000,0);renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;container.appendChild(renderer.domElement);
   controls=new THREE.OrbitControls(camera,renderer.domElement);
-  controls.enableDamping=true;controls.dampingFactor=0.05;controls.maxPolarAngle=Math.PI/2.05;controls.minDistance=6;controls.maxDistance=48;controls.target.set(0,0,0);
+  controls.enableDamping=true;controls.dampingFactor=0.05;controls.maxPolarAngle=Math.PI/2.15;controls.minDistance=16;controls.maxDistance=48;controls.target.set(0,0,0);
   createLighting();createTable();spawnBalls();createCueAndGuide();initPredictionLines();createCrosshairGrid();
   setupUIListeners();applyLanguage(currentLang);renderRivalList();
   window.addEventListener('resize',onResize);
@@ -1535,7 +1535,7 @@ function initPredictionLines(){
 
 function updatePredictionPaths(){
   const cb=balls[0];
-  if(!cb||!cb.active||currentTurnStatus!=='AIMING'||!togglePrediction.checked){predictionLines.forEach(l=>l.visible=false);if(aimingLine)aimingLine.visible=true;return;}
+  if(!cb||!cb.active||currentTurnStatus!=='AIMING'||!togglePrediction.checked){predictionLines.forEach(l=>l.visible=false);if(aimingLine)aimingLine.visible=false;return;}
   aimingLine.visible=false;
   const ad=new THREE.Vector3();camera.getWorldDirection(ad);ad.y=0;ad.normalize();
   const st=cb.mesh.position.clone();let nearest=null,nd=Infinity,hp=null;
@@ -1681,7 +1681,7 @@ function updateCuePosition(){
   if(currentTurnStatus==='AIMING'&&!(aiMode&&currentPlayer===2)){
     cueStick.visible=true;
     const ad=new THREE.Vector3();camera.getWorldDirection(ad);ad.y=0;ad.normalize();
-    aimingLine.geometry.setFromPoints([cb.mesh.position.clone(),cb.mesh.position.clone().add(ad.clone().multiplyScalar(9.5))]);
+    aimingLine.visible=false; aimingLine.geometry.setFromPoints([cb.mesh.position.clone(),cb.mesh.position.clone().add(ad.clone().multiplyScalar(9.5))]);
     aimingLine.computeLineDistances();
     const pw=parseFloat(elPowerSlider.value);const pb=1+(pw/100)*1.65;
     const sp=cb.mesh.position.clone().sub(ad.clone().multiplyScalar(pb+6.2));sp.y=BALL_RADIUS+0.38;

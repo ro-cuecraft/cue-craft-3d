@@ -603,10 +603,17 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
 
     /* 誘몄궗???뱀뀡 ??젣 */
     .pro-settings-section, .cue-selection-section, #ad-panel { display: none !important; }
+    /* 媛뺤젣 ?곗튂 ?쒖꽦??(紐⑤떖 諛?踰꾪듉) - iOS/Android ?곗튂 踰꾧렇 ?꾨꼍 諛⑹? */
+    .modal-overlay, .modal-card, button, input, .btn-primary, .btn-secondary, .action-btn {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
 }
 
 /* Utility */
 .hidden { display: none !important; }
+
 
 
 </style>

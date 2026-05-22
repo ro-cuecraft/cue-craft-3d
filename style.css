@@ -515,85 +515,116 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
-   MOBILE RESPONSIVE (< 768px)
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOBILE PORTRAIT (< 768px) - Compact non-overlapping layout
    ═══════════════════════════════════════════════════════════════════════════════*/
-@media (max-width: 768px) {
+@media (max-width: 768px) and (orientation: portrait) {
     #hud-overlay {
         grid-template-columns: 1fr;
         grid-template-rows: auto 1fr auto;
+        padding: 6px;
+        gap: 6px;
+    }
+
+    /* Header: ultra compact top-left, no blur to maximize visibility */
+    #game-header {
+        grid-column: 1; grid-row: 1;
+        padding: 6px 10px;
+        max-width: calc(100vw - 80px); 
+        background: rgba(12, 14, 20, 0.4); /* Less obstructive */
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+    .logo-area h1 { font-size: 0.85rem; }
+    .subtitle { font-size: 0.55rem; }
+
+    /* Dashboard: fixed at bottom, taking minimal vertical space */
+    #game-dashboard {
+        grid-column: 1; grid-row: 3;
+        position: relative; 
+        max-height: 45vh; /* Never obscure more than bottom 45% */
+        border-radius: 14px;
+        padding: 10px;
+        overflow-y: auto;
+        background: rgba(12, 14, 20, 0.88); /* solid enough to read but dark */
+    }
+    
+    /* Remove drawer handle since it's just a scrollable panel now */
+    .mobile-drawer-handle { display: none; }
+
+    /* Floating buttons: top-right, much smaller and tighter */
+    .lang-toggle-btn { right: 8px; top: 8px; padding: 4px 8px; font-size: 0.6rem; }
+    .mode-toggle-btn { right: 8px; top: 38px; padding: 4px 8px; font-size: 0.6rem; }
+
+    /* Buttons and Sliders: Thicker touch targets */
+    .btn-primary { padding: 16px 16px; font-size: 0.9rem; border-radius: 12px; } /* Bigger STRIKE */
+    .btn-secondary { padding: 12px 14px; }
+    .premium-slider { height: 12px; border-radius: 6px; }
+    .premium-slider::-webkit-slider-thumb { width: 26px; height: 26px; }
+    .premium-slider::-moz-range-thumb { width: 26px; height: 26px; }
+
+    /* Make sections horizontal to save vertical space */
+    .rival-list { flex-direction: row; overflow-x: auto; max-height: none; padding-bottom: 6px; }
+    .rival-card { flex: 0 0 auto; width: 160px; flex-direction: column; text-align: center; padding: 6px; }
+    .rival-flag { font-size: 1.5rem; margin-bottom: 4px; }
+
+    /* Hide ad panel on mobile entirely */
+    #ad-panel { display: none; }
+
+    /* Modals smaller */
+    .modal-card { padding: 20px 14px; }
+    .modal-card h2 { font-size: 1.1rem; }
+    #shot-announcement h2 { font-size: 1.6rem; }
+    .flag-btn { padding: 6px 8px; font-size: 1.15rem; }
+
+    /* Spin circle fits tight */
+    .spin-circle { width: 68px; height: 68px; }
+
+    /* Guide modal: full width */
+    .guide-modal-card { max-width: 96vw; }
+    .guide-step { font-size: 0.75rem; padding: 8px 10px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOBILE LANDSCAPE (< 950px width, landscape orientation)
+   ═══════════════════════════════════════════════════════════════════════════════*/
+@media (max-width: 950px) and (orientation: landscape) {
+    #hud-overlay {
+        grid-template-columns: auto 1fr 240px; /* Much narrower right panel! */
+        padding: 8px;
+        gap: 8px;
+    }
+    
+    #game-header { padding: 6px 12px; }
+    .logo-area h1 { font-size: 0.85rem; }
+    .subtitle { font-size: 0.55rem; }
+    
+    #game-dashboard {
         padding: 10px;
         gap: 8px;
     }
 
-    /* Header: compact top-left */
-    #game-header {
-        grid-column: 1; grid-row: 1;
-        padding: 8px 12px;
-        max-width: calc(100vw - 100px); /* leave room for lang/mode buttons */
-    }
-    .logo-area h1 { font-size: 0.9rem; }
-    .subtitle { font-size: 0.58rem; }
+    .panel-section h3 { font-size: 0.6rem; margin-bottom: 6px; }
+    .player-card { padding: 6px 8px; gap: 6px; }
+    .player-score { font-size: 1.1rem; }
+    .btn-primary { padding: 8px 10px; font-size: 0.7rem; }
+    .btn-secondary { padding: 6px 8px; font-size: 0.65rem; }
+    
+    /* Move floating buttons leftwards so they don't overlap the right panel */
+    .lang-toggle-btn { right: 260px; top: 10px; padding: 4px 8px; font-size: 0.65rem; }
+    .mode-toggle-btn { right: 330px; top: 10px; padding: 4px 8px; font-size: 0.65rem; }
+    .help-toggle-btn { right: 410px; top: 10px; width: 28px; height: 28px; font-size: 0.9rem; }
 
-    /* Dashboard: bottom drawer – does NOT overlap 3D canvas when collapsed */
-    #game-dashboard {
-        grid-column: 1; grid-row: 3;
-        position: fixed;
-        bottom: 0; left: 0; right: 0;
-        /* Collapsed: only 48px handle visible at bottom */
-        max-height: 60vh;
-        transform: translateY(calc(100% - 48px));
-        transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
-        border-radius: 18px 18px 0 0;
-        padding: 4px 14px 28px;
-        z-index: 30;
-        overflow-y: auto;
-    }
-    #game-dashboard.expanded { transform: translateY(0); }
-
-    .mobile-drawer-handle {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 0 6px;
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-        font-size: 0.62rem;
-        color: rgba(255,255,255,0.35);
-        letter-spacing: 1px;
-    }
-
-    /* Floating buttons: top-right, stacked */
-    .lang-toggle-btn { right: 10px; top: 10px; padding: 6px 10px; font-size: 0.65rem; }
-    .mode-toggle-btn { right: 10px; top: 48px; padding: 6px 10px; font-size: 0.65rem; }
-
-    /* Hide ad panel on mobile; controls guide stays in the sidebar drawer */
+    .spin-circle { width: 56px; height: 56px; }
     #ad-panel { display: none; }
-
-    /* Smaller modal */
-    .modal-card { padding: 22px 16px; }
-    .modal-card h2 { font-size: 1.05rem; }
-
-    /* Toast smaller */
-    #shot-announcement h2 { font-size: 1.75rem; }
-
-    /* Flag buttons smaller */
-    .flag-btn { padding: 6px 8px; font-size: 1.25rem; }
-
-    /* Spin circle smaller */
-    .spin-circle { width: 62px; height: 62px; }
-
-    /* Guide modal: full width on very small screens */
-    .guide-modal-card { max-width: 96vw; }
-    .guide-step { font-size: 0.78rem; padding: 10px 12px; }
 }
 
 /* Tablet tweaks */
-@media (max-width: 1024px) and (min-width: 769px) {
-    #hud-overlay { grid-template-columns: auto 1fr 320px; padding: 14px; }
-    #game-dashboard { padding: 16px; }
-    .lang-toggle-btn { right: 345px; }
-    .mode-toggle-btn { right: 460px; }
+@media (max-width: 1024px) and (min-width: 951px) {
+    #hud-overlay { grid-template-columns: auto 1fr 300px; padding: 14px; }
+    #game-dashboard { padding: 14px; }
+    .lang-toggle-btn { right: 325px; }
+    .mode-toggle-btn { right: 440px; }
 }
 
 /* ── Utility ── */

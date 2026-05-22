@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="description" content="CUE CRAFT 3D ??Premium WebGL Billiards Simulator. Pocket Ball & 3-Cushion modes. Play online against global AI rivals.">
-    <title>CUE CRAFT 3D ??Premium Billiards Suite</title>
+    <meta name="description" content="CUE CRAFT 3D – Premium WebGL Billiards Simulator. Pocket Ball & 3-Cushion modes. Play online against global AI rivals.">
+    <title>CUE CRAFT 3D – Premium Billiards Suite</title>
 
     <!-- Google Fonts: Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -612,15 +612,15 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
 </head>
 <body>
 
-    <!-- ?먥븧??3D VIEWPORT ?먥븧??-->
+    <!-- ═══ 3D VIEWPORT ═══ -->
     <div id="canvas-container"></div>
 
-    <!-- ?먥븧??FLOATING TOP BUTTONS ?먥븧??-->
-    <button id="btn-lang" class="lang-toggle-btn" title="Switch Language">?뙋&nbsp;<span id="lang-label">KOR</span></button>
-    <button id="btn-mode" class="mode-toggle-btn" title="Switch Game Mode"><span id="mode-icon">?렠</span>&nbsp;<span id="mode-label" data-i18n="modePocket">POCKET BALL</span></button>
-    <button id="btn-help" class="help-toggle-btn" title="Controls Guide">?뱄툘</button>
+    <!-- ═══ FLOATING TOP BUTTONS ═══ -->
+    <button id="btn-lang" class="lang-toggle-btn" title="Switch Language">🌐&nbsp;<span id="lang-label">KOR</span></button>
+    <button id="btn-mode" class="mode-toggle-btn" title="Switch Game Mode"><span id="mode-icon">🎱</span>&nbsp;<span id="mode-label" data-i18n="modePocket">POCKET BALL</span></button>
+    <button id="btn-help" class="help-toggle-btn" title="Controls Guide">ℹ️</button>
 
-    <!-- ?먥븧??HUD OVERLAY ?먥븧??-->
+    <!-- ═══ HUD OVERLAY ═══ -->
     <div id="hud-overlay">
 
         <!-- Header (top-left) -->
@@ -637,10 +637,10 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
             <!-- Mobile drawer handle -->
             <div class="mobile-drawer-handle" id="drawer-handle"><div class="drawer-bar"></div></div>
 
-            <!-- ?? Player Scoreboard ?? -->
+            <!-- ── Player Scoreboard ── -->
             <div class="panel-section player-stats">
                 <div class="player-card active" id="player-1-card">
-                    <div class="player-flag" id="p1-flag" style="font-size:1.8rem;">?렠</div>
+                    <div class="player-flag" id="p1-flag" style="font-size:1.8rem;">🎱</div>
                     <div class="player-indicator"></div>
                     <div class="player-info">
                         <span class="player-label" id="p1-name" data-i18n="player1">PLAYER 1</span>
@@ -660,14 +660,14 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
                 </div>
             </div>
 
-            <!-- ?? Match Status ?? -->
+            <!-- ── Match Status ── -->
             <div class="panel-section game-status-section">
                 <h3 data-i18n="matchStatus">MATCH STATUS</h3>
                 <div id="game-status" class="status-badge">READY TO AIM</div>
                 <p class="status-desc" id="status-desc">Drag screen to adjust angle.</p>
             </div>
 
-            <!-- ?? Cue Control ?? -->
+            <!-- ── Cue Control ── -->
             <div class="panel-section physics-stats">
                 <h3 data-i18n="cueControl">CUE CONTROL</h3>
                 <div class="control-group">
@@ -692,7 +692,7 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
                 </div>
             </div>
 
-            <!-- ?? Spin Control ?? -->
+            <!-- ── Spin Control ── -->
             <div class="panel-section spin-section">
                 <h3 data-i18n="spinControl">CUE BALL SPIN</h3>
                 <div class="spin-control-wrapper">
@@ -705,7 +705,7 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
                 </div>
             </div>
 
-            <!-- ?? Global Rivals ?? -->
+            <!-- ── Global Rivals ── -->
             <div class="panel-section rival-section">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                     <h3 data-i18n="globalRivals" style="margin:0;">GLOBAL RIVALS</h3>
@@ -714,7 +714,7 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
                 <div class="rival-list" id="rival-list"><!-- JS generates --></div>
             </div>
 
-            <!-- ?? PRO Settings ?? -->
+            <!-- ── PRO Settings ── -->
             <div class="panel-section pro-settings-section">
                 <h3 data-i18n="proSettings">PRO SETTINGS</h3>
                 <div class="control-group">
@@ -741,7 +741,7 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
                 </div>
             </div>
 
-            <!-- ?? CUE SELECTION ?? -->
+            <!-- ── CUE SELECTION ── -->
             <div class="panel-section cue-selection-section">
                 <h3 data-i18n="cueSelection">CUE COLLECTION</h3>
                 <div class="cue-list">
@@ -778,17 +778,17 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
 
     </div>
 
-    <!-- ?먥븧??SHOT TOAST ?먥븧??-->
+    <!-- ═══ SHOT TOAST ═══ -->
     <div id="shot-announcement" class="hidden">
         <h2 id="announcement-title">FANTASTIC!</h2>
         <p id="announcement-subtitle">3-Cushion Combo</p>
     </div>
 
-    <!-- ?먥븧??WELCOME GUIDE MODAL ?먥븧??-->
+    <!-- ═══ WELCOME GUIDE MODAL ═══ -->
     <div id="guide-modal" class="modal-overlay hidden">
         <div class="modal-card glass-panel guide-modal-card">
             <div class="modal-glow"></div>
-            <span class="modal-badge">?렠 CUE CRAFT 3D</span>
+            <span class="modal-badge">🎱 CUE CRAFT 3D</span>
             <h2 id="guide-title" data-i18n="guideTitle">HOW TO PLAY</h2>
             <div class="lang-select-row" id="modal-lang-select" style="display:flex; justify-content:center; gap:8px; margin-bottom:16px;">
                 <button class="lang-btn" data-lang="en" style="padding:4px 8px; font-size:0.7rem; border-radius:4px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; cursor:pointer;">EN</button>
@@ -799,10 +799,10 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
                 <button class="lang-btn" data-lang="hi" style="padding:4px 8px; font-size:0.7rem; border-radius:4px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; cursor:pointer;">IN</button>
             </div>
             <div class="guide-steps">
-                <div class="guide-step" data-i18n="guideStep1">?뼮截? Drag the screen to aim</div>
-                <div class="guide-step" data-i18n="guideStep2">?뮞  Adjust strike power</div>
-                <div class="guide-step" data-i18n="guideStep3">?? Press STRIKE or Spacebar</div>
-                <div class="guide-step" data-i18n="guideStep4">?? Toggle AI Path for trajectory</div>
+                <div class="guide-step" data-i18n="guideStep1">🖱️  Drag the screen to aim</div>
+                <div class="guide-step" data-i18n="guideStep2">💪  Adjust strike power</div>
+                <div class="guide-step" data-i18n="guideStep3">⚡  Press STRIKE or Spacebar</div>
+                <div class="guide-step" data-i18n="guideStep4">✨  Toggle AI Path for trajectory</div>
             </div>
 
             <button id="btn-guide-start" class="btn-primary" style="width:100%;margin-top:8px">
@@ -811,7 +811,7 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
         </div>
     </div>
 
-    <!-- ?먥븧??REVIVE MODAL (cue scratch) ?먥븧??-->
+    <!-- ═══ REVIVE MODAL (cue scratch) ═══ -->
     <div id="revive-modal" class="modal-overlay hidden">
         <div class="modal-card glass-panel">
             <div class="modal-glow"></div>
@@ -824,50 +824,51 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
                 <span class="ad-countdown-text" id="ad-countdown">SIMULATING AD (3s)...</span>
             </div>
             <div class="modal-actions">
-                <button id="btn-watch-ad" class="btn-primary"><span class="btn-glow"></span><span data-i18n="watchAd">?렗 WATCH AD TO CONTINUE</span></button>
+                <button id="btn-watch-ad" class="btn-primary"><span class="btn-glow"></span><span data-i18n="watchAd">🎬 WATCH AD TO CONTINUE</span></button>
                 <button id="btn-skip-ad" class="btn-secondary" data-i18n="giveUp">GIVE UP &amp; RESTART</button>
             </div>
         </div>
     </div>
 
-    <!-- ?먥븧??REVENGE MODAL (AI defeat) ?먥븧??-->
+    <!-- ═══ REVENGE MODAL (AI defeat) ═══ -->
     <div id="revenge-modal" class="modal-overlay hidden">
         <div class="modal-card glass-panel">
             <div class="modal-glow"></div>
-            <span class="modal-badge">?뷂툘 RIVAL MATCH</span>
+            <span class="modal-badge">⚔️ RIVAL MATCH</span>
             <h2 data-i18n="revengeTitle">DEFEATED!</h2>
             <p class="modal-desc" data-i18n="revengeDesc">You lost the rivalry match! Watch an ad to get a revenge shot.</p>
             <div class="modal-actions">
-                <button id="btn-revenge-ad" class="btn-primary"><span class="btn-glow"></span><span data-i18n="revengeAd">?렗 REVENGE SHOT (WATCH AD)</span></button>
+                <button id="btn-revenge-ad" class="btn-primary"><span class="btn-glow"></span><span data-i18n="revengeAd">🎬 REVENGE SHOT (WATCH AD)</span></button>
                 <button id="btn-revenge-skip" class="btn-secondary" data-i18n="revengeSkip">ACCEPT DEFEAT</button>
             </div>
         </div>
     </div>
 
-    <!-- ?먥븧??HELP MODAL ?먥븧??-->
+    <!-- ═══ HELP MODAL ═══ -->
     <div id="help-modal" class="modal-overlay hidden">
         <div class="modal-card glass-panel help-modal-card">
-            <button id="btn-help-close" class="btn-close">??/button>
+            <button id="btn-help-close" class="btn-close">✕</button>
             <div class="modal-glow"></div>
             <span class="modal-badge" data-i18n="controlsGuide">CONTROLS</span>
-            <h2 data-i18n="helpTitle">議곗옉 ?덈궡</h2>
+            <h2 data-i18n="helpTitle">조작 안내</h2>
             <div class="help-steps">
-                <div class="help-step" data-i18n="helpNew1">?뼮截?留덉슦???쒕옒洹?: 3D ?쒖젏 ?뚯쟾</div>
-                <div class="help-step" data-i18n="helpNew2">?뼮截?留덉슦???고겢由??쒕옒洹?: ?붾㈃ ?됲뻾 ?대룞</div>
-                <div class="help-step" data-i18n="helpNew3">?숋툘 留덉슦?????ㅽ겕濡?: ?붾㈃ ?뺣?/異뺤냼 (以????꾩썐)</div>
-                <div class="help-step" data-i18n="helpNew4">?⑨툘 ?ㅽ럹?댁뒪諛?: ?먮? ?寃⑺븯湲?/div>
+                <div class="help-step" data-i18n="helpNew1">🖱️ 마우스 드래그 : 3D 시점 회전</div>
+                <div class="help-step" data-i18n="helpNew2">🖱️ 마우스 우클릭 드래그 : 화면 평행 이동</div>
+                <div class="help-step" data-i18n="helpNew3">⚙️ 마우스 휠 스크롤 : 화면 확대/축소 (줌 인/아웃)</div>
+                <div class="help-step" data-i18n="helpNew4">⌨️ 스페이스바 : 큐대 타격하기</div>
             </div>
         </div>
     </div>
 
     <script>
-// ?????????????????????????????????????????????????????????????????????????????
-// CUE CRAFT 3D  ?? Phase 5: Cross-Platform Premium Simulator
+// ─────────────────────────────────────────────────────────────────────────────
+// CUE CRAFT 3D  –  Phase 5: Cross-Platform Premium Simulator
 // Three.js r128 loaded globally via CDN (THREE + THREE.OrbitControls)
-// ?????????????????????????????????????????????????????????????????????????????
+// ─────────────────────────────────────────────────────────────────────────────
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   i18n DICTIONARY  ?? 6 Languages
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   i18n DICTIONARY  –  6 Languages
+   ═══════════════════════════════════════════════════════════════════════════════*/
 const i18n = {
   en: {
     subtitle:'Next-Gen Web Billiards Simulator',
@@ -883,20 +884,20 @@ const i18n = {
     selectCountry:'SELECT YOUR COUNTRY',
     helpItem1:'<span>Drag</span> Rotate',helpItem2:'<span>Right-Click</span> Pan',
     helpItem3:'<span>Wheel</span> Zoom',helpItem4:'<span>Space</span> Strike',
-    helpNew1:'?뼮截?Drag: Rotate 3D View',helpNew2:'?뼮截?Right-click drag: Pan View',
-    helpNew3:'?숋툘 Wheel scroll: Zoom In/Out',helpNew4:'?⑨툘 Spacebar: Strike',
+    helpNew1:'🖱️ Drag: Rotate 3D View',helpNew2:'🖱️ Right-click drag: Pan View',
+    helpNew3:'⚙️ Wheel scroll: Zoom In/Out',helpNew4:'⌨️ Spacebar: Strike',
     guideTitle:'HOW TO PLAY',
-    guideStep1:'?뼮截? Drag the screen to aim your angle',
-    guideStep2:'?뮞  Adjust strike power with the slider',
-    guideStep3:'?? Press STRIKE or Spacebar to shoot!',
-    guideStep4:'?? Toggle AI Path for trajectory hints',
+    guideStep1:'🖱️  Drag the screen to aim your angle',
+    guideStep2:'💪  Adjust strike power with the slider',
+    guideStep3:'⚡  Press STRIKE or Spacebar to shoot!',
+    guideStep4:'✨  Toggle AI Path for trajectory hints',
     guideBtn:"LET'S PLAY!",
     commercial:'EXTRA CHANCE',chanceExpired:'CHANCE EXPIRED!',
     scratchedDesc:'You scratched the cue ball. Use a chance to continue!',
-    watchAd:'?렗 GET EXTRA CHANCE',giveUp:'GIVE UP & RESTART',
+    watchAd:'🎬 GET EXTRA CHANCE',giveUp:'GIVE UP & RESTART',
     sponsored:'BONUS',adSlot:'Billiards Arena Event',adDesc:'Special events coming soon',
-    revengeTitle:'DEFEATED!',revengeDesc:'Lost the match! Watch an ad for a revenge shot ??balls stay in place!',
-    revengeAd:'?렗 REVENGE SHOT (WATCH AD)',revengeSkip:'ACCEPT DEFEAT',
+    revengeTitle:'DEFEATED!',revengeDesc:'Lost the match! Watch an ad for a revenge shot – balls stay in place!',
+    revengeAd:'🎬 REVENGE SHOT (WATCH AD)',revengeSkip:'ACCEPT DEFEAT',
     readyToAim:'READY TO AIM',statusDescDefault:'Drag to aim. Scroll to zoom.',
     shotInProgress:'SHOT IN PROGRESS',shotInProgressDesc:'Physics computing...',
     cueBallReady:'CUE BALL READY',cueBallReadyDesc:'Adjust angle and strike!',
@@ -918,147 +919,147 @@ const i18n = {
     controlsGuide:'CONTROLS',
   },
   ko: {
-    subtitle:'李⑥꽭? ???밴뎄 ?쒕??덉씠??,
-    player1:'?뚮젅?댁뼱 1',player2:'?뚮젅?댁뼱 2',solids:'?붾━???⑥깋)',stripes:'?ㅽ듃?쇱씠??以꾨Т??',
-    matchStatus:'寃쎄린 ?곹깭',cueControl:'??議곗옉',strikePower:'?寃??멸린',
-    aiPrediction:'AI ?덉륫 寃쎈줈',freeTrial:'臾대즺 泥댄뿕',
-    strikeBtn:'?寃⑺븯湲?(?ㅽ럹?댁뒪)',resetBtn:'?섍뎄 由ъ뀑',
-    spinControl:'?섍뎄 ?뚯쟾 議곗젅',spinCenter:'以묒떖',spinBackspin:'?뚯뼱移섍린',
-    spinTopspin:'諛?댁튂湲?,spinLeft:'醫뚰쉶??,spinRight:'?고쉶??,
-    modePocket:'?ъ폆蹂?,mode3Cushion:'?곕━荑좎뀡',
-    globalRivals:'湲濡쒕쾶 ?쇱씠踰?,challengeBtn:'?꾩쟾',btnPractice:'?쇱옄 ?곗뒿?섍린',
-    practiceMode:'?곗뒿 紐⑤뱶',practiceModeSub:'?먯쑀 ?곗뒿 紐⑤뱶濡??꾪솚?섏뿀?듬땲??,
-    selectCountry:'援?? ?좏깮',
-    helpItem1:'<span>?쒕옒洹?/span> ?뚯쟾',helpItem2:'<span>?고겢由?/span> ?대룞',
-    helpItem3:'<span>??/span> 以?,helpItem4:'<span>?ㅽ럹?댁뒪</span> ?寃?,
-    helpNew1:'?뼮截?留덉슦???쒕옒洹?: 3D ?쒖젏 ?뚯쟾',helpNew2:'?뼮截?留덉슦???고겢由??쒕옒洹?: ?붾㈃ ?됲뻾 ?대룞',
-    helpNew3:'?숋툘 留덉슦?????ㅽ겕濡?: ?붾㈃ ?뺣?/異뺤냼 (以????꾩썐)',helpNew4:'?⑨툘 ?ㅽ럹?댁뒪諛?: ?먮? ?寃⑺븯湲?,
-    guideTitle:'寃뚯엫 諛⑸쾿',
-    guideStep1:'?뼮截??붾㈃???쒕옒洹명빐 議곗? 媛곷룄瑜?留욎텛?몄슂',
-    guideStep2:'?뮞 ?щ씪?대뜑濡??寃??멸린瑜?議곗젅?섏꽭??,
-    guideStep3:'???寃?踰꾪듉 ?먮뒗 ?ㅽ럹?댁뒪諛붾? ?꾨Ⅴ?몄슂!',
-    guideStep4:'??AI 寃쎈줈瑜?耳쒕㈃ 沅ㅼ쟻??蹂댁뿬??,
-    guideBtn:'寃뚯엫 ?쒖옉!',
-    commercial:'異붽? 湲고쉶',chanceExpired:'湲고쉶 ?뚮㈇!',
-    scratchedDesc:'?섍뎄媛 ?ъ폆??鍮좎죱?듬땲??',
-    watchAd:'?렗 異붽? 湲고쉶 ?산린',giveUp:'?ш린?섍퀬 ?ъ떆??,
-    sponsored:'蹂대꼫??,adSlot:'?밴뎄 ?꾨젅???대깽??,adDesc:'?밸퀎 ?대깽???덉젙',
-    revengeTitle:'?⑤같!',revengeDesc:'寃쎄린??議뚯뒿?덈떎! 愿묎퀬瑜?蹂닿퀬 怨??꾩튂 ?좎? 蹂듭닔??',
-    revengeAd:'?렗 蹂듭닔??(愿묎퀬 ?쒖껌)',revengeSkip:'?⑤같 ?섏슜',
-    readyToAim:'議곗? 以鍮?,statusDescDefault:'?쒕옒洹몃줈 媛곷룄 議곗젅. ?ㅽ겕濡ㅻ줈 以?',
-    shotInProgress:'??吏꾪뻾 以?,shotInProgressDesc:'臾쇰━ ?곗궛 以?..',
-    cueBallReady:'?섍뎄 以鍮??꾨즺',cueBallReadyDesc:'媛곷룄瑜?議곗젅?섍퀬 ?寃?',
-    cueBallScratched:'?섍뎄 ?ㅽ겕?섏튂!',cueBallScratchDesc:'?섍뎄媛 ?ъ폆??鍮좎죱?듬땲??',
-    matchRestarted:'寃쎄린 ?ъ떆??,matchRestartedDesc:'蹂대뱶 由ъ뀑. ?뚮젅?댁뼱 1 李⑤?.',
-    playerTurn:'?뚮젅?댁뼱 {n} 李⑤?',playerTurnDesc:'媛곷룄 議곗젅 ???寃?',
-    aiTurn:'AI ?ш퀬 以?..',aiTurnDesc:'?쇱씠踰뚯씠 ?룹쓣 怨꾩궛 以?..',
-    toastRevived:'遺??',toastRevivedSub:'?꾨━誘몄뾼 李ъ뒪 諛쒕룞!',
-    toastAiOn:'AI ?덉륫 ?쒖꽦??,toastAiOnSub:'?ㅼ떆媛?臾쇰━ ?ъ쁺 ?쒖옉!',
-    toastFantastic3:'?섏긽?곸씤 ??',toastFantastic3Sub:'{n}荑좎뀡 諭낇겕!',
-    toastFantastic2:'硫뗭쭊 ?룹엯?덈떎!',toastFantastic2Sub:'2荑좎뀡 諭낇겕!',
-    toastGreat1:'?뚮?????',toastGreat1Sub:'荑좎뀡 諭낇겕!',
-    toastPocketed:'?섑븯?⑥뼱??',toastPocketedSub:'{n}踰?怨??ъ폆!',
-    toast3cScore:'?앹젏!',toast3cScoreSub:'?곕━荑좎뀡 ?ъ씤??',
-    toast3cMiss:'誘몄뒪',toast3cMissSub:'荑좎뀡 ?먮뒗 ?곴뎄 遺議?',
-    challengeStarting:'寃쎄린 ?쒖옉!',challengeStartingSub:'vs {name}',
-    revengeGranted:'蹂듭닔??',revengeGrantedSub:'??踰???湲고쉶!',
-    chalkBtn:'珥덊겕 移좏븯湲?(C)',toastMiscue:'?묒궗由?',toastMiscueSub:'珥덊겕瑜???移좏빐???먭? 誘몃걚?ъ죱?듬땲??',
-    controlsGuide:'議곗옉 媛?대뱶',
+    subtitle:'차세대 웹 당구 시뮬레이터',
+    player1:'플레이어 1',player2:'플레이어 2',solids:'솔리드(단색)',stripes:'스트라이프(줄무늬)',
+    matchStatus:'경기 상태',cueControl:'큐 조작',strikePower:'타격 세기',
+    aiPrediction:'AI 예측 경로',freeTrial:'무료 체험',
+    strikeBtn:'타격하기 (스페이스)',resetBtn:'수구 리셋',
+    spinControl:'수구 회전 조절',spinCenter:'중심',spinBackspin:'끌어치기',
+    spinTopspin:'밀어치기',spinLeft:'좌회전',spinRight:'우회전',
+    modePocket:'포켓볼',mode3Cushion:'쓰리쿠션',
+    globalRivals:'글로벌 라이벌',challengeBtn:'도전',btnPractice:'혼자 연습하기',
+    practiceMode:'연습 모드',practiceModeSub:'자유 연습 모드로 전환되었습니다',
+    selectCountry:'국가 선택',
+    helpItem1:'<span>드래그</span> 회전',helpItem2:'<span>우클릭</span> 이동',
+    helpItem3:'<span>휠</span> 줌',helpItem4:'<span>스페이스</span> 타격',
+    helpNew1:'🖱️ 마우스 드래그 : 3D 시점 회전',helpNew2:'🖱️ 마우스 우클릭 드래그 : 화면 평행 이동',
+    helpNew3:'⚙️ 마우스 휠 스크롤 : 화면 확대/축소 (줌 인/아웃)',helpNew4:'⌨️ 스페이스바 : 큐대 타격하기',
+    guideTitle:'게임 방법',
+    guideStep1:'🖱️ 화면을 드래그해 조준 각도를 맞추세요',
+    guideStep2:'💪 슬라이더로 타격 세기를 조절하세요',
+    guideStep3:'⚡ 타격 버튼 또는 스페이스바를 누르세요!',
+    guideStep4:'✨ AI 경로를 켜면 궤적이 보여요',
+    guideBtn:'게임 시작!',
+    commercial:'추가 기회',chanceExpired:'기회 소멸!',
+    scratchedDesc:'수구가 포켓에 빠졌습니다!',
+    watchAd:'🎬 추가 기회 얻기',giveUp:'포기하고 재시작',
+    sponsored:'보너스',adSlot:'당구 아레나 이벤트',adDesc:'특별 이벤트 예정',
+    revengeTitle:'패배!',revengeDesc:'경기에 졌습니다! 광고를 보고 공 위치 유지 복수전!',
+    revengeAd:'🎬 복수전 (광고 시청)',revengeSkip:'패배 수용',
+    readyToAim:'조준 준비',statusDescDefault:'드래그로 각도 조절. 스크롤로 줌.',
+    shotInProgress:'샷 진행 중',shotInProgressDesc:'물리 연산 중...',
+    cueBallReady:'수구 준비 완료',cueBallReadyDesc:'각도를 조절하고 타격!',
+    cueBallScratched:'수구 스크래치!',cueBallScratchDesc:'수구가 포켓에 빠졌습니다.',
+    matchRestarted:'경기 재시작',matchRestartedDesc:'보드 리셋. 플레이어 1 차례.',
+    playerTurn:'플레이어 {n} 차례',playerTurnDesc:'각도 조절 후 타격.',
+    aiTurn:'AI 사고 중...',aiTurnDesc:'라이벌이 샷을 계산 중...',
+    toastRevived:'부활!',toastRevivedSub:'프리미엄 찬스 발동!',
+    toastAiOn:'AI 예측 활성화',toastAiOnSub:'실시간 물리 투영 시작!',
+    toastFantastic3:'환상적인 샷!',toastFantastic3Sub:'{n}쿠션 뱅크!',
+    toastFantastic2:'멋진 샷입니다!',toastFantastic2Sub:'2쿠션 뱅크!',
+    toastGreat1:'훌륭한 샷!',toastGreat1Sub:'쿠션 뱅크!',
+    toastPocketed:'잘하셨어요!',toastPocketedSub:'{n}번 공 포켓!',
+    toast3cScore:'득점!',toast3cScoreSub:'쓰리쿠션 포인트!',
+    toast3cMiss:'미스',toast3cMissSub:'쿠션 또는 적구 부족.',
+    challengeStarting:'경기 시작!',challengeStartingSub:'vs {name}',
+    revengeGranted:'복수전!',revengeGrantedSub:'한 번 더 기회!',
+    chalkBtn:'초크 칠하기 (C)',toastMiscue:'삑사리!',toastMiscueSub:'초크를 안 칠해서 큐가 미끄러졌습니다!',
+    controlsGuide:'조작 가이드',
   },
   ja: {
-    subtitle:'轝▽툟餓ｃ궑?㎯깣?볝꺁?ㅳ꺖?됥궥?잆깷?с꺖?욍꺖',
-    player1:'?쀣꺃?ㅳ깶??',player2:'?쀣꺃?ㅳ깶??',solids:'?썬꺁?껁깋',stripes:'?밤깉?⒲궎??,
-    matchStatus:'屋?릦?뜻퀋',cueControl:'??깷?쇗뱧鵝?,strikePower:'?룔깾?껁깉?묆꺈??,
-    aiPrediction:'AI雅덃릍?묆궧',freeTrial:'?→뼑鵝볣쮶',
-    strikeBtn:'?룔깾?껁깉 (?밤깪?쇈궧)',resetBtn:'?뗧릡?ゃ궩?껁깉',
-    spinControl:'?뗧릡?밤깞??,spinCenter:'?삠꺍?욍꺖',spinBackspin:'凉뺛걤??,
-    spinTopspin:'?쇈걮??,spinLeft:'藥?썮邕?,spinRight:'?녑썮邕?,
-    modePocket:'?앫궞?껁깉?쒌꺖??,mode3Cushion:'?밤꺁?쇈궚?껁궥?㎯꺍',
-    globalRivals:'?겹꺆?쇈깘?ャ꺀?ㅳ깘??,challengeBtn:'?묉닰',btnPractice:'?뺛꺁?쇘럽玲?,
-    practiceMode:'渶당퓪?㏂꺖??,practiceModeSub:'?썬꺆渶당퓪?㏂꺖?됥겓鸚됪쎍?뺛굦?얇걮??,
-    selectCountry:'?썬굮?멩뒢',
-    helpItem1:'<span>?됥꺀?껁궛</span> ?욆빪',helpItem2:'<span>?녈궚?ゃ긿??/span> ?묆꺍',
-    helpItem3:'<span>?쎼궎?쇈꺂</span> ?뷩꺖??,helpItem4:'<span>?밤깪?쇈궧</span> ?룔깾?껁깉',
-    guideTitle:'?듽겞??,
-    guideStep1:'?뼮截??삯씊?믡깋?⒲긿?겹걮??쭜佯╉굮沃욘빐',
-    guideStep2:'?뮞 ?밤꺀?ㅳ??쇈겎?묆꺈?쇈굮沃욘빐',
-    guideStep3:'???룔깾?껁깉?쒌궭?녈걢?밤깪?쇈궧??꺖?㎪돀?ㅿ펯',
-    guideStep4:'??AI?묆궧?㎬퍕?볝굮烏①ㅊ',
-    guideBtn:'?쀣꺃?ㅹ뼀冶뗰펯',
-    commercial:'瓦썲뒥?곥깵?녈궧',chanceExpired:'?곥깵?녈궧永귚틙竊?,
-    scratchedDesc:'?뗧릡?뚣깮?긱긿?덀겓?썬걾?얇걮?잞펯',
-    watchAd:'?렗 瓦썲뒥?곥깵?녈궧?믥뜴孃?,giveUp:'獄╉굙?╉꺁?밤궭?쇈깉',
-    sponsored:'?쒌꺖?듽궧',adSlot:'?㏂꺁?쇈깏?ㅳ깧?녈깉',adDesc:'?밧닪?ㅳ깧?녈깉雅덂츣',
-    revengeTitle:'?쀥뙒竊?,revengeDesc:'縕졼걨?얇걮?잞펯佯껃몜?믦쫳?╉꺁?쇻꺍?멥궥?㎯긿?덌펯',
-    revengeAd:'?렗 ?ゃ깧?녈궦竊덂틕?딂쫿?댐펹',revengeSkip:'?쀥뙒?믣룛?묈뀯?뚣굥',
-    readyToAim:'?㎪틬繹뽩굺',statusDescDefault:'?됥꺀?껁궛?㎬쭜佯?た?담귙궧??꺆?쇈꺂?㎯궨?쇈깲??,
-    shotInProgress:'?룔깾?껁깉訝?,shotInProgressDesc:'?⑴릤轢붺츞訝?..',
-    cueBallReady:'?뗧릡繹뽩굺若뚥틙',cueBallReadyDesc:'鰲믣벧?믦た?담걮?╉궥?㎯긿?덌펯',
-    cueBallScratched:'?밤궚?⒲긿?곻펯',cueBallScratchDesc:'?뗧릡?뚣깮?긱긿?덀겓?썬걾?얇걮?잆?,
-    matchRestarted:'屋?릦?ゃ궧?욍꺖??,matchRestartedDesc:'?쒌꺖?됥꺁?삠긿?덀귙깤?с궎?ㅳ꺖1??빁??,
-    playerTurn:'?쀣꺃?ㅳ깶??n}??빁',playerTurnDesc:'鰲믣벧?믦た?담걮?╉궥?㎯긿?덀?,
-    aiTurn:'AI?앲껂릎...',aiTurnDesc:'?⒲궎?먦꺂?뚣궥?㎯긿?덀굮鼇덄츞訝?..',
-    toastRevived:'孃⒵뉵竊?,toastRevivedSub:'?쀣꺃?잆궋?졼긽?ｃ꺍?밭쇇?뺧펯',
-    toastAiOn:'AI雅덃릍ON',toastAiOnSub:'?ゃ궋?ャ궭?ㅳ깲?⑴릤?뺝쉽?뗥쭓竊?,
-    toastFantastic3:'榮졿쇀?됥걮?꾠궥?㎯긿?덌펯',toastFantastic3Sub:'{n}??긿?룔깾?녈깘?녈궚竊?,
-    toastFantastic2:'?듽궎?밤궥?㎯긿?덌펯',toastFantastic2Sub:'2??긿?룔깾?녈깘?녈궚竊?,
-    toastGreat1:'?겹긿?됥궥?㎯긿?덌펯',toastGreat1Sub:'??긿?룔깾?녈깘?녈궚竊?,
-    toastPocketed:'?듽궎?뱄펯',toastPocketedSub:'{n}?ゃ깭?쇈꺂?앫궞?껁깉竊?,
-    toast3cScore:'孃쀧궧竊?,toast3cScoreSub:'?밤꺁?쇈궚?껁궥?㎯꺍?앫궎?녈깉竊?,
-    toast3cMiss:'?잆궧',toast3cMissSub:'??긿?룔깾?녈겲?잆겘?꾤릡訝띹떨??,
-    challengeStarting:'屋?릦?뗥쭓竊?,challengeStartingSub:'vs {name}',
-    revengeGranted:'?ゃ깧?녈궦竊?,revengeGrantedSub:'?귙걝訝佯╉긽?ｃ꺍?뱄펯',
-    chalkBtn:'?곥깾?쇈궚?믣죿??(C)',toastMiscue:'?잆궧竊?,toastMiscueSub:'?곥깾?쇈궚?믣죿?듿퓲?뚣겲?쀣걼竊?,
-    controlsGuide:'?띴퐳?с궎??,
+    subtitle:'次世代ウェブビリヤードシミュレーター',
+    player1:'プレイヤー1',player2:'プレイヤー2',solids:'ソリッド',stripes:'ストライプ',
+    matchStatus:'試合状況',cueControl:'キュー操作',strikePower:'ショットパワー',
+    aiPrediction:'AI予測パス',freeTrial:'無料体験',
+    strikeBtn:'ショット (スペース)',resetBtn:'手球リセット',
+    spinControl:'手球スピン',spinCenter:'センター',spinBackspin:'引き球',
+    spinTopspin:'押し球',spinLeft:'左回転',spinRight:'右回転',
+    modePocket:'ポケットボール',mode3Cushion:'スリークッション',
+    globalRivals:'グローバルライバル',challengeBtn:'挑戦',btnPractice:'フリー練習',
+    practiceMode:'練習モード',practiceModeSub:'ソロ練習モードに変更されました',
+    selectCountry:'国を選択',
+    helpItem1:'<span>ドラッグ</span> 回転',helpItem2:'<span>右クリック</span> パン',
+    helpItem3:'<span>ホイール</span> ズーム',helpItem4:'<span>スペース</span> ショット',
+    guideTitle:'遊び方',
+    guideStep1:'🖱️ 画面をドラッグして角度を調整',
+    guideStep2:'💪 スライダーでパワーを調整',
+    guideStep3:'⚡ ショットボタンかスペースキーで打つ！',
+    guideStep4:'✨ AIパスで軌道を表示',
+    guideBtn:'プレイ開始！',
+    commercial:'追加チャンス',chanceExpired:'チャンス終了！',
+    scratchedDesc:'手球がポケットに落ちました！',
+    watchAd:'🎬 追加チャンスを獲得',giveUp:'諦めてリスタート',
+    sponsored:'ボーナス',adSlot:'アリーナイベント',adDesc:'特別イベント予定',
+    revengeTitle:'敗北！',revengeDesc:'負けました！広告を見てリベンジショット！',
+    revengeAd:'🎬 リベンジ（広告視聴）',revengeSkip:'敗北を受け入れる',
+    readyToAim:'照準準備',statusDescDefault:'ドラッグで角度調整。スクロールでズーム。',
+    shotInProgress:'ショット中',shotInProgressDesc:'物理演算中...',
+    cueBallReady:'手球準備完了',cueBallReadyDesc:'角度を調整してショット！',
+    cueBallScratched:'スクラッチ！',cueBallScratchDesc:'手球がポケットに落ちました。',
+    matchRestarted:'試合リスタート',matchRestartedDesc:'ボードリセット。プレイヤー1の番。',
+    playerTurn:'プレイヤー{n}の番',playerTurnDesc:'角度を調整してショット。',
+    aiTurn:'AI思考中...',aiTurnDesc:'ライバルがショットを計算中...',
+    toastRevived:'復活！',toastRevivedSub:'プレミアムチャンス発動！',
+    toastAiOn:'AI予測ON',toastAiOnSub:'リアルタイム物理投影開始！',
+    toastFantastic3:'素晴らしいショット！',toastFantastic3Sub:'{n}クッションバンク！',
+    toastFantastic2:'ナイスショット！',toastFantastic2Sub:'2クッションバンク！',
+    toastGreat1:'グッドショット！',toastGreat1Sub:'クッションバンク！',
+    toastPocketed:'ナイス！',toastPocketedSub:'{n}番ボールポケット！',
+    toast3cScore:'得点！',toast3cScoreSub:'スリークッションポイント！',
+    toast3cMiss:'ミス',toast3cMissSub:'クッションまたは的球不足。',
+    challengeStarting:'試合開始！',challengeStartingSub:'vs {name}',
+    revengeGranted:'リベンジ！',revengeGrantedSub:'もう一度チャンス！',
+    chalkBtn:'チョークを塗る (C)',toastMiscue:'ミス！',toastMiscueSub:'チョークを塗り忘れました！',
+    controlsGuide:'操作ガイド',
   },
   zh: {
-    subtitle:'轝▽툟餓ｇ퐨窈드룿?껅Æ?잌솳',
-    player1:'?⒴?1',player2:'?⒴?2',solids:'?②돯??,stripes:'?김돯??,
-    matchStatus:'驪붻탿?뜻?,cueControl:'?껅쓥?㎩댍',strikePower:'?사릡?쎾벧',
-    aiPrediction:'AI窯꾣탩瓮?봇',freeTrial:'?띹뉩瑥뺟뵪',
-    strikeBtn:'?사릡 (令뷸졏)',resetBtn:'?띸쉰驪띸릡',
-    spinControl:'驪띸릡?뗨쉬',spinCenter:'訝?퓘',spinBackspin:'煐⒵쓥',
-    spinTopspin:'?ⓩ쓥',spinLeft:'藥?뿃',spinRight:'?녔뿃',
-    modePocket:'?썼쥕?곁릡',mode3Cushion:'訝됧틩',
-    globalRivals:'?①릡野방뎸',challengeBtn:'?묉닔',btnPractice:'?뺜볶瀯껂튌',
-    practiceMode:'瀯껂튌與▼폀',practiceModeSub:'藥꿨늾??눛?뺜볶瀯껂튌與▼폀',
-    selectCountry:'?됪떓?①쉪?썲?',
-    helpItem1:'<span>?뽪떭</span> ?뗨쉬',helpItem2:'<span>?녜뵰</span> 亮녕㎉',
-    helpItem3:'<span>譯싪쉰</span> 煐⒵붂',helpItem4:'<span>令뷸졏</span> ?사릡',
-    guideTitle:'歷멩닆?방퀡',
-    guideStep1:'?뼮截??뽪떭掠뤷퉽瘟껅빐鰲믣벧',
-    guideStep2:'?뮞 ?ⓩ퍚?쀨컘?닷뒟佯?,
-    guideStep3:'???됧눤?껅뙃??닑令뷸졏??룕?껓펯',
-    guideStep4:'??凉?츬I瓮?푶?η쐦饔②예',
-    guideBtn:'凉冶뗦만?륅펯',
-    commercial:'窯앭쨼?뷰폏',chanceExpired:'?뷰폏瀯볠씇竊?,
-    scratchedDesc:'驪띸릡瓦쏂쥕雅놅펯',
-    watchAd:'?렗 ?룟룚窯앭쨼?뷰폏',giveUp:'?얍펱亮띌뇥?겼?冶?,
-    sponsored:'也뽩뒻',adSlot:'?곁릡塋욄??뷸뉵??,adDesc:'?밧닽域삣뒯?ц??잌푷',
-    revengeTitle:'鸚김뇰竊?,revengeDesc:'驪붻탿鸚김뇰竊곭쐦亮욕몜?룟풓鸚띴퍐訝?삼펯',
-    revengeAd:'?렗 鸚띴퍐?사릡竊덄쐦亮욕몜竊?,revengeSkip:'?ε룛鸚김뇰',
-    readyToAim:'?녶쨭?꾢뇛',statusDescDefault:'?뽪떭瘟껅빐鰲믣벧?귝퍣饔?섄?얇?,
-    shotInProgress:'?사릡訝?,shotInProgressDesc:'?⑴릤瓦먪츞訝?..',
-    cueBallReady:'驪띸릡弱긴퐤',cueBallReadyDesc:'瘟껅빐鰲믣벧亮뜹눤?껓펯',
-    cueBallScratched:'驪띸릡??쭊竊?,cueBallScratchDesc:'驪띸릡瓦쏂쥕雅녴?,
-    matchRestarted:'驪붻탿?띶맦',matchRestartedDesc:'?띸쉰若뚧닇?귞렔若??욃릦??,
-    playerTurn:'?⒴?{n}?욃릦',playerTurnDesc:'瘟껅빐鰲믣벧?롥눤?껁?,
-    aiTurn:'AI?앲껂릎...',aiTurnDesc:'野방뎸閭ｅ쑉溫←츞...',
-    toastRevived:'鸚띷뉵竊?,toastRevivedSub:'遙섊벨?뷰폏嚥域삼펯',
-    toastAiOn:'AI窯꾣탩凉??,toastAiOnSub:'若욄뿶?⑴릤?뺝컙凉冶뗰펯',
-    toastFantastic3:'暎얍쉘瀯앬샷竊?,toastFantastic3Sub:'{n}佯볢텈瀛㎫옐熬뗰펯',
-    toastFantastic2:'暎얍쉘訝?삼펯',toastFantastic2Sub:'2佯볡옐熬뗰펯',
-    toastGreat1:'也썹릡竊?,toastGreat1Sub:'佯볢씁?껓펯',
-    toastPocketed:'轢귚벽竊?,toastPocketedSub:'{n}?루릡瓦쏂쥕竊?,
-    toast3cScore:'孃쀥늽竊?,toast3cScoreSub:'訝됧틩孃쀥늽竊?,
-    toast3cMiss:'?や릎',toast3cMissSub:'佯볠빊?뽫쎅?뉒릡訝띹떨??,
-    challengeStarting:'驪붻탿凉冶뗰펯',challengeStartingSub:'vs {name}',
-    revengeGranted:'鸚띴퍐竊?,revengeGrantedSub:'?띷씎訝轝→쑛鴉싷펯',
-    chalkBtn:'易귝듅藥㎩뀑 (C)',toastMiscue:'譯묉쓥竊?,toastMiscueSub:'鵝졾퓲溫경텂?밧랫?뗤틙竊?,
-    controlsGuide:'?띴퐳?뉐뜔',
+    subtitle:'次世代网页台球模拟器',
+    player1:'玩家1',player2:'玩家2',solids:'全色球',stripes:'花色球',
+    matchStatus:'比赛状态',cueControl:'球杆控制',strikePower:'击球力度',
+    aiPrediction:'AI预测路线',freeTrial:'免费试用',
+    strikeBtn:'击球 (空格)',resetBtn:'重置母球',
+    spinControl:'母球旋转',spinCenter:'中心',spinBackspin:'缩杆',
+    spinTopspin:'推杆',spinLeft:'左旋',spinRight:'右旋',
+    modePocket:'落袋台球',mode3Cushion:'三库',
+    globalRivals:'全球对手',challengeBtn:'挑战',btnPractice:'单人练习',
+    practiceMode:'练习模式',practiceModeSub:'已切换至单人练习模式',
+    selectCountry:'选择您的国家',
+    helpItem1:'<span>拖拽</span> 旋转',helpItem2:'<span>右键</span> 平移',
+    helpItem3:'<span>滚轮</span> 缩放',helpItem4:'<span>空格</span> 击球',
+    guideTitle:'游戏方法',
+    guideStep1:'🖱️ 拖拽屏幕调整角度',
+    guideStep2:'💪 用滑块调整力度',
+    guideStep3:'⚡ 按击球按钮或空格键发球！',
+    guideStep4:'✨ 开启AI路径查看轨迹',
+    guideBtn:'开始游戏！',
+    commercial:'额外机会',chanceExpired:'机会结束！',
+    scratchedDesc:'母球进袋了！',
+    watchAd:'🎬 获取额外机会',giveUp:'放弃并重新开始',
+    sponsored:'奖励',adSlot:'台球竞技场活动',adDesc:'特别活动敬请期待',
+    revengeTitle:'失败！',revengeDesc:'比赛失败！看广告获得复仇一击！',
+    revengeAd:'🎬 复仇击球（看广告）',revengeSkip:'接受失败',
+    readyToAim:'准备瞄准',statusDescDefault:'拖拽调整角度。滚轮缩放。',
+    shotInProgress:'击球中',shotInProgressDesc:'物理运算中...',
+    cueBallReady:'母球就位',cueBallReadyDesc:'调整角度并击球！',
+    cueBallScratched:'母球犯规！',cueBallScratchDesc:'母球进袋了。',
+    matchRestarted:'比赛重启',matchRestartedDesc:'重置完成。玩家1回合。',
+    playerTurn:'玩家{n}回合',playerTurnDesc:'调整角度后击球。',
+    aiTurn:'AI思考中...',aiTurnDesc:'对手正在计算...',
+    toastRevived:'复活！',toastRevivedSub:'高级机会激活！',
+    toastAiOn:'AI预测开启',toastAiOnSub:'实时物理投射开始！',
+    toastFantastic3:'精彩绝伦！',toastFantastic3Sub:'{n}库超级翻袋！',
+    toastFantastic2:'精彩一击！',toastFantastic2Sub:'2库翻袋！',
+    toastGreat1:'好球！',toastGreat1Sub:'库边球！',
+    toastPocketed:'漂亮！',toastPocketedSub:'{n}号球进袋！',
+    toast3cScore:'得分！',toast3cScoreSub:'三库得分！',
+    toast3cMiss:'未中',toast3cMissSub:'库数或目标球不足。',
+    challengeStarting:'比赛开始！',challengeStartingSub:'vs {name}',
+    revengeGranted:'复仇！',revengeGrantedSub:'再来一次机会！',
+    chalkBtn:'涂抹巧克 (C)',toastMiscue:'滑杆！',toastMiscueSub:'你忘记涂抹巧克了！',
+    controlsGuide:'操作指南',
   },
   es: {
-    subtitle:'Simulador de Billar Web de Nueva Generaci처n',
+    subtitle:'Simulador de Billar Web de Nueva Generación',
     player1:'JUGADOR 1',player2:'JUGADOR 2',solids:'Lisas',stripes:'Rayadas',
     matchStatus:'ESTADO DEL JUEGO',cueControl:'CONTROL DEL TACO',strikePower:'POTENCIA',
     aiPrediction:'RUTA IA',freeTrial:'GRATIS',
@@ -1068,86 +1069,86 @@ const i18n = {
     modePocket:'POOL',mode3Cushion:'3 BANDAS',
     globalRivals:'RIVALES GLOBALES',challengeBtn:'DESAFIAR',btnPractice:'PRACTICA LIBRE',
     practiceMode:'PRACTICA LIBRE',practiceModeSub:'Modo de practica activado',
-    selectCountry:'SELECCIONA TU PA횒S',
+    selectCountry:'SELECCIONA TU PAÍS',
     helpItem1:'<span>Arrastrar</span> Rotar',helpItem2:'<span>Click Der.</span> Mover',
     helpItem3:'<span>Rueda</span> Zoom',helpItem4:'<span>Espacio</span> Golpear',
-    guideTitle:'C횙MO JUGAR',
-    guideStep1:'?뼮截?Arrastra para apuntar',
-    guideStep2:'?뮞 Ajusta la potencia con el deslizador',
-    guideStep3:'??징Pulsa GOLPEAR o Espacio para tirar!',
-    guideStep4:'??Activa IA para ver la trayectoria',
-    guideBtn:'징A JUGAR!',
-    commercial:'OPORTUNIDAD EXTRA',chanceExpired:'징OPORTUNIDAD ACABADA!',
-    scratchedDesc:'징La bola blanca cay처 en la tronera!',
-    watchAd:'?렗 OBTENER OPORTUNIDAD',giveUp:'RENDIRSE Y REINICIAR',
+    guideTitle:'CÓMO JUGAR',
+    guideStep1:'🖱️ Arrastra para apuntar',
+    guideStep2:'💪 Ajusta la potencia con el deslizador',
+    guideStep3:'⚡ ¡Pulsa GOLPEAR o Espacio para tirar!',
+    guideStep4:'✨ Activa IA para ver la trayectoria',
+    guideBtn:'¡A JUGAR!',
+    commercial:'OPORTUNIDAD EXTRA',chanceExpired:'¡OPORTUNIDAD ACABADA!',
+    scratchedDesc:'¡La bola blanca cayó en la tronera!',
+    watchAd:'🎬 OBTENER OPORTUNIDAD',giveUp:'RENDIRSE Y REINICIAR',
     sponsored:'BONUS',adSlot:'Evento de Billar',adDesc:'Eventos especiales pronto',
-    revengeTitle:'징DERROTA!',revengeDesc:'징Perdiste! 징Mira un anuncio para la revancha!',
-    revengeAd:'?렗 REVANCHA (VER ANUNCIO)',revengeSkip:'ACEPTAR DERROTA',
+    revengeTitle:'¡DERROTA!',revengeDesc:'¡Perdiste! ¡Mira un anuncio para la revancha!',
+    revengeAd:'🎬 REVANCHA (VER ANUNCIO)',revengeSkip:'ACEPTAR DERROTA',
     readyToAim:'LISTO PARA APUNTAR',statusDescDefault:'Arrastra para apuntar. Rueda para zoom.',
-    shotInProgress:'TIRO EN CURSO',shotInProgressDesc:'Calculando f챠sica...',
-    cueBallReady:'BOLA LISTA',cueBallReadyDesc:'징Ajusta el 찼ngulo y tira!',
-    cueBallScratched:'징SCRATCH!',cueBallScratchDesc:'Bola blanca en tronera.',
+    shotInProgress:'TIRO EN CURSO',shotInProgressDesc:'Calculando física...',
+    cueBallReady:'BOLA LISTA',cueBallReadyDesc:'¡Ajusta el ángulo y tira!',
+    cueBallScratched:'¡SCRATCH!',cueBallScratchDesc:'Bola blanca en tronera.',
     matchRestarted:'JUEGO REINICIADO',matchRestartedDesc:'Mesa reseteada. Turno del Jugador 1.',
     playerTurn:'TURNO DE JUGADOR {n}',playerTurnDesc:'Ajusta y golpea.',
     aiTurn:'IA PENSANDO...',aiTurnDesc:'El rival calcula el tiro...',
-    toastRevived:'징REVIVIDO!',toastRevivedSub:'징Oportunidad Premium!',
-    toastAiOn:'IA ACTIVA',toastAiOnSub:'징Proyecci처n en tiempo real!',
-    toastFantastic3:'징TIRO INCRE횒BLE!',toastFantastic3Sub:'징{n} bandas!',
-    toastFantastic2:'징FANT횁STICO!',toastFantastic2Sub:'징2 bandas!',
-    toastGreat1:'징BUEN TIRO!',toastGreat1Sub:'징Banda!',
-    toastPocketed:'징MUY BIEN!',toastPocketedSub:'징Bola {n} en tronera!',
-    toast3cScore:'징PUNTO!',toast3cScoreSub:'징Punto de 3 bandas!',
+    toastRevived:'¡REVIVIDO!',toastRevivedSub:'¡Oportunidad Premium!',
+    toastAiOn:'IA ACTIVA',toastAiOnSub:'¡Proyección en tiempo real!',
+    toastFantastic3:'¡TIRO INCREÍBLE!',toastFantastic3Sub:'¡{n} bandas!',
+    toastFantastic2:'¡FANTÁSTICO!',toastFantastic2Sub:'¡2 bandas!',
+    toastGreat1:'¡BUEN TIRO!',toastGreat1Sub:'¡Banda!',
+    toastPocketed:'¡MUY BIEN!',toastPocketedSub:'¡Bola {n} en tronera!',
+    toast3cScore:'¡PUNTO!',toast3cScoreSub:'¡Punto de 3 bandas!',
     toast3cMiss:'FALLO',toast3cMissSub:'Bandas o bolas insuficientes.',
-    challengeStarting:'징PARTIDO!',challengeStartingSub:'vs {name}',
-    revengeGranted:'징REVANCHA!',revengeGrantedSub:'징Una oportunidad m찼s!',
-    chalkBtn:'PONER TIZA (C)',toastMiscue:'징PIFIA!',toastMiscueSub:'징Olvidaste poner tiza!',
+    challengeStarting:'¡PARTIDO!',challengeStartingSub:'vs {name}',
+    revengeGranted:'¡REVANCHA!',revengeGrantedSub:'¡Una oportunidad más!',
+    chalkBtn:'PONER TIZA (C)',toastMiscue:'¡PIFIA!',toastMiscueSub:'¡Olvidaste poner tiza!',
     controlsGuide:'CONTROLES',
   },
   hi: {
-    subtitle:'西끶쨽西꿋? 西む?西№ㅌ誓 西뺖ㅎ 西듀쪍西?西оㅏ西꿋ㅏ西?ㅀ誓띭ㄱ誓띭ㅈ 西멘ㅏ西?쪓西?쪇西꿋쪍西잀ㅀ',
-    player1:'西뽤ㅏ西꿋ㅎ西□ㅌ誓 1',player2:'西뽤ㅏ西꿋ㅎ西□ㅌ誓 2',solids:'西멘쪏西꿋ㅏ西?,stripes:'西멘쪓西잀쪓西겯ㅎ西뉋ㄺ',
-    matchStatus:'西?쪎西?西멘쪓西?ㅏ西ㅰㅏ',cueControl:'西뺖쪓西?쪈 西ⓣㅏ西?쨧西ㅰ쪓西겯ㄳ',strikePower:'西뜩쪏西?西むㅎ西듀ㅀ',
-    aiPrediction:'AI 西むㄵ',freeTrial:'西?쪇西ムㅌ誓띭ㄴ',
-    strikeBtn:'西뜩쪏西?(西멘쪓西む쪍西?',resetBtn:'西뺖쪓西?쪈 西о쪏西?西겯?西멘쪍西?,
-    spinControl:'西뺖쪓西?쪈 西о쪏西?西멘쪓西むㅏ西?,spinCenter:'西뺖쪍西귖ㄶ誓띭ㅀ',spinBackspin:'西о쪎西뺖ㅈ誓띭ㄺ西욈ㄸ',
-    spinTopspin:'西잀쪏西むㅈ誓띭ㄺ西욈ㄸ',spinLeft:'西оㅎ西?ㅎ西?西멘쪓西むㅏ西?,spinRight:'西╆ㅎ西?ㅎ西?西멘쪓西むㅏ西?,
-    modePocket:'西む쪏西뺖쪍西?西о쪏西?,mode3Cushion:'3-西뺖쪇西뜩ㄸ',
-    globalRivals:'西듀쪎西뜩쪓西듀ㅏ西?西む쪓西겯ㄴ西욈ㄶ誓띭ㅅ西귖ㄶ誓띭ㅅ誓',challengeBtn:'西싟쪇西ⓣ쪒西ㅰ?',btnPractice:'西멘쪓西듀ㄴ西귖ㄴ誓띭ㅀ 西끶ㄽ誓띭ㄿ西약ㅈ',
-    practiceMode:'西끶ㄽ誓띭ㄿ西약ㅈ 西?쪑西?,practiceModeSub:'西뤲쨻西?西끶ㄽ誓띭ㄿ西약ㅈ 西?쪑西?西멘쨻誓띭ㅇ西?,
-    selectCountry:'西끶ㄺ西ⓣㅎ 西╆쪍西?西싟쪇西ⓣ쪍西?,
-    helpItem1:'<span>西뽤?西귖쩀誓뉋쨧</span> 西섁쪇西?ㅎ西뤲쨦',helpItem2:'<span>西겯ㅎ西뉋쩅-西뺖쪓西꿋ㅏ西?/span> 西む쪎西?,
-    helpItem3:'<span>西듀쪓西밝?西?/span> 西쒉ㅌ誓귖ㄾ',helpItem4:'<span>西멘쪓西む쪍西?/span> 西뜩쪏西?,
-    guideTitle:'西뺖쪎西멘쪍 西뽤쪍西꿋쪍西?,
-    guideStep1:'?뼮截?西멘쪓西뺖쪓西겯?西?西뽤?西귖쩀西뺖ㅀ 西ⓣㅏ西뜩ㅎ西ⓣㅎ 西꿋쨽西약쨵西?,
-    guideStep2:'?뮞 西멘쪓西꿋ㅎ西뉋ㄱ西?西멘쪍 西むㅎ西듀ㅀ 西멘쪍西?西뺖ㅀ誓뉋쨧',
-    guideStep3:'??西뜩쪏西?西о쩅西?西?ㅎ 西멘쪓西む쪍西멘ㄼ西약ㅀ 西╆ㄼ西약쨵西?',
-    guideStep4:'??AI 西むㄵ 西멘쪍 西잀쪓西겯쪎西쒉쪍西뺖쪓西잀ㅀ誓 西╆쪍西뽤쪍西?,
-    guideBtn:'西뽤쪍西꿋ㄸ西?西뜩쪇西겯쪈 西뺖ㅀ誓뉋쨧!',
-    commercial:'西끶ㄴ西욈ㅀ西욈쨻誓띭ㄴ 西?쪒西뺖ㅎ',chanceExpired:'西끶ㅅ西멘ㅀ 西멘ㄾ西약ㄺ誓띭ㄴ!',
-    scratchedDesc:'西뺖쪓西?쪈 西о쪏西?西む쪏西뺖쪍西?西?쪍西?西쀠ㅏ西?西쀠쨮!',
-    watchAd:'?렗 西끶ㄴ西욈ㅀ西욈쨻誓띭ㄴ 西?쪒西뺖ㅎ 西む쪓西겯ㅎ西む쪓西?西뺖ㅀ誓뉋쨧',giveUp:'西밝ㅎ西?西?ㅎ西ⓣ쪍西?,
-    sponsored:'西о쪑西ⓣㅈ',adSlot:'西оㅏ西꿋ㅏ西?ㅀ誓띭ㄱ誓띭ㅈ 西뉋ㅅ誓뉋쨧西?,adDesc:'西듀ㅏ西뜩쪍西?西뉋ㅅ誓뉋쨧西?西쒉ㅂ誓띭ㄶ 西밝?',
-    revengeTitle:'西밝ㅎ西?',revengeDesc:'西?쪎西?西밝ㅎ西?西쀠쨵! 西듀ㅏ西쒉쪓西왽ㅎ西むㄸ 西╆쪍西뽤쨻西?西겯ㅏ西듀쪍西귖쩂 西뜩쪏西?西꿋쪍西?',
-    revengeAd:'?렗 西겯ㅏ西듀쪍西귖쩂 (西듀ㅏ西쒉쪓西왽ㅎ西むㄸ 西╆쪍西뽤쪍西?',revengeSkip:'西밝ㅎ西?西멘쪓西듀?西뺖ㅎ西겯쪍西?,
-    readyToAim:'西ⓣㅏ西뜩ㅎ西ⓣㅎ 西ㅰ쪎西?ㅎ西?,statusDescDefault:'西뽤?西귖쩀西뺖ㅀ 西ⓣㅏ西뜩ㅎ西ⓣㅎ 西꿋쨽西약쨵西곟ⅳ 西멘쪓西뺖쪓西겯쪏西?西멘쪍 西쒉ㅌ誓귖ㄾ誓?,
-    shotInProgress:'西뜩쪏西?西쒉ㅎ西겯?',shotInProgressDesc:'西ムㅏ西쒉ㅌ西욈쨻誓띭ㅈ 西쀠ㄳ西ⓣㅎ...',
-    cueBallReady:'西뺖쪓西?쪈 西о쪏西?西ㅰ쪎西?ㅎ西?,cueBallReadyDesc:'西뺖쪑西?西멘쪍西?西뺖ㅀ誓뉋쨧 西붲ㅀ 西?ㅎ西겯쪍西?',
-    cueBallScratched:'西멘쪓西뺖쪓西겯쪎西?',cueBallScratchDesc:'西뺖쪓西?쪈 西о쪏西?西む쪏西뺖쪍西?西?쪍西귖ⅳ',
-    matchRestarted:'西?쪎西?西겯?西멘쪓西잀ㅎ西겯쪓西?,matchRestartedDesc:'西о쪑西겯쪓西?西겯?西멘쪍西잀ⅳ 西뽤ㅏ西꿋ㅎ西□ㅌ誓 1 西뺖? 西оㅎ西겯?誓?,
-    playerTurn:'西뽤ㅏ西꿋ㅎ西□ㅌ誓 {n} 西뺖? 西оㅎ西겯?',playerTurnDesc:'西뺖쪑西?西멘쪍西?西뺖ㅀ誓뉋쨧 西붲ㅀ 西?ㅎ西겯쪍西귖ⅳ',
-    aiTurn:'AI 西멘쪑西?西겯ㅉ西?西밝쪎...',aiTurnDesc:'西む쪓西겯ㄴ西욈ㄶ誓띭ㅅ西귖ㄶ誓띭ㅅ誓 西뜩쪏西?西쀠ㄳ西ⓣㅎ 西뺖ㅀ 西겯ㅉ西?西밝쪎...',
-    toastRevived:'西む쪇西ⓣㅀ誓띭쩂誓西듀ㅏ西?',toastRevivedSub:'西む쪓西겯?西?ㅏ西?ㄾ 西싟ㅎ西귖ㅈ!',
-    toastAiOn:'AI 西むㄵ 西싟ㅎ西꿋쪈',toastAiOnSub:'西겯ㅏ西?ㅂ-西잀ㅎ西뉋ㄾ 西ムㅏ西쒉ㅌ西욈쨻誓띭ㅈ!',
-    toastFantastic3:'西뜩ㅎ西ⓣㄶ西약ㅀ 西뜩쪏西?',toastFantastic3Sub:'{n}-西뺖쪇西뜩ㄸ 西о쪎西귖쨻!',
-    toastFantastic2:'西оㅉ誓곟ㄴ 西оㄲ西솰ㅏ西?ㅎ!',toastFantastic2Sub:'2-西뺖쪇西뜩ㄸ 西о쪎西귖쨻!',
-    toastGreat1:'西끶쩀誓띭쩁西?西뜩쪏西?',toastGreat1Sub:'西뺖쪇西뜩ㄸ 西о쪎西귖쨻!',
-    toastPocketed:'西оㄲ西솰ㅏ西?ㅎ!',toastPocketedSub:'西о쪏西?{n} 西む쪏西뺖쪍西?',
-    toast3cScore:'西멘쪓西뺖쪑西?',toast3cScoreSub:'3-西뺖쪇西뜩ㄸ 西む쪏西뉋쨧西?',
-    toast3cMiss:'西?ㅏ西?,toast3cMissSub:'西뺖쪇西뜩ㄸ 西?ㅎ 西о쪏西?西끶ㄺ西겯쪓西?ㅎ西む쪓西ㅰⅳ',
-    challengeStarting:'西?쪎西?西뜩쪇西겯쪈!',challengeStartingSub:'vs {name}',
-    revengeGranted:'西겯ㅏ西듀쪍西귖쩂!',revengeGrantedSub:'西뤲쨻 西붲ㅀ 西?쪒西뺖ㅎ!',
-    chalkBtn:'西싟쪏西?西꿋쨽西약쨵西?(C)',toastMiscue:'西?ㅏ西멘쪓西뺖쪓西?쪈!',toastMiscueSub:'西녱ㄺ 西싟쪏西?西꿋쨽西약ㄸ西?西?쪈西?西쀠쨵!',
-    controlsGuide:'西ⓣㅏ西?쨧西ㅰ쪓西겯ㄳ',
+    subtitle:'अगली पीढ़ी का वेब बिलियर्ड्स सिम्युलेटर',
+    player1:'खिलाड़ी 1',player2:'खिलाड़ी 2',solids:'सॉलिड',stripes:'स्ट्राइप',
+    matchStatus:'मैच स्थिति',cueControl:'क्यू नियंत्रण',strikePower:'शॉट पावर',
+    aiPrediction:'AI पथ',freeTrial:'मुफ़्त',
+    strikeBtn:'शॉट (स्पेस)',resetBtn:'क्यू बॉल रीसेट',
+    spinControl:'क्यू बॉल स्पिन',spinCenter:'केंद्र',spinBackspin:'बैकस्पिन',
+    spinTopspin:'टॉपस्पिन',spinLeft:'बायाँ स्पिन',spinRight:'दायाँ स्पिन',
+    modePocket:'पॉकेट बॉल',mode3Cushion:'3-कुशन',
+    globalRivals:'वैश्विक प्रतिद्वंद्वी',challengeBtn:'चुनौती',btnPractice:'स्वतंत्र अभ्यास',
+    practiceMode:'अभ्यास मोड',practiceModeSub:'एकल अभ्यास मोड सक्षम',
+    selectCountry:'अपना देश चुनें',
+    helpItem1:'<span>खींचें</span> घुमाएँ',helpItem2:'<span>राइट-क्लिक</span> पैन',
+    helpItem3:'<span>व्हील</span> ज़ूम',helpItem4:'<span>स्पेस</span> शॉट',
+    guideTitle:'कैसे खेलें',
+    guideStep1:'🖱️ स्क्रीन खींचकर निशाना लगाएँ',
+    guideStep2:'💪 स्लाइडर से पावर सेट करें',
+    guideStep3:'⚡ शॉट बटन या स्पेसबार दबाएँ!',
+    guideStep4:'✨ AI पथ से ट्रैजेक्टरी देखें',
+    guideBtn:'खेलना शुरू करें!',
+    commercial:'अतिरिक्त मौका',chanceExpired:'अवसर समाप्त!',
+    scratchedDesc:'क्यू बॉल पॉकेट में गिर गई!',
+    watchAd:'🎬 अतिरिक्त मौका प्राप्त करें',giveUp:'हार मानें',
+    sponsored:'बोनस',adSlot:'बिलियर्ड्स इवेंट',adDesc:'विशेष इवेंट जल्द ही',
+    revengeTitle:'हार!',revengeDesc:'मैच हार गए! विज्ञापन देखकर रिवेंज शॉट लें!',
+    revengeAd:'🎬 रिवेंज (विज्ञापन देखें)',revengeSkip:'हार स्वीकारें',
+    readyToAim:'निशाना तैयार',statusDescDefault:'खींचकर निशाना लगाएँ। स्क्रॉल से ज़ूम।',
+    shotInProgress:'शॉट जारी',shotInProgressDesc:'फिज़िक्स गणना...',
+    cueBallReady:'क्यू बॉल तैयार',cueBallReadyDesc:'कोण सेट करें और मारें!',
+    cueBallScratched:'स्क्रैच!',cueBallScratchDesc:'क्यू बॉल पॉकेट में।',
+    matchRestarted:'मैच रीस्टार्ट',matchRestartedDesc:'बोर्ड रीसेट। खिलाड़ी 1 की बारी।',
+    playerTurn:'खिलाड़ी {n} की बारी',playerTurnDesc:'कोण सेट करें और मारें।',
+    aiTurn:'AI सोच रहा है...',aiTurnDesc:'प्रतिद्वंद्वी शॉट गणना कर रहा है...',
+    toastRevived:'पुनर्जीवित!',toastRevivedSub:'प्रीमियम चांस!',
+    toastAiOn:'AI पथ चालू',toastAiOnSub:'रियल-टाइम फिज़िक्स!',
+    toastFantastic3:'शानदार शॉट!',toastFantastic3Sub:'{n}-कुशन बैंक!',
+    toastFantastic2:'बहुत बढ़िया!',toastFantastic2Sub:'2-कुशन बैंक!',
+    toastGreat1:'अच्छा शॉट!',toastGreat1Sub:'कुशन बैंक!',
+    toastPocketed:'बढ़िया!',toastPocketedSub:'बॉल {n} पॉकेट!',
+    toast3cScore:'स्कोर!',toast3cScoreSub:'3-कुशन पॉइंट!',
+    toast3cMiss:'मिस',toast3cMissSub:'कुशन या बॉल अपर्याप्त।',
+    challengeStarting:'मैच शुरू!',challengeStartingSub:'vs {name}',
+    revengeGranted:'रिवेंज!',revengeGrantedSub:'एक और मौका!',
+    chalkBtn:'चॉक लगाएँ (C)',toastMiscue:'मिस्क्यू!',toastMiscueSub:'आप चॉक लगाना भूल गए!',
+    controlsGuide:'नियंत्रण',
   },
 };
 
@@ -1156,8 +1157,9 @@ const LANG_LABELS = {en:'ENG',ko:'KOR',ja:'JPN',zh:'CHN',es:'ESP',hi:'HIN'};
 const langDetect = (navigator.language||'en').slice(0,2).toLowerCase();
 let currentLang = {ko:'ko',ja:'ja',zh:'zh',es:'es',hi:'hi'}[langDetect]||'en';
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   CONSTANTS
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CONSTANTS
+   ═══════════════════════════════════════════════════════════════════════════════*/
 const BALL_RADIUS=0.32, BALL_DIAMETER=BALL_RADIUS*2;
 const TABLE_WIDTH=14.2, TABLE_LENGTH=28.4;
 // Physics: base damping per 16.67ms frame; dt-normalized in animate()
@@ -1166,7 +1168,7 @@ const STOP_SPEED=0.002;
 
 let cueMass = 530; // 520 - 540g
 let tipHardness = 'H'; // 'H', 'M', 'S'
-const TARGET_DT=16.67; // ms ??60fps reference
+const TARGET_DT=16.67; // ms – 60fps reference
 const POCKET_RADIUS=0.65;
 const POCKETS=[
   {x:-TABLE_WIDTH/2,z:-TABLE_LENGTH/2},{x:TABLE_WIDTH/2,z:-TABLE_LENGTH/2},
@@ -1185,8 +1187,9 @@ const RIVALS=[
   {name:'MinJun_Seoul',code:'kr',country:'KOR',rank:'LEGEND',rating:2300,pRange:[45,85],acc:0.92},
 ];
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   GAME STATE
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   GAME STATE
+   ═══════════════════════════════════════════════════════════════════════════════*/
 let currentPlayer=1, scores={p1:0,p2:0}, currentTurnStatus='AIMING', isCueBallPocketed=false;
 let gameMode='pocket'; // 'pocket'|'threecushion'
 let playerCountry='KR';
@@ -1203,16 +1206,18 @@ const CUE_DESIGNS = [
 ];
 let currentCueIndex = 0;
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   THREE.JS VARIABLES
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THREE.JS VARIABLES
+   ═══════════════════════════════════════════════════════════════════════════════*/
 let scene,camera,renderer,controls;
 let balls=[],tableFelt,aimingLine,cueStick;
 let audioCtx=null,activeParticles=[],predictionLines=[];
 let pocketMeshes=[],crosshairGrid=null;
 let lampMaterials=[];
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   DOM REFERENCES
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   DOM REFERENCES
+   ═══════════════════════════════════════════════════════════════════════════════*/
 const $=id=>document.getElementById(id);
 const elP1Score=$('p1-score'),elP2Score=$('p2-score');
 const elP1Card=$('player-1-card'),elP2Card=$('player-2-card');
@@ -1229,8 +1234,9 @@ const btnLang=$('btn-lang'),btnMode=$('btn-mode');
 const spinCircle=$('spin-circle'),spinDot=$('spin-dot'),spinLabel=$('spin-label');
 const rivalList=$('rival-list');
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   i18n ENGINE
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   i18n ENGINE
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function T(key,vars){let s=i18n[currentLang][key]||i18n.en[key]||key;if(vars)Object.keys(vars).forEach(k=>{s=s.replace('{'+k+'}',vars[k]);});return s;}
 
 function applyLanguage(lang){
@@ -1243,8 +1249,9 @@ function applyLanguage(lang){
   renderRivalList();
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   AUDIO (Web Audio API synthesis)
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   AUDIO (Web Audio API synthesis)
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function playSound(type,intensity){
   const vol=Math.min(Math.max(intensity||1,0.1),1);
   try{
@@ -1252,7 +1259,7 @@ function playSound(type,intensity){
     if(audioCtx.state==='suspended')audioCtx.resume();
     const n=audioCtx.currentTime;
     if(type==='ball'){
-      // Phenolic Resin Aramith "TAK!" ??crisp, high-fidelity impact
+      // Phenolic Resin Aramith "TAK!" – crisp, high-fidelity impact
       const o=audioCtx.createOscillator(),g=audioCtx.createGain();
       o.connect(g);g.connect(audioCtx.destination);
       o.type='square';
@@ -1273,7 +1280,7 @@ function playSound(type,intensity){
       g.gain.setValueAtTime(vol*.62,n);g.gain.exponentialRampToValueAtTime(.001,n+.28);
       o.start(n);o.stop(n+.28);
     } else if(type==='miscue'){
-      // Dull "tok" thud ??low frequency noise burst
+      // Dull "tok" thud – low frequency noise burst
       const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*.18,audioCtx.sampleRate);
       const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);
       const src=audioCtx.createBufferSource();src.buffer=buf;
@@ -1281,7 +1288,7 @@ function playSound(type,intensity){
       const g=audioCtx.createGain();g.gain.setValueAtTime(vol*.5,n);
       src.connect(lp);lp.connect(g);g.connect(audioCtx.destination);src.start(n);
     } else if(type==='chalk'){
-      // Realistic chalk scrape (?ш컖?ш컖)
+      // Realistic chalk scrape (사각사각)
       const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*.35,audioCtx.sampleRate);
       const d=buf.getChannelData(0);
       for(let i=0;i<d.length;i++){
@@ -1298,8 +1305,9 @@ function playSound(type,intensity){
   }catch(e){}
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   BALL TEXTURES (Canvas 2D procedural)
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   BALL TEXTURES (Canvas 2D procedural)
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function createBallTexture(num,hex){
   const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');
   if(gameMode==='threecushion' && (num===0 || num===1)){
@@ -1325,8 +1333,9 @@ function createBallTexture(num,hex){
   const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.ClampToEdgeWrapping;return t;
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   THREE.JS INIT
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THREE.JS INIT
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function init(){
   const container=$('canvas-container');
   scene=new THREE.Scene();scene.background=null;scene.fog=new THREE.FogExp2('#05070a',0.014);
@@ -1343,12 +1352,13 @@ function init(){
   setTimeout(()=>elGuideModal.classList.remove('hidden'),250);
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   LIGHTING (raised ceiling, wide angle, max penumbra)
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   LIGHTING (raised ceiling, wide angle, max penumbra)
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function createLighting(){
   // Ambient: lowered to 0.42 for premium billiard club atmosphere (not over-exposed)
   scene.add(new THREE.AmbientLight('#ddeeff',0.42));
-  // Key directional (warm, from upper-right) ??main shadow caster
+  // Key directional (warm, from upper-right) – main shadow caster
   const dir=new THREE.DirectionalLight('#fff8ee',0.75);
   dir.position.set(6,24,10);dir.castShadow=true;
   dir.shadow.mapSize.set(2048,2048);
@@ -1359,7 +1369,7 @@ function createLighting(){
   scene.add(dir);
   // Cool fill from opposite side
   const fill=new THREE.DirectionalLight('#b0c8e8',0.35);fill.position.set(-10,18,-12);scene.add(fill);
-  // Front fill ??eliminates front shadow on table
+  // Front fill – eliminates front shadow on table
   const front=new THREE.DirectionalLight('#ffffff',0.28);front.position.set(0,14,-20);scene.add(front);
   // Back fill
   const back=new THREE.DirectionalLight('#ffffff',0.22);back.position.set(0,14,20);scene.add(back);
@@ -1413,11 +1423,12 @@ function createLighting(){
   });
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   TABLE (with toggleable pockets)
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   TABLE (with toggleable pockets)
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function createTable(){
-  // Deep forest green ??professional billiard standard, matte velvet texture
-  // Deep forest green ??matte velvet texture to avoid overexposure
+  // Deep forest green – professional billiard standard, matte velvet texture
+  // Deep forest green – matte velvet texture to avoid overexposure
   const feltMat=new THREE.MeshStandardMaterial({color:'#083e1c',roughness:1.0,metalness:0.0,envMapIntensity:0.0});
   tableFelt=new THREE.Mesh(new THREE.BoxGeometry(TABLE_WIDTH,0.2,TABLE_LENGTH),feltMat);
   tableFelt.position.y=-0.1;tableFelt.receiveShadow=true;scene.add(tableFelt);
@@ -1440,8 +1451,9 @@ function createTable(){
   POCKETS.forEach(p=>{const m=new THREE.Mesh(pG,pM);m.position.set(p.x,0.01,p.z);scene.add(m);pocketMeshes.push(m);});
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   CROSSHAIR GRID (semi-transparent 3D grid on table)
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CROSSHAIR GRID (semi-transparent 3D grid on table)
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function createCrosshairGrid(){
   const size=Math.max(TABLE_WIDTH,TABLE_LENGTH)+2;
   crosshairGrid=new THREE.GridHelper(size,36,0x3a5a48,0x3a5a48);
@@ -1451,8 +1463,9 @@ function createCrosshairGrid(){
   scene.add(crosshairGrid);
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   SPAWN BALLS (mode-aware)
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   SPAWN BALLS (mode-aware)
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function spawnBalls(){
   balls.forEach(b=>scene.remove(b.mesh));balls=[];
   const sG=new THREE.SphereGeometry(BALL_RADIUS,32,32);
@@ -1482,8 +1495,9 @@ function spawnBalls(){
   shotData={cushionHits:0,ballsHit:new Set()};
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   CUE STICK & GUIDE
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CUE STICK & GUIDE
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function createCueTexture(index=0) {
   const d=CUE_DESIGNS[index];
   const c=document.createElement('canvas');c.width=1024;c.height=256;const x=c.getContext('2d');
@@ -1524,8 +1538,9 @@ function createCueAndGuide(){
   cueStick.castShadow=true;scene.add(cueStick);
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   AI PREDICTION LINES
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   AI PREDICTION LINES
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function initPredictionLines(){
   [new THREE.LineDashedMaterial({color:'#f0f2f5',dashSize:.22,gapSize:.14}),
    new THREE.LineDashedMaterial({color:'#facc15',dashSize:.16,gapSize:.10}),
@@ -1557,8 +1572,9 @@ function updatePredictionPaths(){
   }
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   PARTICLES
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   PARTICLES
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function spawnParticles(x,z){
   const g=new THREE.BoxGeometry(.08,.08,.08),mt=new THREE.MeshStandardMaterial({color:'#facc15',emissive:'#ffd700',emissiveIntensity:2.2,roughness:.08,metalness:.96});
   for(let i=0;i<32;i++){const m=new THREE.Mesh(g,mt.clone());m.position.set(x,BALL_RADIUS,z);const a=Math.random()*Math.PI*2;scene.add(m);
@@ -1612,16 +1628,18 @@ function updateParticles(){
   }
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   TOAST
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function triggerToast(title,sub){
   const el=$('shot-announcement');$('announcement-title').textContent=title;$('announcement-subtitle').textContent=sub;
   el.classList.remove('hidden');el.style.animation='none';el.offsetHeight;el.style.animation='';setTimeout(()=>el.classList.add('hidden'),2200);
 }
 function triggerAlert(t,d){elStatus.textContent=t;elStatusDesc.textContent=d;}
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   SPIN UI (mouse + touch drag on circle)
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   SPIN UI (mouse + touch drag on circle)
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function setupSpinUI(){
   let dragging=false;
   function updateSpin(cx,cy){
@@ -1669,8 +1687,9 @@ function updateSpinLabel(){
   else spinLabel.textContent=t.spinRight;
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   CUE POSITION (real-time camera-relative)
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CUE POSITION (real-time camera-relative)
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function updateCuePosition(){
   const cb=balls[0];
   if(!cb||!cb.active){if(cueStick)cueStick.visible=false;if(aimingLine)aimingLine.visible=false;return;}
@@ -1685,8 +1704,9 @@ function updateCuePosition(){
   }else{cueStick.visible=false;aimingLine.visible=false;}
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   PHYSICS: BALL COLLISIONS
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   PHYSICS: BALL COLLISIONS
+   ═══════════════════════════════════════════════════════════════════════════════*/
 
 function handleBallCollisions(){
   for(let i=0;i<balls.length;i++){const b1=balls[i];if(!b1.active)continue;
@@ -1708,8 +1728,9 @@ function handleBallCollisions(){
   }
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   PHYSICS: CUSHION BOUNCES
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   PHYSICS: CUSHION BOUNCES
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function handleCushionBounces(){
   const mnX=-TABLE_WIDTH/2+BALL_RADIUS,mxX=TABLE_WIDTH/2-BALL_RADIUS,mnZ=-TABLE_LENGTH/2+BALL_RADIUS,mxZ=TABLE_LENGTH/2-BALL_RADIUS;
   balls.forEach(b=>{if(!b.active)return;const sp=b.vel.length();let bounced=false;
@@ -1723,8 +1744,9 @@ function handleCushionBounces(){
   });
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   POCKETS + 3-CUSHION SCORING
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   POCKETS + 3-CUSHION SCORING
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function checkPockets(){
   if(gameMode==='threecushion')return; // No pockets in 3-cushion
   balls.forEach(b=>{if(!b.active)return;POCKETS.forEach(p=>{
@@ -1746,8 +1768,8 @@ function pocketBall(ball,pocket){
     // Check Win
     if(scores.p1>=8 || scores.p2>=8){
       const winnerName = scores.p1>=8 ? elP1Name.textContent : elP2Name.textContent;
-      if(scores.p1>=8&&!elP1Name.textContent.includes('?몣')) elP1Name.textContent = '?몣 ' + elP1Name.textContent;
-      if(scores.p2>=8&&!elP2Name.textContent.includes('?몣')) elP2Name.textContent = '?몣 ' + elP2Name.textContent;
+      if(scores.p1>=8&&!elP1Name.textContent.includes('👑')) elP1Name.textContent = '👑 ' + elP1Name.textContent;
+      if(scores.p2>=8&&!elP2Name.textContent.includes('👑')) elP2Name.textContent = '👑 ' + elP2Name.textContent;
       triggerToast('WINNER!', `${winnerName} takes the crown!`);
       spawnConfetti();playFanfare();playApplause();
     } else {
@@ -1768,8 +1790,8 @@ function check3CushionScore(){
     // Check Win
     if(scores.p1>=5 || scores.p2>=5){
       const winnerName = scores.p1>=5 ? elP1Name.textContent : elP2Name.textContent;
-      if(scores.p1>=5&&!elP1Name.textContent.includes('?몣')) elP1Name.textContent = '?몣 ' + elP1Name.textContent;
-      if(scores.p2>=5&&!elP2Name.textContent.includes('?몣')) elP2Name.textContent = '?몣 ' + elP2Name.textContent;
+      if(scores.p1>=5&&!elP1Name.textContent.includes('👑')) elP1Name.textContent = '👑 ' + elP1Name.textContent;
+      if(scores.p2>=5&&!elP2Name.textContent.includes('👑')) elP2Name.textContent = '👑 ' + elP2Name.textContent;
       triggerToast('WINNER!', `${winnerName} takes the crown!`);
       spawnConfetti();playFanfare();playApplause();
     } else {
@@ -1780,8 +1802,9 @@ function check3CushionScore(){
   }
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   MODALS
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MODALS
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function startAdSim(){
   const preview=document.querySelector('.ad-stream-preview'),cd=$('ad-countdown'),bar=$('ad-progress');
   btnWatchAd.style.display='none';btnSkipAd.style.display='none';preview.classList.add('active');
@@ -1802,10 +1825,11 @@ function revengeAdWatch(){
   triggerToast(T('revengeGranted'),T('revengeGrantedSub'));playSound('ball',1);spawnParticles(0,0);
 }
 function revengeSkip(){elRevengeModal.classList.add('hidden');aiMode=false;aiRival=null;scores={p1:0,p2:0};elP1Score.textContent='0';elP2Score.textContent='0';
-  elP2Name.textContent=T('player2');elP2Flag.textContent='?뙇';spawnBalls();currentTurnStatus='AIMING';triggerAlert(T('matchRestarted'),T('matchRestartedDesc'));}
+  elP2Name.textContent=T('player2');elP2Flag.textContent='🌍';spawnBalls();currentTurnStatus='AIMING';triggerAlert(T('matchRestarted'),T('matchRestartedDesc'));}
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   STRIKE / RESET (with backspin + sidespin)
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   STRIKE / RESET (with backspin + sidespin)
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function strikeCueBall(){
   if(currentTurnStatus!=='AIMING'||isCueBallPocketed)return;
   const cb=balls[0];if(!cb||!cb.active)return;
@@ -1816,7 +1840,7 @@ function strikeCueBall(){
   const ad=new THREE.Vector3();camera.getWorldDirection(ad);ad.y=0;ad.normalize();
   
   // Edge-zone detection: if spin dot is far from centre (spinRadius > 0.62)
-  // and chalk hasn't been freshly applied ??40% chance of miscue
+  // and chalk hasn't been freshly applied – 40% chance of miscue
   const spinRadius=Math.sqrt(spinOffset.x*spinOffset.x+spinOffset.y*spinOffset.y);
   const isEdgeShot=(spinRadius>0.62);
   const hasMiscue=isEdgeShot&&shotsSinceChalk>1&&Math.random()<0.40;
@@ -1886,11 +1910,12 @@ function resetCueBall(){
   cb.backspin=0;cb.sidespin=0;isCueBallPocketed=false;currentTurnStatus='AIMING';triggerAlert(T('cueBallReady'),T('cueBallReadyDesc'));
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   MODE SWITCHING
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MODE SWITCHING
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function switchMode(){
   gameMode=gameMode==='pocket'?'threecushion':'pocket';
-  $('mode-icon').textContent=gameMode==='pocket'?'?렠':'?윥';
+  $('mode-icon').textContent=gameMode==='pocket'?'🎱':'🟥';
   $('mode-label').textContent=T(gameMode==='pocket'?'modePocket':'mode3Cushion');
   // Toggle pockets
   pocketMeshes.forEach(m=>m.visible=gameMode==='pocket');
@@ -1901,13 +1926,14 @@ function switchMode(){
   spawnBalls();triggerAlert(T('readyToAim'),T('statusDescDefault'));
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   RIVAL LIST + AI CHALLENGE
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   RIVAL LIST + AI CHALLENGE
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function renderRivalList(){
   rivalList.innerHTML='';
   RIVALS.forEach(r=>{
     const card=document.createElement('div');card.className='rival-card';
-    card.innerHTML=`<span class="rival-flag fi fi-${r.code}"></span><div class="rival-info"><span class="rival-name">${r.name}</span><span class="rival-rank">${r.rank} 쨌 ${r.rating}</span></div><button class="btn-challenge">${T('challengeBtn')}</button>`;
+    card.innerHTML=`<span class="rival-flag fi fi-${r.code}"></span><div class="rival-info"><span class="rival-name">${r.name}</span><span class="rival-rank">${r.rank} · ${r.rating}</span></div><button class="btn-challenge">${T('challengeBtn')}</button>`;
     card.querySelector('.btn-challenge').addEventListener('click',()=>startChallenge(r));
     rivalList.appendChild(card);
   });
@@ -1947,8 +1973,9 @@ function tryAITurn(){
   setTimeout(()=>{if(currentTurnStatus==='AIMING'&&currentPlayer===2)aiStrikeCueBall(aiRival);},1800);
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   MODAL LANG SELECTION
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MODAL LANG SELECTION
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function setupModalLangSelect(){
   document.querySelectorAll('#modal-lang-select .lang-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
@@ -1960,8 +1987,9 @@ function setupModalLangSelect(){
 }
 setupModalLangSelect();
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   MOBILE DRAWER
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOBILE DRAWER
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function setupMobileDrawer(){
   const dashboard=$('game-dashboard');const handle=$('drawer-handle');
   let startY=0,drawerDragging=false;  // renamed to avoid conflict with spin UI dragging
@@ -1984,14 +2012,15 @@ function setupMobileDrawer(){
   handle.addEventListener('click',()=>dashboard.classList.toggle('expanded'));
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   ANIMATE LOOP  ?? delta-time independent physics
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   ANIMATE LOOP  –  delta-time independent physics
+   ═══════════════════════════════════════════════════════════════════════════════*/
 let lastTime=0;
 function animate(now=0){
   requestAnimationFrame(animate);
   // Delta-time: clamp to 50ms max so physics don't explode on tab-switch lag
   const dt=Math.min(now-lastTime,50);lastTime=now;
-  // dt-normalized damping: F^(dt/target) ??same deceleration regardless of frame rate
+  // dt-normalized damping: F^(dt/target) — same deceleration regardless of frame rate
   const dtFactor=dt/TARGET_DT;
   const frictionDt=Math.pow(FRICTION,dtFactor);
   const spinDecayDt=Math.pow(0.988,dtFactor);
@@ -2079,8 +2108,9 @@ function animate(now=0){
   updateCuePosition();updatePredictionPaths();renderer.render(scene,camera);
 }
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   UI LISTENERS
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   UI LISTENERS
+   ═══════════════════════════════════════════════════════════════════════════════*/
 function setupUIListeners(){
   const btnChalk=$('btn-chalk');
   if(btnChalk) btnChalk.addEventListener('click',()=>{
@@ -2184,8 +2214,9 @@ function setupUIListeners(){
 
 function onResize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);}
 
-/* ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??   BOOT
-   ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??/
+/* ═══════════════════════════════════════════════════════════════════════════════
+   BOOT
+   ═══════════════════════════════════════════════════════════════════════════════*/
 init();
 
 </script>

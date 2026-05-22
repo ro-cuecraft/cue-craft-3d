@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body>
+    <!-- Setup DOM mocks so app.js can parse and run top-level -->
+    <div id="game-container"></div>
+    <script>
+        window.onerror = function(msg, url, line, col, error) {
+            fetch('/log', {method: 'POST', body: msg + ' at line ' + line});
+        };
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

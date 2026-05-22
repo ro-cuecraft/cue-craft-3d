@@ -1,0 +1,62 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOBILE LANDSCAPE (< 950px width, landscape orientation)
+   ═══════════════════════════════════════════════════════════════════════════════*/
+@media (max-width: 950px) and (orientation: landscape) {
+    #hud-overlay {
+        grid-template-columns: 1fr 240px; /* Much narrower right panel! */
+        padding: 8px;
+        gap: 8px;
+        pointer-events: none;
+    }
+    
+    #game-header { 
+        position: fixed; top: 10px; left: 10px;
+        background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+        padding: 0; pointer-events: none;
+    }
+    .logo-area h1 { font-size: 0.9rem; text-shadow: 1px 1px 4px rgba(0,0,0,0.8); }
+    .subtitle { display: none; }
+    
+    #game-dashboard {
+        grid-column: 2;
+        padding: 10px;
+        background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+        pointer-events: none;
+        max-height: 100vh; overflow-y: auto;
+    }
+
+    .panel-section {
+        background: rgba(12, 14, 20, 0.65);
+        backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 8px 10px;
+        margin-bottom: 8px;
+        pointer-events: auto;
+    }
+
+    .panel-section h3 { display: none; } /* hide section titles */
+    .player-card { padding: 4px 8px; gap: 6px; }
+    .player-score { font-size: 1.1rem; }
+    .btn-primary { padding: 8px 10px; font-size: 0.7rem; }
+    .btn-secondary { padding: 6px 8px; font-size: 0.65rem; }
+    
+    /* Move floating buttons leftwards so they don't overlap the right panel */
+    .lang-toggle-btn { right: 260px; top: 10px; padding: 4px 8px; font-size: 0.65rem; pointer-events: auto; background: rgba(0,0,0,0.6); }
+    .mode-toggle-btn { right: 330px; top: 10px; padding: 4px 8px; font-size: 0.65rem; pointer-events: auto; background: rgba(0,0,0,0.6); }
+    .help-toggle-btn { right: 410px; top: 10px; width: 28px; height: 28px; font-size: 0.9rem; pointer-events: auto; background: rgba(0,0,0,0.6); }
+
+    .spin-circle { width: 56px; height: 56px; }
+    #ad-panel { display: none; }
+}
+
+/* Tablet tweaks */
+@media (max-width: 1024px) and (min-width: 951px) {
+    #hud-overlay { grid-template-columns: auto 1fr 300px; padding: 14px; }
+    #game-dashboard { padding: 14px; }
+    .lang-toggle-btn { right: 325px; }
+    .mode-toggle-btn { right: 440px; }
+}
+
+/* Utility */
+.hidden { display: none !important; }

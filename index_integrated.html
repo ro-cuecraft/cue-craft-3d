@@ -1329,11 +1329,11 @@ function createBallTexture(num,hex){
 function init(){
   const container=$('canvas-container');
   scene=new THREE.Scene();scene.background=null;scene.fog=new THREE.FogExp2('#05070a',0.014);
-  camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.1,200);camera.position.set(0,18,26);
+  camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.01,200);camera.position.set(0,18,26);
   renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setClearColor(0x000000,0);renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;container.appendChild(renderer.domElement);
   controls=new THREE.OrbitControls(camera,renderer.domElement);
-  controls.enableDamping=true;controls.dampingFactor=0.05;controls.maxPolarAngle=Math.PI/2.15;controls.minDistance=16;controls.maxDistance=48;controls.target.set(0,0,0);
+  controls.enableDamping=true;controls.dampingFactor=0.05;controls.maxPolarAngle=Math.PI/2.15;controls.minDistance=20;controls.maxDistance=48;controls.target.set(0,0,0);
   createLighting();createTable();spawnBalls();createCueAndGuide();initPredictionLines();createCrosshairGrid();
   setupUIListeners();applyLanguage(currentLang);renderRivalList();
   window.addEventListener('resize',onResize);
@@ -2202,7 +2202,7 @@ function setupUIListeners(){
   setupSpinUI();setupMobileDrawer();
 }
 
-function onResize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);}
+function onResize(){const aspect=innerWidth/innerHeight;camera.aspect=aspect;camera.fov=(aspect<1)?65:45;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);}
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    BOOT

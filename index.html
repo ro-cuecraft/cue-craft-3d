@@ -1234,10 +1234,6 @@ function createBallTexture(num,hex){
   else if(num===0){
     const g=x.createRadialGradient(88,80,8,128,128,128);g.addColorStop(0,'#fff');g.addColorStop(.6,'#f0f0f0');g.addColorStop(1,'#d8d8d8');
     x.fillStyle=g;x.fillRect(0,0,256,256);
-    // Draw 6 Aramith red dots to make rotation visible
-    x.fillStyle='#dc2626';
-    const dotPos = [{x:128,y:30},{x:128,y:226},{x:30,y:128},{x:226,y:128},{x:60,y:60},{x:196,y:196}];
-    dotPos.forEach(p=>{x.beginPath();x.arc(p.x,p.y,10,0,Math.PI*2);x.fill();});
   }
   else{const isS=num>8;x.fillStyle=isS?'#fff':hex;x.fillRect(0,0,256,256);if(isS){x.fillStyle=hex;x.fillRect(0,54,256,148);}
     x.beginPath();x.arc(128,128,52,0,Math.PI*2);x.fillStyle='#fff';x.fill();x.lineWidth=3;x.strokeStyle='rgba(0,0,0,.15)';x.stroke();
@@ -1251,11 +1247,11 @@ function createBallTexture(num,hex){
 function init(){
   const container=$('canvas-container');
   scene=new THREE.Scene();scene.background=null;scene.fog=new THREE.FogExp2('#05070a',0.014);
-  camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.01,200);camera.position.set(0,18,26);
+  camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.01,200);camera.position.set(0,24,34);
   renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setClearColor(0x000000,0);renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;container.appendChild(renderer.domElement);
   controls=new THREE.OrbitControls(camera,renderer.domElement);
-  controls.enableDamping=true;controls.dampingFactor=0.05;controls.maxPolarAngle=Math.PI/2.15;controls.minDistance=20;controls.maxDistance=48;controls.target.set(0,0,0);
+  controls.enableDamping=true;controls.dampingFactor=0.05;controls.maxPolarAngle=Math.PI/2.15;controls.minDistance=30;controls.maxDistance=65;controls.target.set(0,0,0);
   createLighting();createTable();spawnBalls();createCueAndGuide();initPredictionLines();createCrosshairGrid();
   setupUIListeners();applyLanguage(currentLang);renderRivalList();
   window.addEventListener('resize',onResize);

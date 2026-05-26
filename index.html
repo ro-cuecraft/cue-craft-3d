@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko" translate="no">
 <head>
     <meta charset="UTF-8">
@@ -61,7 +61,7 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
 #hud-overlay {
     position: fixed; inset: 0; z-index: 10; pointer-events: none;
     display: grid;
-    grid-template-columns: auto 1fr 380px;
+    grid-template-columns: auto 1fr 320px;
     grid-template-rows: auto 1fr auto;
     gap: 16px;
     padding: 20px;
@@ -515,6 +515,21 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
 
 .hidden { display: none !important; }
 .modal-card { overflow-x: hidden; }
+
+@media (max-width: 768px) {
+    #hud-overlay { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; padding: 12px; }
+    #game-dashboard {
+        display: none;
+    }
+    #game-dashboard.drawer-open {
+        display: flex; position: fixed; bottom: 0; left: 0; right: 0; grid-column: 1; grid-row: 3; width: 100%; height: 70vh; max-width: none; border-radius: 24px 24px 0 0; z-index: 50; background: rgba(12, 14, 20, 0.95); border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .mobile-drawer-handle { display: flex; justify-content: center; margin-bottom: 8px; }
+    #ad-panel { display: none; }
+    .lang-toggle-btn { right: 80px; }
+    .mode-toggle-btn { right: 180px; }
+    .help-toggle-btn { right: 20px; }
+}
 
 </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
@@ -1430,7 +1445,7 @@ function createCueAndGuide(){
   aimingLine.computeLineDistances();scene.add(aimingLine);
   
   const cueGeom = new THREE.CylinderGeometry(0.04,0.08,12,32);
-  cueGeom.rotateX(-Math.PI/2);
+  cueGeom.rotateX(Math.PI/2);
   cueStick=new THREE.Mesh(cueGeom,new THREE.MeshStandardMaterial({map:createCueTexture(),roughness:0.25,metalness:0.3}));
   cueStick.castShadow=true;scene.add(cueStick);
 }
@@ -2109,13 +2124,20 @@ function setupUIListeners(){
   setupSpinUI();setupMobileDrawer();
 }
 
-function onResize(){const aspect=innerWidth/innerHeight;camera.aspect=aspect;camera.fov=(aspect<1)?65:45;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);}
+function onResize(){
+  const aspect=innerWidth/innerHeight;
+  camera.aspect=aspect;
+  camera.fov=(aspect<1)?65:45;
+  if(innerWidth>768){camera.setViewOffset(innerWidth,innerHeight,160,0,innerWidth,innerHeight);}
+  else{camera.clearViewOffset();}
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+}
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    BOOT
    ═══════════════════════════════════════════════════════════════════════════════*/
 init();
-
 
 </script>
 </body>

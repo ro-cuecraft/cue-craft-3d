@@ -532,6 +532,15 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
     .help-toggle-btn { right: 20px; }
 }
 
+/* Stat Bars */
+.stat-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.stat-label { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600; color: #cbd5e1; }
+.stat-label span { color: #fff; font-weight: 700; }
+.stat-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.5); border-radius: 3px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8); }
+.stat-bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: linear-gradient(90deg, #3b82f6, #60a5fa); box-shadow: 0 0 8px rgba(59, 130, 246, 0.5); }
+.stat-bar-fill.high { background: linear-gradient(90deg, #ea580c, #f97316); box-shadow: 0 0 8px rgba(249, 115, 22, 0.5); }
+.stat-bar-fill.mid { background: linear-gradient(90deg, #8b5cf6, #a78bfa); box-shadow: 0 0 8px rgba(139, 92, 246, 0.5); }
+
 </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
     <!-- Three.js r128 + OrbitControls (global scope, non-module CDN) -->
@@ -644,21 +653,31 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
 
             <!-- ── PRO Settings ── -->
             <div class="panel-section pro-settings-section">
-                <h3 data-i18n="proSettings">PRO SETTINGS</h3>
-                <div class="control-group">
-                    <label for="cue-mass-slider" data-i18n="cueMass">CUE MASS</label>
-                    <div class="power-meter-wrapper">
-                        <input type="range" id="cue-mass-slider" min="520" max="540" value="530" step="1" class="premium-slider">
-                        <div class="power-percentage" id="cue-mass-value" style="min-width:40px;">530g</div>
+                <h3 data-i18n="cueStats">CUE STATS</h3>
+                
+                <div class="stat-row">
+                    <div class="stat-label">Mass <span id="stat-mass-val">540g</span></div>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill" id="stat-mass-bar" style="width: 80%;"></div>
                     </div>
                 </div>
-                <div class="control-group">
-                    <label data-i18n="tipHardness">TIP HARDNESS</label>
-                    <div class="tip-toggle-group" id="tip-hardness-group">
-                        <button class="btn-tip active" data-val="H">HARD</button>
-                        <button class="btn-tip" data-val="M">MID</button>
-                        <button class="btn-tip" data-val="S">SOFT</button>
+                
+                <div class="stat-row">
+                    <div class="stat-label">Power <span id="stat-power-val">x1.00</span></div>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill mid" id="stat-power-bar" style="width: 50%;"></div>
                     </div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-label">Spin <span id="stat-spin-val">x1.00</span></div>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill high" id="stat-spin-bar" style="width: 50%;"></div>
+                    </div>
+                </div>
+                
+                <div class="stat-row" style="margin-top: 10px; margin-bottom: 12px;">
+                    <div class="stat-label">Tip: <span id="stat-tip-val" style="color: #fbbf24;">HARD</span></div>
                 </div>
                 <div class="control-group">
                     <label for="humidity-slider" data-i18n="tableHumidity">TABLE HUMIDITY</label>
@@ -1080,8 +1099,8 @@ const TABLE_WIDTH=14.2, TABLE_LENGTH=28.4;
 let FRICTION=0.990;
 const STOP_SPEED=0.002;
 
-let cueMass = 530; // 520 - 540g
-let tipHardness = 'H'; // 'H', 'M', 'S'
+let player1CueIndex = 0;
+let player2CueIndex = 1;
 const TARGET_DT=16.67; // ms – 60fps reference
 const POCKET_RADIUS=0.65;
 const POCKETS=[
@@ -1113,10 +1132,10 @@ let shotData={cushionHits:0,ballsHit:new Set()};
 let shotsSinceChalk=0;
 
 const CUE_DESIGNS = [
-  { id:'classic', name:'Classic Maple', shaft:['#e4c698','#f3ddb3','#d4b278'], joint:['#888','#fff','#ccc','#fff','#555'], wrap:['#4a2e15','#704214','#3e2110'], butt:['#bbb','#e0e0e0','#999'] },
-  { id:'carbon', name:'Carbon Black', shaft:['#333','#555','#222'], joint:['#0ea5e9','#38bdf8','#0284c7','#38bdf8','#0ea5e9'], wrap:['#111','#222','#050505'], butt:['#1e293b','#334155','#0f172a'] },
-  { id:'sapphire', name:'Royal Sapphire', shaft:['#d1d5db','#f3f4f6','#9ca3af'], joint:['#fbbf24','#fde68a','#d97706','#fde68a','#fbbf24'], wrap:['#1e3a8a','#2563eb','#172554'], butt:['#f8fafc','#ffffff','#cbd5e1'] },
-  { id:'crimson', name:'Ruby Crimson', shaft:['#e4c698','#f3ddb3','#d4b278'], joint:['#facc15','#fef08a','#ca8a04','#fef08a','#facc15'], wrap:['#7f1d1d','#b91c1c','#450a0a'], butt:['#111827','#1f2937','#030712'] }
+  { id:'classic', name:'Classic Maple', mass: 540, tipHardness: 'H', spinMod: 1.0, powerMod: 1.0, shaft:['#e4c698','#f3ddb3','#d4b278'], joint:['#888','#fff','#ccc','#fff','#555'], wrap:['#4a2e15','#704214','#3e2110'], butt:['#bbb','#e0e0e0','#999'] },
+  { id:'carbon', name:'Carbon Black', mass: 515, tipHardness: 'S', spinMod: 1.25, powerMod: 1.1, shaft:['#333','#555','#222'], joint:['#0ea5e9','#38bdf8','#0284c7','#38bdf8','#0ea5e9'], wrap:['#111','#222','#050505'], butt:['#1e293b','#334155','#0f172a'] },
+  { id:'sapphire', name:'Royal Sapphire', mass: 525, tipHardness: 'M', spinMod: 1.1, powerMod: 1.05, shaft:['#d1d5db','#f3f4f6','#9ca3af'], joint:['#fbbf24','#fde68a','#d97706','#fde68a','#fbbf24'], wrap:['#1e3a8a','#2563eb','#172554'], butt:['#f8fafc','#ffffff','#cbd5e1'] },
+  { id:'crimson', name:'Ruby Crimson', mass: 535, tipHardness: 'M', spinMod: 1.15, powerMod: 1.0, shaft:['#e4c698','#f3ddb3','#d4b278'], joint:['#facc15','#fef08a','#ca8a04','#fef08a','#facc15'], wrap:['#7f1d1d','#b91c1c','#450a0a'], butt:['#111827','#1f2937','#030712'] }
 ];
 let currentCueIndex = 0;
 
@@ -1796,24 +1815,26 @@ function strikeCueBall(){
   let finalSidespin=0;
   let jumpY=0;
 
+  const cueConfig = CUE_DESIGNS[currentPlayer === 1 ? player1CueIndex : player2CueIndex];
+
   if(hasMiscue){
     triggerToast(T('toastMiscue'),T('toastMiscueSub'));
     power*=0.45;
     const deviationAngle=(Math.random()-0.5)*0.55;
     ad.applyAxisAngle(new THREE.Vector3(0,1,0),deviationAngle);
   } else {
-    const massScale = cueMass / 530;
-    const actualPower = power * massScale;
-    let deflectionFactor = tipHardness === 'H' ? 0.07 : (tipHardness === 'S' ? 0.03 : 0.05);
+    const massScale = cueConfig.mass / 530;
+    const actualPower = power * massScale * cueConfig.powerMod;
+    let deflectionFactor = cueConfig.tipHardness === 'H' ? 0.07 : (cueConfig.tipHardness === 'S' ? 0.03 : 0.05);
     const deflectionAngle = -(spinOffset.x) * deflectionFactor * (actualPower / 100);
     ad.applyAxisAngle(new THREE.Vector3(0,1,0), deflectionAngle);
-    finalBackspin = -spinOffset.y * actualPower * 0.0018;
-    finalSidespin =  spinOffset.x * actualPower * 0.0015;
+    finalBackspin = -spinOffset.y * actualPower * 0.0018 * cueConfig.spinMod;
+    finalSidespin =  spinOffset.x * actualPower * 0.0015 * cueConfig.spinMod;
     if(actualPower>94 && spinOffset.y>0.65) jumpY=actualPower*0.0022;
   }
 
-  const massScaleForVel = hasMiscue ? 1 : cueMass / 530;
-  const actualPowerForVel = hasMiscue ? power : power * massScaleForVel;
+  const massScaleForVel = hasMiscue ? 1 : cueConfig.mass / 530;
+  const actualPowerForVel = hasMiscue ? power : power * massScaleForVel * cueConfig.powerMod;
   finalVel.set(ad.x*actualPowerForVel*0.0072, jumpY, ad.z*actualPowerForVel*0.0072);
 
   updateChalkWarning();
@@ -1950,7 +1971,11 @@ function aiStrikeCueBall(rival){
   camera.lookAt(cb.mesh.position);
   controls.target.copy(cb.mesh.position);
   
-  let finalVel=new THREE.Vector3(ad.x*pw*0.0072, 0, ad.z*pw*0.0072);
+  let finalVel=new THREE.Vector3();
+  const cueConfig = CUE_DESIGNS[player2CueIndex];
+  const massScale = cueConfig.mass / 530;
+  const actualPower = pw * massScale * cueConfig.powerMod;
+  finalVel.set(ad.x*actualPower*0.0072, 0, ad.z*actualPower*0.0072);
   
   pendingShot = {
     vel: finalVel,
@@ -2006,6 +2031,7 @@ function renderRivalList(){
 
 function startChallenge(rival){
   aiMode=true;aiRival=rival;
+  player2CueIndex = Math.floor(Math.random() * CUE_DESIGNS.length);
   elP2Flag.innerHTML=`<span class="fi fi-${rival.code}"></span>`;elP2Name.textContent=rival.name;
   scores={p1:0,p2:0};elP1Score.textContent='0';elP2Score.textContent='0';
   currentPlayer=1;currentTurnStatus='AIMING';
@@ -2199,6 +2225,13 @@ function animate(now=0){
       if(gameMode==='threecushion')check3CushionScore();
       currentTurnStatus='AIMING';
       currentPlayer=currentPlayer===1?2:1;
+      
+      const newCueIndex = currentPlayer === 1 ? player1CueIndex : player2CueIndex;
+      if(cueStick && cueStick.material) {
+        cueStick.material.map = createCueTexture(newCueIndex);
+        cueStick.material.needsUpdate = true;
+      }
+
       elP1Card.classList.toggle('active',currentPlayer===1);
       elP2Card.classList.toggle('active',currentPlayer===2);
       triggerAlert(T('playerTurn',{n:currentPlayer}),T('playerTurnDesc'));
@@ -2245,21 +2278,31 @@ function setupUIListeners(){
     if(e.code==='KeyC'){e.preventDefault();if($('btn-chalk')){shotsSinceChalk=0;playSound('chalk',1);$('btn-chalk').classList.remove('chalk-warn');}}
   });
 
-  const elCueMassSlider=$('cue-mass-slider'),elCueMassValue=$('cue-mass-value');
-  if(elCueMassSlider) {
-    elCueMassSlider.addEventListener('input',(e)=>{
-      cueMass=parseInt(e.target.value);
-      if(elCueMassValue)elCueMassValue.textContent=cueMass+'g';
-    });
+  function updateCueStatsUI(idx) {
+    const cd = CUE_DESIGNS[idx];
+    
+    const elMassVal = $('stat-mass-val');
+    const elMassBar = $('stat-mass-bar');
+    if(elMassVal) elMassVal.textContent = cd.mass + 'g';
+    if(elMassBar) elMassBar.style.width = ((cd.mass - 500) / 50 * 100) + '%';
+    
+    const elPowVal = $('stat-power-val');
+    const elPowBar = $('stat-power-bar');
+    if(elPowVal) elPowVal.textContent = 'x' + cd.powerMod.toFixed(2);
+    if(elPowBar) elPowBar.style.width = ((cd.powerMod - 0.9) / 0.3 * 100) + '%';
+    
+    const elSpinVal = $('stat-spin-val');
+    const elSpinBar = $('stat-spin-bar');
+    if(elSpinVal) elSpinVal.textContent = 'x' + cd.spinMod.toFixed(2);
+    if(elSpinBar) elSpinBar.style.width = ((cd.spinMod - 0.9) / 0.5 * 100) + '%';
+    
+    const elTipVal = $('stat-tip-val');
+    if(elTipVal) {
+      elTipVal.textContent = cd.tipHardness === 'H' ? 'HARD' : (cd.tipHardness === 'S' ? 'SOFT' : 'MID');
+      elTipVal.style.color = cd.tipHardness === 'H' ? '#fbbf24' : (cd.tipHardness === 'S' ? '#38bdf8' : '#a78bfa');
+    }
   }
-  const tipBtns=document.querySelectorAll('.btn-tip');
-  if(tipBtns) {
-    tipBtns.forEach(btn=>btn.addEventListener('click',(e)=>{
-      tipBtns.forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      tipHardness=btn.dataset.val;
-    }));
-  }
+  updateCueStatsUI(player1CueIndex);
   const elHumiditySlider=$('humidity-slider'),elHumidityValue=$('humidity-value');
   if(elHumiditySlider) {
     elHumiditySlider.addEventListener('input',(e)=>{
@@ -2303,13 +2346,15 @@ function setupUIListeners(){
         target.classList.add('active');
         const index = parseInt(target.dataset.index);
         currentCueIndex = index;
-        if(cueStick) {
+        player1CueIndex = index;
+        updateCueStatsUI(index);
+        if(currentPlayer===1 && cueStick) {
           const oldMap = cueStick.material.map;
           cueStick.material.map = createCueTexture(currentCueIndex);
           cueStick.material.needsUpdate = true;
           if(oldMap) oldMap.dispose();
-          triggerToast("EQUIPPED", CUE_DESIGNS[index].name);
         }
+        triggerToast("EQUIPPED", CUE_DESIGNS[index].name);
       });
     });
   }

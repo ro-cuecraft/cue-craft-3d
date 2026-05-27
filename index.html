@@ -1612,6 +1612,7 @@ function updateCuePosition(){
       cb.sidespin=pendingShot.sidespin;
       pendingShot=null;
       cueStick.visible=false;
+      movingStartTime=performance.now();
     }
   } else if(currentTurnStatus==='AIMING'){
     if(currentPlayer===2){
@@ -1776,6 +1777,7 @@ function updatePracticeScore() {
 
 let pendingShot=null;
 let animationStart=0;
+let movingStartTime=0;
 function strikeCueBall(){
   if(currentTurnStatus!=='AIMING'||isCueBallPocketed)return;
   const cb=balls[0];if(!cb||!cb.active)return;
@@ -2154,6 +2156,19 @@ function animate(now=0){
 
   if(currentTurnStatus==='MOVING'){
     handleBallCollisions();handleCushionBounces();checkPockets();
+    
+    // Physics Watchdog: Force stop if moving for more than 10 seconds
+    if(performance.now() - movingStartTime > 10000 && !allStopped) {
+      console.warn("Physics timeout: forcing balls to stop.");
+      allStopped = true;
+      balls.forEach(b => {
+        if(b.active) {
+          b.vel.set(0,0,0); b.backspin=0; b.sidespin=0;
+          if(b.mesh.position.y > BALL_RADIUS) b.mesh.position.y = BALL_RADIUS;
+        }
+      });
+    }
+
     if(allStopped){
       if(gameMode==='threecushion')check3CushionScore();
       currentTurnStatus='AIMING';

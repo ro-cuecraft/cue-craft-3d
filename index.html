@@ -1143,7 +1143,7 @@ let currentCueIndex = 0;
    THREE.JS VARIABLES
    ═══════════════════════════════════════════════════════════════════════════════*/
 let scene,camera,renderer,controls;
-let balls=[],tableFelt,aimingLine,cueStick;
+let balls=[],tableFelt,aimingLine,cueStick,targetGhostBall=null;
 let audioCtx=null,activeParticles=[],predictionLines=[];
 let pocketMeshes=[],crosshairGrid=null;
 let lampMaterials=[];
@@ -1272,7 +1272,7 @@ function init(){
   renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setClearColor(0x000000,0);renderer.setSize(container.clientWidth,container.clientHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;container.appendChild(renderer.domElement);
   controls=new THREE.OrbitControls(camera,renderer.domElement);
-  controls.enableDamping=false;controls.maxPolarAngle=Math.PI/2.15;controls.minDistance=30;controls.maxDistance=65;controls.target.set(0,0,0);
+  controls.enableDamping=false;controls.rotateSpeed=0.4;controls.maxPolarAngle=Math.PI/2.15;controls.minDistance=30;controls.maxDistance=65;controls.target.set(0,0,0);
   createLighting();createTable();spawnBalls();createCueAndGuide();initPredictionLines();createCrosshairGrid();
   setupUIListeners();applyLanguage(currentLang);renderRivalList();
   window.addEventListener('resize',onResize);
@@ -1430,8 +1430,10 @@ function createCueTexture(index=0) {
 }
 
 function createCueAndGuide(){
-  aimingLine=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3(0,0,10)]),new THREE.LineDashedMaterial({color:0xe2b744,dashSize:0.3,gapSize:0.2}));
+  aimingLine=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3(0,0,10)]),new THREE.LineDashedMaterial({color:0xe2b744,dashSize:0.3,gapSize:0.2,linewidth:2}));
   aimingLine.computeLineDistances();scene.add(aimingLine);
+  targetGhostBall=new THREE.Mesh(new THREE.SphereGeometry(BALL_RADIUS,16,16),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.5,wireframe:true}));
+  targetGhostBall.visible=false;scene.add(targetGhostBall);
   
   const cueGeom = new THREE.CylinderGeometry(0.045,0.09,4.75,32);
   cueGeom.rotateX(Math.PI/2);
@@ -1451,32 +1453,104 @@ function initPredictionLines(){
 
 function updatePredictionPaths(){
   const cb=balls[0];
-  if(!cb||!cb.active||currentTurnStatus!=='AIMING'||!togglePrediction.checked){predictionLines.forEach(l=>l.visible=false);return;}
+  if(!cb||!cb.active||currentTurnStatus!=='AIMING'){
+    predictionLines.forEach(l=>l.visible=false);
+    if(aimingLine)aimingLine.visible=false;
+    if(targetGhostBall)targetGhostBall.visible=false;
+    return;
+  }
+  
+  // Curved physics prediction for aimingLine
+  const cueConfig = CUE_DESIGNS[currentPlayer === 1 ? player1CueIndex : player2CueIndex];
+  const power = parseFloat(elPowerSlider.value) || 0;
   const ad=new THREE.Vector3().subVectors(cb.mesh.position,camera.position);ad.y=0;ad.normalize();
+  
+  const massScale = cueConfig.mass / 530;
+  const actualPower = power * massScale * cueConfig.powerMod;
+  let deflectionFactor = cueConfig.tipHardness === 'H' ? 0.07 : (cueConfig.tipHardness === 'S' ? 0.03 : 0.05);
+  const deflectionAngle = -(spinOffset.x) * deflectionFactor * (actualPower / 100);
+  
+  let predictedAd = ad.clone();
+  predictedAd.applyAxisAngle(new THREE.Vector3(0,1,0), deflectionAngle);
+  
+  const finalSidespin = spinOffset.x * actualPower * 0.0015 * cueConfig.spinMod;
+  
+  let pPos = cb.mesh.position.clone();
+  let pVel = new THREE.Vector3(predictedAd.x * actualPower * 0.0072, 0, predictedAd.z * actualPower * 0.0072);
+  let pSidespin = finalSidespin;
+  
+  const dtFactor = 1.0; 
+  const sidespinDecayDt = Math.pow(0.998, dtFactor);
+  const frictionDt = Math.pow(FRICTION, dtFactor);
+  
+  let points = [pPos.clone()];
+  let hitDetected = false;
+  
+  for(let i=0; i<90; i++) {
+    if(pPos.x > TABLE_WIDTH/2 - BALL_RADIUS || pPos.x < -TABLE_WIDTH/2 + BALL_RADIUS ||
+       pPos.z > TABLE_LENGTH/2 - BALL_RADIUS || pPos.z < -TABLE_LENGTH/2 + BALL_RADIUS) {
+       hitDetected = true; break;
+    }
+    for(let j=1; j<balls.length; j++) {
+       const ob = balls[j];
+       if(!ob.active) continue;
+       if(pPos.distanceToSquared(ob.mesh.position) <= BALL_DIAMETER * BALL_DIAMETER) { hitDetected = true; break; }
+    }
+    if(hitDetected) break;
+    
+    pPos.add(pVel.clone().multiplyScalar(16.67));
+    const sp = Math.sqrt(pVel.x*pVel.x + pVel.z*pVel.z);
+    if(sp > 0) {
+       const ux = pVel.x/sp, uz = pVel.z/sp;
+       pVel.x += (-uz) * pSidespin * dtFactor;
+       pVel.z += (ux) * pSidespin * dtFactor;
+       pSidespin *= sidespinDecayDt;
+    }
+    pVel.multiplyScalar(frictionDt);
+    points.push(pPos.clone());
+    if(sp < 0.002) break;
+  }
+  
+  if(aimingLine) {
+    aimingLine.visible = true;
+    aimingLine.geometry.setFromPoints(points);
+    aimingLine.computeLineDistances();
+  }
+  
+  if(targetGhostBall) {
+    targetGhostBall.visible = true;
+    targetGhostBall.position.copy(points[points.length-1]);
+  }
+  
+  if(!togglePrediction.checked) {
+    predictionLines.forEach(l=>l.visible=false);
+    return;
+  }
+  
   const st=cb.mesh.position.clone();let nearest=null,nd=Infinity,hp=null;
-  balls.forEach(t=>{if(t.number===0||!t.active)return;const tt=t.mesh.position.clone().sub(st);const pr=tt.dot(ad);if(pr<=0)return;
-    const ps=tt.lengthSq()-pr*pr;if(ps<BALL_DIAMETER*BALL_DIAMETER){const d=pr-Math.sqrt(BALL_DIAMETER*BALL_DIAMETER-ps);if(d>0&&d<nd){nd=d;nearest=t;hp=st.clone().add(ad.clone().multiplyScalar(d));}}});
+  balls.forEach(t=>{if(t.number===0||!t.active)return;const tt=t.mesh.position.clone().sub(st);const pr=tt.dot(predictedAd);if(pr<=0)return;
+    const ps=tt.lengthSq()-pr*pr;if(ps<BALL_DIAMETER*BALL_DIAMETER){const d=pr-Math.sqrt(BALL_DIAMETER*BALL_DIAMETER-ps);if(d>0&&d<nd){nd=d;nearest=t;hp=st.clone().add(predictedAd.clone().multiplyScalar(d));}}});
   if(nearest&&hp){
     predictionLines.forEach(l=>l.visible=true);
     predictionLines[0].geometry.setFromPoints([st,hp]);predictionLines[0].computeLineDistances();
     const nm=nearest.mesh.position.clone().sub(hp).normalize();
     predictionLines[1].geometry.setFromPoints([nearest.mesh.position.clone(),nearest.mesh.position.clone().add(nm.clone().multiplyScalar(4.5))]);predictionLines[1].computeLineDistances();
-    const tg=new THREE.Vector3(-nm.z,0,nm.x);if(ad.dot(tg)<0)tg.negate();
+    const tg=new THREE.Vector3(-nm.z,0,nm.x);if(predictedAd.dot(tg)<0)tg.negate();
     predictionLines[2].geometry.setFromPoints([hp,hp.clone().add(tg.multiplyScalar(3.2))]);predictionLines[2].computeLineDistances();
   } else {
     predictionLines[0].visible=true;predictionLines[1].visible=predictionLines[2].visible=false;
     let hd=22;const mnX=-TABLE_WIDTH/2+BALL_RADIUS,mxX=TABLE_WIDTH/2-BALL_RADIUS,mnZ=-TABLE_LENGTH/2+BALL_RADIUS,mxZ=TABLE_LENGTH/2-BALL_RADIUS;
-    if(ad.x>0){const d=(mxX-st.x)/ad.x;if(d<hd)hd=d;}if(ad.x<0){const d=(mnX-st.x)/ad.x;if(d<hd)hd=d;}
-    if(ad.z>0){const d=(mxZ-st.z)/ad.z;if(d<hd)hd=d;}if(ad.z<0){const d=(mnZ-st.z)/ad.z;if(d<hd)hd=d;}
-    predictionLines[0].geometry.setFromPoints([st,st.clone().add(ad.clone().multiplyScalar(hd))]);predictionLines[0].computeLineDistances();
+    if(predictedAd.x>0){const d=(mxX-st.x)/predictedAd.x;if(d<hd)hd=d;}if(predictedAd.x<0){const d=(mnX-st.x)/predictedAd.x;if(d<hd)hd=d;}
+    if(predictedAd.z>0){const d=(mxZ-st.z)/predictedAd.z;if(d<hd)hd=d;}if(predictedAd.z<0){const d=(mnZ-st.z)/predictedAd.z;if(d<hd)hd=d;}
+    predictionLines[0].geometry.setFromPoints([st,st.clone().add(predictedAd.clone().multiplyScalar(hd))]);predictionLines[0].computeLineDistances();
   }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    PARTICLES
    ═══════════════════════════════════════════════════════════════════════════════*/
-function spawnParticles(x,z){
-  const g=new THREE.BoxGeometry(.08,.08,.08),mt=new THREE.MeshStandardMaterial({color:'#facc15',emissive:'#ffd700',emissiveIntensity:2.2,roughness:.08,metalness:.96});
+function spawnParticles(x,z, color='#facc15'){
+  const g=new THREE.BoxGeometry(.08,.08,.08),mt=new THREE.MeshStandardMaterial({color:color,emissive:color,emissiveIntensity:2.2,roughness:.08,metalness:.96});
   for(let i=0;i<32;i++){const m=new THREE.Mesh(g,mt.clone());m.position.set(x,BALL_RADIUS,z);const a=Math.random()*Math.PI*2;scene.add(m);
     activeParticles.push({mesh:m,velocity:new THREE.Vector3(Math.cos(a)*(.03+Math.random()*.13),.06+Math.random()*.14,Math.sin(a)*(.03+Math.random()*.13)),age:0,maxAge:48+Math.floor(Math.random()*36)});}
 }
@@ -1640,9 +1714,6 @@ function updateCuePosition(){
     }
     cueStick.visible=true;
     const ad=new THREE.Vector3().subVectors(cb.mesh.position,camera.position);ad.y=0;ad.normalize();
-    aimingLine.visible=true; 
-    aimingLine.geometry.setFromPoints([cb.mesh.position.clone(),cb.mesh.position.clone().add(ad.clone().multiplyScalar(9.5))]);
-    aimingLine.computeLineDistances();
     
     const pw=parseFloat(elPowerSlider.value);
     const powerOffset = (pw/100)*1.65;
@@ -1818,7 +1889,8 @@ function strikeCueBall(){
   const cueConfig = CUE_DESIGNS[currentPlayer === 1 ? player1CueIndex : player2CueIndex];
 
   if(hasMiscue){
-    triggerToast(T('toastMiscue'),T('toastMiscueSub'));
+    triggerToast("MISCUE!", "Too much spin at the edge!");
+    spawnParticles(cb.mesh.position.x, cb.mesh.position.z, '#ef4444');
     power*=0.45;
     const deviationAngle=(Math.random()-0.5)*0.55;
     ad.applyAxisAngle(new THREE.Vector3(0,1,0),deviationAngle);
@@ -1831,6 +1903,14 @@ function strikeCueBall(){
     finalBackspin = -spinOffset.y * actualPower * 0.0018 * cueConfig.spinMod;
     finalSidespin =  spinOffset.x * actualPower * 0.0015 * cueConfig.spinMod;
     if(actualPower>94 && spinOffset.y>0.65) jumpY=actualPower*0.0022;
+    
+    if(actualPower > 85) {
+       spawnParticles(cb.mesh.position.x, cb.mesh.position.z, '#3b82f6');
+       triggerToast("POWER SHOT!", "Great strike!");
+    } else if(Math.abs(spinOffset.x) > 0.5 || Math.abs(spinOffset.y) > 0.5) {
+       spawnParticles(cb.mesh.position.x, cb.mesh.position.z, '#a855f7');
+       triggerToast("NICE SPIN!", "Applying english!");
+    }
   }
 
   const massScaleForVel = hasMiscue ? 1 : cueConfig.mass / 530;

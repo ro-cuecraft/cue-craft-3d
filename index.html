@@ -1320,7 +1320,7 @@ function createTable(){
   const rzG=new THREE.BoxGeometry(rT,rH,TABLE_LENGTH);
   const rL=new THREE.Mesh(rzG,wM);rL.position.set(-TABLE_WIDTH/2-rT/2,yR,0);rL.castShadow=rL.receiveShadow=true;scene.add(rL);
   const rR=rL.clone();rR.position.x=TABLE_WIDTH/2+rT/2;scene.add(rR);
-  const cM=new THREE.MeshStandardMaterial({color:'#d4af37',roughness:0.08,metalness:0.94});
+  const cM=new THREE.MeshStandardMaterial({color:'#1a1a1a',roughness:0.8,metalness:0.3});
   const jG=new THREE.BoxGeometry(rT*1.28,rH*1.06,rT*1.28);
   [{x:-TABLE_WIDTH/2-rT/2,z:-TABLE_LENGTH/2-rT/2},{x:TABLE_WIDTH/2+rT/2,z:-TABLE_LENGTH/2-rT/2},{x:-TABLE_WIDTH/2-rT/2,z:TABLE_LENGTH/2+rT/2},{x:TABLE_WIDTH/2+rT/2,z:TABLE_LENGTH/2+rT/2}]
   .forEach(p=>{const j=new THREE.Mesh(jG,cM);j.position.set(p.x,yR-0.02,p.z);scene.add(j);});

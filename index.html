@@ -44,6 +44,7 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
 
 /* ???? WebGL Canvas ???? */
 #canvas-container { position: fixed; inset: 0; z-index: 0; touch-action: none; }
+@media (min-width: 769px) { #canvas-container { right: 360px; } }
 #canvas-container canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 
 /* ???? Glass Panel ???? */
@@ -1248,8 +1249,8 @@ function createBallTexture(num,hex){
 function init(){
   const container=$('canvas-container');
   scene=new THREE.Scene();scene.background=null;scene.fog=new THREE.FogExp2('#05070a',0.014);
-  camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.01,200);camera.position.set(0,18,-34);
-  renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setClearColor(0x000000,0);renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  camera=new THREE.PerspectiveCamera(45,container.clientWidth/container.clientHeight,0.01,200);camera.position.set(0,18,-34);
+  renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setClearColor(0x000000,0);renderer.setSize(container.clientWidth,container.clientHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;container.appendChild(renderer.domElement);
   controls=new THREE.OrbitControls(camera,renderer.domElement);
   controls.enableDamping=true;controls.dampingFactor=0.05;controls.maxPolarAngle=Math.PI/2.15;controls.minDistance=30;controls.maxDistance=65;controls.target.set(0,0,0);
@@ -2260,13 +2261,15 @@ function setupUIListeners(){
 }
 
 function onResize(){
-  const aspect=innerWidth/innerHeight;
-  camera.aspect=aspect;
-  camera.fov=(aspect<1)?65:45;
-  if(innerWidth>768){camera.setViewOffset(innerWidth,innerHeight,180,0,innerWidth,innerHeight);}
-  else{camera.clearViewOffset();}
+  const container = document.getElementById('canvas-container');
+  if(!container) return;
+  const w = container.clientWidth;
+  const h = container.clientHeight;
+  const aspect = w / h;
+  camera.aspect = aspect;
+  camera.fov = (aspect < 1) ? 65 : 45;
   camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth,innerHeight);
+  renderer.setSize(w, h);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════

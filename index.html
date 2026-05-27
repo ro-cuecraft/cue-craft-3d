@@ -1808,8 +1808,8 @@ function strikeCueBall(){
     let deflectionFactor = tipHardness === 'H' ? 0.07 : (tipHardness === 'S' ? 0.03 : 0.05);
     const deflectionAngle = -(spinOffset.x) * deflectionFactor * (actualPower / 100);
     ad.applyAxisAngle(new THREE.Vector3(0,1,0), deflectionAngle);
-    finalBackspin = -spinOffset.y * actualPower * 0.00060;
-    finalSidespin =  spinOffset.x * actualPower * 0.00038;
+    finalBackspin = -spinOffset.y * actualPower * 0.0018;
+    finalSidespin =  spinOffset.x * actualPower * 0.0015;
     if(actualPower>94 && spinOffset.y>0.65) jumpY=actualPower*0.0022;
   }
 
@@ -2089,7 +2089,8 @@ function animate(now=0){
   // dt-normalized damping: F^(dt/target) — same deceleration regardless of frame rate
   const dtFactor=dt/TARGET_DT;
   const frictionDt=Math.pow(FRICTION,dtFactor);
-  const spinDecayDt=Math.pow(0.988,dtFactor);
+  const backspinDecayDt=Math.pow(0.970,dtFactor);
+  const sidespinDecayDt=Math.pow(0.998,dtFactor);
 
   controls.update();updateParticles();
   if(crosshairGrid)crosshairGrid.visible=(currentTurnStatus==='AIMING');
@@ -2114,13 +2115,28 @@ function animate(now=0){
         if(Math.abs(b.vel.y)<0.018)b.vel.y=0;
       }
 
-      // Rolling rotation
       const sp=Math.sqrt(horizSq);
-      if(sp>0.0001){
-        b.mesh.rotateOnWorldAxis(
-          new THREE.Vector3(-b.vel.z,0,b.vel.x).normalize(),
-          sp*dtFactor/BALL_RADIUS
-        );
+      
+      // Visual rotation components
+      if (sp > 0.0001 || Math.abs(b.sidespin) > 0.000004 || Math.abs(b.backspin) > 0.000004) {
+        if (sp > 0.0001) {
+          b.mesh.rotateOnWorldAxis(
+            new THREE.Vector3(-b.vel.z, 0, b.vel.x).normalize(),
+            sp * dtFactor / BALL_RADIUS
+          );
+        }
+        if (Math.abs(b.sidespin) > 0.000004) {
+          b.mesh.rotateOnWorldAxis(
+            new THREE.Vector3(0, 1, 0),
+            -b.sidespin * dtFactor * 40.0
+          );
+        }
+        if (Math.abs(b.backspin) > 0.000004 && sp > 0.0001) {
+          b.mesh.rotateOnWorldAxis(
+            new THREE.Vector3(-b.vel.z, 0, b.vel.x).normalize(),
+            b.backspin * dtFactor * 40.0
+          );
+        }
       }
 
       // Exponential damping (dt-normalized)
@@ -2143,7 +2159,7 @@ function animate(now=0){
         const ux=b.vel.x/sp,uz=b.vel.z/sp;
         b.vel.x-=ux*b.backspin*dtFactor;
         b.vel.z-=uz*b.backspin*dtFactor;
-        b.backspin*=spinDecayDt;
+        b.backspin*=backspinDecayDt;
         if(Math.abs(b.backspin)<0.000004)b.backspin=0;
       }
       // Sidespin: lateral curve
@@ -2151,7 +2167,7 @@ function animate(now=0){
         const ux=b.vel.x/sp,uz=b.vel.z/sp;
         b.vel.x+=(-uz)*b.sidespin*dtFactor;
         b.vel.z+=(ux)*b.sidespin*dtFactor;
-        b.sidespin*=spinDecayDt;
+        b.sidespin*=sidespinDecayDt;
         if(Math.abs(b.sidespin)<0.000004)b.sidespin=0;
       }
 

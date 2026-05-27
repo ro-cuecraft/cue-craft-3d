@@ -1281,39 +1281,10 @@ function createLighting(){
   const front=new THREE.DirectionalLight('#ffffff',0.28);front.position.set(0,14,-20);scene.add(front);
   // Back fill
   const back=new THREE.DirectionalLight('#ffffff',0.22);back.position.set(0,14,20);scene.add(back);
-  // Premium Luxury Lamp Housing
-  const matBlack = new THREE.MeshStandardMaterial({color: 0x18181b, roughness: 0.8, metalness: 0.3, transparent: true, opacity: 1, side: THREE.DoubleSide});
-  const matGold = new THREE.MeshStandardMaterial({color: 0xd4af37, roughness: 0.2, metalness: 0.9, transparent: true, opacity: 1, side: THREE.BackSide});
-  const matGlow = new THREE.MeshBasicMaterial({color: 0xfffcf0, transparent: true, opacity: 1});
-  lampMaterials.push(matBlack, matGold, matGlow);
-
-  // Crossbar (along Z axis)
-  const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 16, 16), matBlack);
-  bar.rotation.x = Math.PI/2;
-  bar.position.set(0, 34.8, 0);
-  scene.add(bar);
-
-  // Ceiling Wires/Chains (hanging from ceiling to crossbar)
-  const wireGeom = new THREE.CylinderGeometry(0.02, 0.02, 16, 8);
-  const wire1 = new THREE.Mesh(wireGeom, matBlack); wire1.position.set(0, 42.8, -6); scene.add(wire1);
-  const wire2 = new THREE.Mesh(wireGeom, matBlack); wire2.position.set(0, 42.8, 6); scene.add(wire2);
-
+  // Premium Luxury Lamp Housing removed to prevent camera blocking
+  
   // 3 ceiling spotlights aligned with the center
   [{x:0,z:-6},{x:0,z:0},{x:0,z:6}].forEach(p=>{
-    // Lamp Shade (Truncated Cone) - Scaled down to not block view
-    const shade = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 1.0, 1.0, 32, 1, true), matBlack);
-    shade.position.set(p.x, 34.2, p.z);
-    scene.add(shade);
-    
-    // Inner Gold Lining
-    const innerShade = new THREE.Mesh(new THREE.CylinderGeometry(0.23, 0.98, 0.98, 32, 1, true), matGold);
-    innerShade.position.set(p.x, 34.2, p.z);
-    scene.add(innerShade);
-
-    // Glowing Bulb
-    const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.16, 16, 16), matGlow);
-    bulb.position.set(p.x, 34.0, p.z);
-    scene.add(bulb);
 
     const s=new THREE.SpotLight('#fff5e0',1.4);
     s.position.set(p.x,34.5,p.z);

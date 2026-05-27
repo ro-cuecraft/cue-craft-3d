@@ -1576,34 +1576,41 @@ function updateCuePosition(){
   const cb=balls[0];
   if(!cb||!cb.active){if(cueStick)cueStick.visible=false;if(aimingLine)aimingLine.visible=false;return;}
   
+  if(currentPlayer===2){
+    cueStick.visible=false;
+    aimingLine.visible=false;
+    return;
+  }
+  
+  const baseOffset = 2.76;
+  const cueHeight = BALL_RADIUS + 0.38;
+
   if(currentTurnStatus==='ANIMATING_STRIKE' && pendingShot){
     cueStick.visible=true;
-    const ad=pendingShot.ad; // Lock to the original aim direction
-    const pb=1+(pendingShot.power/100)*1.65;
+    const ad=pendingShot.ad;
+    const pb=(pendingShot.power/100)*1.65;
     const t = performance.now() - animationStart;
     
-    let offset = pb;
+    let strokeOffset = 0;
     if (t < 400) {
-      // Warm up 1 (400ms): Pull back and return
-      offset = pb + Math.abs(Math.sin((t / 400) * Math.PI)) * 1.0;
+      strokeOffset = Math.abs(Math.sin((t / 400) * Math.PI)) * 1.0;
     } else if (t < 800) {
-      // Warm up 2 (400ms): Pull back and return
-      offset = pb + Math.abs(Math.sin(((t - 400) / 400) * Math.PI)) * 1.0;
+      strokeOffset = Math.abs(Math.sin(((t - 400) / 400) * Math.PI)) * 1.0;
     } else if (t < 950) {
-      // Deep pull back before strike (150ms)
       const p = (t - 800) / 150;
-      offset = pb + p * 2.0;
+      strokeOffset = p * (1.0 + pb);
     } else if (t < 1000) {
-      // Powerful thrust forward (50ms)
       const p = (t - 950) / 50;
-      offset = (pb + 2.0) * (1 - p) + (-0.2) * p;
+      strokeOffset = (1.0 + pb) * (1 - p) + (-0.1) * p;
     }
     
-    const sp=cb.mesh.position.clone().sub(ad.clone().multiplyScalar(offset+3.45));sp.y=BALL_RADIUS+0.38;
-    cueStick.position.copy(sp);cueStick.lookAt(cb.mesh.position);
+    const totalOffset = baseOffset + strokeOffset;
+    const sp=cb.mesh.position.clone().sub(ad.clone().multiplyScalar(totalOffset));
+    sp.y=cueHeight;
+    cueStick.position.copy(sp);
+    cueStick.lookAt(cb.mesh.position);
     
     if (t >= 1000) {
-      // Animation complete, apply strike
       currentTurnStatus='MOVING';
       triggerAlert(T('shotInProgress'),T('shotInProgressDesc'));
       cb.vel.copy(pendingShot.vel);
@@ -1612,15 +1619,25 @@ function updateCuePosition(){
       pendingShot=null;
       cueStick.visible=false;
     }
-  } else if(currentTurnStatus==='AIMING'&&!(aiMode&&currentPlayer===2)){
+  } else if(currentTurnStatus==='AIMING'){
     cueStick.visible=true;
     const ad=new THREE.Vector3().subVectors(cb.mesh.position,camera.position);ad.y=0;ad.normalize();
-    aimingLine.visible=false; aimingLine.geometry.setFromPoints([cb.mesh.position.clone(),cb.mesh.position.clone().add(ad.clone().multiplyScalar(9.5))]);
+    aimingLine.visible=false; 
+    aimingLine.geometry.setFromPoints([cb.mesh.position.clone(),cb.mesh.position.clone().add(ad.clone().multiplyScalar(9.5))]);
     aimingLine.computeLineDistances();
-    const pw=parseFloat(elPowerSlider.value);const pb=1+(pw/100)*1.65;
-    const sp=cb.mesh.position.clone().sub(ad.clone().multiplyScalar(pb+3.45));sp.y=BALL_RADIUS+0.38;
-    cueStick.position.copy(sp);cueStick.lookAt(cb.mesh.position);
-  }else{cueStick.visible=false;aimingLine.visible=false;}
+    
+    const pw=parseFloat(elPowerSlider.value);
+    const powerOffset = (pw/100)*1.65;
+    
+    const totalOffset = baseOffset + powerOffset;
+    const sp=cb.mesh.position.clone().sub(ad.clone().multiplyScalar(totalOffset));
+    sp.y=cueHeight;
+    cueStick.position.copy(sp);
+    cueStick.lookAt(cb.mesh.position);
+  } else {
+    cueStick.visible=false;
+    aimingLine.visible=false;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════

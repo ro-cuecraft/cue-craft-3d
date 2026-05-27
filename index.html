@@ -1555,13 +1555,56 @@ function updateSpinLabel(){
 function updateCuePosition(){
   const cb=balls[0];
   if(!cb||!cb.active){if(cueStick)cueStick.visible=false;if(aimingLine)aimingLine.visible=false;return;}
-  if(currentTurnStatus==='AIMING'&&!(aiMode&&currentPlayer===2)){
+  
+  if(currentTurnStatus==='ANIMATING_STRIKE' && pendingShot){
+    cueStick.visible=true;
+    aimingLine.visible=false;
+    const elapsed = performance.now() - animationStart;
+    const WARMUP = 900;
+    const STRIKE_DUR = 80;
+    
+    let dist = 0;
+    const pb = 1 + (pendingShot.power/100)*1.65;
+    const cueLengthOffset = 2.5;
+    const initialDist = pb + cueLengthOffset;
+
+    if (elapsed < WARMUP) {
+      // Warm up stroke (oscillate)
+      const progress = elapsed / WARMUP;
+      const swing = Math.sin(progress * Math.PI * 5) * (0.3 + (pendingShot.power/100)*0.4); 
+      dist = initialDist + Math.abs(swing);
+    } else if (elapsed < WARMUP + STRIKE_DUR) {
+      // Thrust forward
+      const p2 = (elapsed - WARMUP) / STRIKE_DUR;
+      const maxPullback = initialDist + (0.3 + (pendingShot.power/100)*0.4);
+      dist = maxPullback * (1 - p2) + cueLengthOffset * p2;
+    } else {
+      // Strike!
+      cb.vel.copy(pendingShot.vel);
+      cb.backspin = pendingShot.backspin;
+      cb.sidespin = pendingShot.sidespin;
+      if(pendingShot.hasMiscue) {
+        playSound('miscue', Math.min(pendingShot.power/100, 1));
+      } else {
+        playSound('ball', Math.min(pendingShot.power/80, 1));
+      }
+      currentTurnStatus='MOVING';
+      pendingShot = null;
+      cueStick.visible=false;
+      return;
+    }
+    const sp = cb.mesh.position.clone().sub(pendingShot.ad.clone().multiplyScalar(dist));
+    sp.y = BALL_RADIUS + 0.38;
+    cueStick.position.copy(sp);
+    cueStick.lookAt(cb.mesh.position);
+    
+  } else if(currentTurnStatus==='AIMING'&&!(aiMode&&currentPlayer===2)){
     cueStick.visible=true;
     const ad=new THREE.Vector3();camera.getWorldDirection(ad);ad.y=0;ad.normalize();
     aimingLine.visible=false; aimingLine.geometry.setFromPoints([cb.mesh.position.clone(),cb.mesh.position.clone().add(ad.clone().multiplyScalar(9.5))]);
     aimingLine.computeLineDistances();
     const pw=parseFloat(elPowerSlider.value);const pb=1+(pw/100)*1.65;
-    const sp=cb.mesh.position.clone().sub(ad.clone().multiplyScalar(pb+3.45));sp.y=BALL_RADIUS+0.38;
+    const sp=cb.mesh.position.clone().sub(ad.clone().multiplyScalar(pb+2.5));sp.y=BALL_RADIUS+0.38;
     cueStick.position.copy(sp);cueStick.lookAt(cb.mesh.position);
   }else{cueStick.visible=false;aimingLine.visible=false;}
 }
@@ -1690,7 +1733,7 @@ function revengeSkip(){elRevengeModal.classList.add('hidden');aiMode=false;aiRiv
 function updatePracticeScore() {
   if(!isPracticeMode) return;
   const pct = practiceStats.shots > 0 ? Math.round((scores.p1 / practiceStats.shots) * 100) : 0;
-  elP1Score.textContent = ${scores.p1} /  (%);
+  elP1Score.textContent = `${scores.p1} / ${practiceStats.shots} (${pct}%)`;
 }
 
 let pendingShot=null;

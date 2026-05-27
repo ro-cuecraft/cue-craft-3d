@@ -1576,12 +1576,6 @@ function updateCuePosition(){
   const cb=balls[0];
   if(!cb||!cb.active){if(cueStick)cueStick.visible=false;if(aimingLine)aimingLine.visible=false;return;}
   
-  if(currentPlayer===2){
-    cueStick.visible=false;
-    aimingLine.visible=false;
-    return;
-  }
-  
   const baseOffset = 2.76;
   const cueHeight = BALL_RADIUS + 0.38;
 
@@ -1620,6 +1614,11 @@ function updateCuePosition(){
       cueStick.visible=false;
     }
   } else if(currentTurnStatus==='AIMING'){
+    if(currentPlayer===2){
+      cueStick.visible=false;
+      aimingLine.visible=false;
+      return;
+    }
     cueStick.visible=true;
     const ad=new THREE.Vector3().subVectors(cb.mesh.position,camera.position);ad.y=0;ad.normalize();
     aimingLine.visible=false; 

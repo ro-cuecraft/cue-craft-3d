@@ -1196,16 +1196,22 @@ function applyLanguage(lang){
 /* ═══════════════════════════════════════════════════════════════════════════════
    AUDIO (Web Audio API synthesis)
    ═══════════════════════════════════════════════════════════════════════════════*/
-function playSound(type,intensity){
+function playSound(type,intensity,x,z){
   const vol=Math.min(Math.max(intensity||1,0.1),1);
   try{
     if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
     if(audioCtx.state==='suspended')audioCtx.resume();
     const n=audioCtx.currentTime;
+    let p=null;
+    if(x!==undefined && z!==undefined && audioCtx.createPanner){
+      p=audioCtx.createPanner();p.panningModel='HRTF';p.distanceModel='inverse';
+      p.refDistance=5;p.maxDistance=100;p.rolloffFactor=1.2;
+      p.positionX.value=x;p.positionY.value=BALL_RADIUS;p.positionZ.value=z;
+    }
     if(type==='ball'){
       // Phenolic Resin Aramith "TAK!" – crisp, high-fidelity impact
       const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-      o.connect(g);g.connect(audioCtx.destination);
+      if(p){ o.connect(g); g.connect(p); p.connect(audioCtx.destination); } else { o.connect(g); g.connect(audioCtx.destination); }
       o.type='square';
       const freq=800+vol*1200; // More dynamic pitch range for phenolic resin impact
       o.frequency.setValueAtTime(freq*1.5,n);o.frequency.exponentialRampToValueAtTime(freq*0.4,n+.05);
@@ -1213,13 +1219,13 @@ function playSound(type,intensity){
       o.start(n);o.stop(n+.05);
     } else if(type==='cushion'){
       const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-      o.connect(g);g.connect(audioCtx.destination);
+      if(p){ o.connect(g); g.connect(p); p.connect(audioCtx.destination); } else { o.connect(g); g.connect(audioCtx.destination); }
       o.type='sine';o.frequency.setValueAtTime(180+vol*120,n);o.frequency.exponentialRampToValueAtTime(55,n+.14);
       g.gain.setValueAtTime(vol*.68,n);g.gain.exponentialRampToValueAtTime(.001,n+.14);
       o.start(n);o.stop(n+.14);
     } else if(type==='pocket'){
       const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-      o.connect(g);g.connect(audioCtx.destination);
+      if(p){ o.connect(g); g.connect(p); p.connect(audioCtx.destination); } else { o.connect(g); g.connect(audioCtx.destination); }
       o.type='sine';o.frequency.setValueAtTime(225,n);o.frequency.exponentialRampToValueAtTime(48,n+.28);
       g.gain.setValueAtTime(vol*.62,n);g.gain.exponentialRampToValueAtTime(.001,n+.28);
       o.start(n);o.stop(n+.28);
@@ -1230,7 +1236,7 @@ function playSound(type,intensity){
       const src=audioCtx.createBufferSource();src.buffer=buf;
       const lp=audioCtx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=280;
       const g=audioCtx.createGain();g.gain.setValueAtTime(vol*.5,n);
-      src.connect(lp);lp.connect(g);g.connect(audioCtx.destination);src.start(n);
+      if(p){ src.connect(lp); lp.connect(g); g.connect(p); p.connect(audioCtx.destination); } else { src.connect(lp); lp.connect(g); g.connect(audioCtx.destination); } src.start(n);
     } else if(type==='chalk'){
       // Realistic chalk scrape (사각사각)
       const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*.35,audioCtx.sampleRate);
@@ -1244,7 +1250,7 @@ function playSound(type,intensity){
       const src=audioCtx.createBufferSource();src.buffer=buf;
       const bp=audioCtx.createBiquadFilter();bp.type='highpass';bp.frequency.value=4000;
       const g=audioCtx.createGain();g.gain.setValueAtTime(.8,n);
-      src.connect(bp);bp.connect(g);g.connect(audioCtx.destination);src.start(n);
+      if(p){ src.connect(bp); bp.connect(g); g.connect(p); p.connect(audioCtx.destination); } else { src.connect(bp); bp.connect(g); g.connect(audioCtx.destination); } src.start(n);
     }
   }catch(e){}
 }
@@ -1754,7 +1760,7 @@ function handleBallCollisions(){
         b1.mesh.position.x-=nx*ov*.5;b1.mesh.position.z-=nz*ov*.5;b2.mesh.position.x+=nx*ov*.5;b2.mesh.position.z+=nz*ov*.5;
         const vn=(b1.vel.x-b2.vel.x)*nx+(b1.vel.z-b2.vel.z)*nz;
         if(vn>0){const imp=2*vn/(b1.mass+b2.mass);b1.vel.x-=imp*b2.mass*nx;b1.vel.z-=imp*b2.mass*nz;b2.vel.x+=imp*b1.mass*nx;b2.vel.z+=imp*b1.mass*nz;
-          playSound('ball',Math.min(vn*1.9,1));
+          playSound('ball',Math.min(vn*1.9,1),b1.mesh.position.x,b1.mesh.position.z);
           // Track for 3-cushion scoring
           if(b1.number===0)shotData.ballsHit.add(b2.number);
           if(b2.number===0)shotData.ballsHit.add(b1.number);
@@ -1774,7 +1780,7 @@ function handleCushionBounces(){
     else if(b.mesh.position.x>mxX){b.mesh.position.x=mxX;b.vel.x*=-0.72;bounced=true;}
     if(b.mesh.position.z<mnZ){b.mesh.position.z=mnZ;b.vel.z*=-0.72;bounced=true;}
     else if(b.mesh.position.z>mxZ){b.mesh.position.z=mxZ;b.vel.z*=-0.72;bounced=true;}
-    if(bounced&&sp>0.05){b.cushionBounces++;playSound('cushion',Math.min(sp*2,1));
+    if(bounced&&sp>0.05){b.cushionBounces++;playSound('cushion',Math.min(sp*2,1),b.mesh.position.x,b.mesh.position.z);
       if(b.number===0)shotData.cushionHits++;
     }
   });
@@ -1790,7 +1796,7 @@ function checkPockets(){
 }
 
 function pocketBall(ball,pocket){
-  ball.active=false;ball.vel.set(0,0,0);playSound('pocket',1);spawnParticles(pocket.x,pocket.z);
+  ball.active=false;ball.vel.set(0,0,0);playSound('pocket',1,pocket.x,pocket.z);spawnParticles(pocket.x,pocket.z);
   let f=0;(function drop(){if(f<18){ball.mesh.position.y-=.085;ball.mesh.scale.multiplyScalar(.9);f++;requestAnimationFrame(drop);}else scene.remove(ball.mesh);})();
   if(ball.number===0){isCueBallPocketed=true;triggerAlert(T('cueBallScratched'),T('cueBallScratchDesc'));setTimeout(()=>elReviveModal.classList.remove('hidden'),900);}
   else{
@@ -2218,6 +2224,19 @@ function animate(now=0){
   const backspinDecayDt=Math.pow(0.970,dtFactor);
   const sidespinDecayDt=Math.pow(0.998,dtFactor);
 
+  if(audioCtx && audioCtx.listener && audioCtx.listener.positionX) {
+    const fw = new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);
+    const up = new THREE.Vector3(0,1,0).applyQuaternion(camera.quaternion);
+    audioCtx.listener.positionX.value = camera.position.x;
+    audioCtx.listener.positionY.value = camera.position.y;
+    audioCtx.listener.positionZ.value = camera.position.z;
+    audioCtx.listener.forwardX.value = fw.x;
+    audioCtx.listener.forwardY.value = fw.y;
+    audioCtx.listener.forwardZ.value = fw.z;
+    audioCtx.listener.upX.value = up.x;
+    audioCtx.listener.upY.value = up.y;
+    audioCtx.listener.upZ.value = up.z;
+  }
   controls.update();updateParticles();
   if (cameraShake > 0 && currentTurnStatus === 'MOVING') {
       camera.position.x += (Math.random() - 0.5) * cameraShake;

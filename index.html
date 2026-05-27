@@ -1710,10 +1710,13 @@ function revengeSkip(){elRevengeModal.classList.add('hidden');aiMode=false;aiRiv
 /* ═══════════════════════════════════════════════════════════════════════════════
    STRIKE / RESET (with backspin + sidespin)
    ═══════════════════════════════════════════════════════════════════════════════*/
+window.isPracticeMode = window.isPracticeMode || false;
+window.practiceStats = window.practiceStats || {shots:0};
+
 function updatePracticeScore() {
-  if(!isPracticeMode) return;
-  const pct = practiceStats.shots > 0 ? Math.round((scores.p1 / practiceStats.shots) * 100) : 0;
-  elP1Score.textContent = ` /  (%)`;
+  if(!window.isPracticeMode) return;
+  const pct = window.practiceStats.shots > 0 ? Math.round((scores.p1 / window.practiceStats.shots) * 100) : 0;
+  elP1Score.textContent = `${scores.p1} / ${window.practiceStats.shots} (${pct}%)`;
 }
 
 let pendingShot=null;
@@ -1721,7 +1724,7 @@ let animationStart=0;
 function strikeCueBall(){
   if(currentTurnStatus!=='AIMING'||isCueBallPocketed)return;
   const cb=balls[0];if(!cb||!cb.active)return;
-  if(isPracticeMode) practiceStats.shots++;
+  if(window.isPracticeMode) window.practiceStats.shots++;
   shotsSinceChalk++;
   balls.forEach(b=>{b.cushionBounces=0;});
   shotData={cushionHits:0,ballsHit:new Set()};

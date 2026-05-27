@@ -1670,10 +1670,10 @@ function handleBallCollisions(){
 function handleCushionBounces(){
   const mnX=-TABLE_WIDTH/2+BALL_RADIUS,mxX=TABLE_WIDTH/2-BALL_RADIUS,mnZ=-TABLE_LENGTH/2+BALL_RADIUS,mxZ=TABLE_LENGTH/2-BALL_RADIUS;
   balls.forEach(b=>{if(!b.active)return;const sp=b.vel.length();let bounced=false;
-    if(b.mesh.position.x<mnX){b.mesh.position.x=mnX;b.vel.x*=-0.85;bounced=true;}
-    else if(b.mesh.position.x>mxX){b.mesh.position.x=mxX;b.vel.x*=-0.85;bounced=true;}
-    if(b.mesh.position.z<mnZ){b.mesh.position.z=mnZ;b.vel.z*=-0.85;bounced=true;}
-    else if(b.mesh.position.z>mxZ){b.mesh.position.z=mxZ;b.vel.z*=-0.85;bounced=true;}
+    if(b.mesh.position.x<mnX){b.mesh.position.x=mnX;b.vel.x*=-0.72;bounced=true;}
+    else if(b.mesh.position.x>mxX){b.mesh.position.x=mxX;b.vel.x*=-0.72;bounced=true;}
+    if(b.mesh.position.z<mnZ){b.mesh.position.z=mnZ;b.vel.z*=-0.72;bounced=true;}
+    else if(b.mesh.position.z>mxZ){b.mesh.position.z=mxZ;b.vel.z*=-0.72;bounced=true;}
     if(bounced&&sp>0.05){b.cushionBounces++;playSound('cushion',Math.min(sp*2,1));
       if(b.number===0)shotData.cushionHits++;
     }
@@ -2126,6 +2126,17 @@ function animate(now=0){
       // Exponential damping (dt-normalized)
       b.vel.x*=frictionDt;
       b.vel.z*=frictionDt;
+      
+      // Rolling friction (linear deceleration)
+      if (sp > 0) {
+        const drop = 0.00035 * dtFactor;
+        if (sp < drop) {
+          b.vel.x = 0; b.vel.z = 0;
+        } else {
+          const ratio = (sp - drop) / sp;
+          b.vel.x *= ratio; b.vel.z *= ratio;
+        }
+      }
 
       // Backspin: opposes horizontal velocity (draw / follow)
       if(Math.abs(b.backspin)>0.000004&&sp>0){

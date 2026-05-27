@@ -541,6 +541,17 @@ input[type="range"] { -webkit-appearance: none; appearance: none; }
 .stat-bar-fill.high { background: linear-gradient(90deg, #ea580c, #f97316); box-shadow: 0 0 8px rgba(249, 115, 22, 0.5); }
 .stat-bar-fill.mid { background: linear-gradient(90deg, #8b5cf6, #a78bfa); box-shadow: 0 0 8px rgba(139, 92, 246, 0.5); }
 
+/* Score Animation */
+@keyframes scoreBump {
+    0% { transform: scale(1); color: #fff; }
+    50% { transform: scale(1.5); color: #fbbf24; }
+    100% { transform: scale(1); color: #fff; }
+}
+.score-bump {
+    animation: scoreBump 0.5s ease-out;
+    display: inline-block;
+}
+
 </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
     <!-- Three.js r128 + OrbitControls (global scope, non-module CDN) -->
@@ -1144,7 +1155,7 @@ let currentCueIndex = 0;
    ═══════════════════════════════════════════════════════════════════════════════*/
 let scene,camera,renderer,controls;
 let balls=[],tableFelt,aimingLine,cueStick,targetGhostBall=null;
-let audioCtx=null,activeParticles=[],predictionLines=[];
+let audioCtx=null,activeParticles=[],predictionLines=[],cameraShake=0;
 let pocketMeshes=[],crosshairGrid=null;
 let lampMaterials=[];
 
@@ -1196,10 +1207,10 @@ function playSound(type,intensity){
       const o=audioCtx.createOscillator(),g=audioCtx.createGain();
       o.connect(g);g.connect(audioCtx.destination);
       o.type='square';
-      const freq=1200+vol*800; // Phenolic resin is higher pitched and sharper
-      o.frequency.setValueAtTime(freq*1.5,n);o.frequency.exponentialRampToValueAtTime(freq*0.4,n+.04);
-      g.gain.setValueAtTime(vol*.8,n);g.gain.exponentialRampToValueAtTime(.001,n+.04);
-      o.start(n);o.stop(n+.04);
+      const freq=800+vol*1200; // More dynamic pitch range for phenolic resin impact
+      o.frequency.setValueAtTime(freq*1.5,n);o.frequency.exponentialRampToValueAtTime(freq*0.4,n+.05);
+      g.gain.setValueAtTime(vol*1.2,n);g.gain.exponentialRampToValueAtTime(.001,n+.05);
+      o.start(n);o.stop(n+.05);
     } else if(type==='cushion'){
       const o=audioCtx.createOscillator(),g=audioCtx.createGain();
       o.connect(g);g.connect(audioCtx.destination);
@@ -1783,7 +1794,13 @@ function pocketBall(ball,pocket){
   let f=0;(function drop(){if(f<18){ball.mesh.position.y-=.085;ball.mesh.scale.multiplyScalar(.9);f++;requestAnimationFrame(drop);}else scene.remove(ball.mesh);})();
   if(ball.number===0){isCueBallPocketed=true;triggerAlert(T('cueBallScratched'),T('cueBallScratchDesc'));setTimeout(()=>elReviveModal.classList.remove('hidden'),900);}
   else{
-    if(currentPlayer===1){scores.p1++;elP1Score.textContent=scores.p1; if(typeof updatePracticeScore === 'function') updatePracticeScore();}else{scores.p2++;elP2Score.textContent=scores.p2;}
+    if(currentPlayer===1){
+      scores.p1++;elP1Score.textContent=scores.p1; if(typeof updatePracticeScore === 'function') updatePracticeScore();
+      elP1Score.classList.remove('score-bump'); void elP1Score.offsetWidth; elP1Score.classList.add('score-bump');
+    }else{
+      scores.p2++;elP2Score.textContent=scores.p2;
+      elP2Score.classList.remove('score-bump'); void elP2Score.offsetWidth; elP2Score.classList.add('score-bump');
+    }
     const bc=ball.cushionBounces;
     if(bc>=3)triggerToast(T('toastFantastic3'),T('toastFantastic3Sub',{n:bc}));
     else if(bc===2)triggerToast(T('toastFantastic2'),T('toastFantastic2Sub'));
@@ -1911,6 +1928,10 @@ function strikeCueBall(){
        spawnParticles(cb.mesh.position.x, cb.mesh.position.z, '#a855f7');
        triggerToast("NICE SPIN!", "Applying english!");
     }
+  }
+
+  if (power > 60) {
+      cameraShake = (power - 60) * 0.04; // scale up to 1.6
   }
 
   const massScaleForVel = hasMiscue ? 1 : cueConfig.mass / 530;
@@ -2198,6 +2219,13 @@ function animate(now=0){
   const sidespinDecayDt=Math.pow(0.998,dtFactor);
 
   controls.update();updateParticles();
+  if (cameraShake > 0 && currentTurnStatus === 'MOVING') {
+      camera.position.x += (Math.random() - 0.5) * cameraShake;
+      camera.position.y += (Math.random() - 0.5) * cameraShake;
+      camera.position.z += (Math.random() - 0.5) * cameraShake;
+      cameraShake *= 0.85;
+      if(cameraShake < 0.01) cameraShake = 0;
+  }
   if(crosshairGrid)crosshairGrid.visible=(currentTurnStatus==='AIMING');
 
   let allStopped=true;
@@ -2356,6 +2384,13 @@ function setupUIListeners(){
   window.addEventListener('keydown',e=>{
     if(e.code==='Space'){e.preventDefault();strikeCueBall();}
     if(e.code==='KeyC'){e.preventDefault();if($('btn-chalk')){shotsSinceChalk=0;playSound('chalk',1);$('btn-chalk').classList.remove('chalk-warn');}}
+  });
+  
+  window.addEventListener('keydown', e => {
+    if(e.key === 'Shift') controls.rotateSpeed = 0.08; // Fine aim mode
+  });
+  window.addEventListener('keyup', e => {
+    if(e.key === 'Shift') controls.rotateSpeed = 0.4;
   });
 
   function updateCueStatsUI(idx) {

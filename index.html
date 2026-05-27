@@ -1433,7 +1433,7 @@ function updatePredictionPaths(){
   const cb=balls[0];
   if(!cb||!cb.active||currentTurnStatus!=='AIMING'||!togglePrediction.checked){predictionLines.forEach(l=>l.visible=false);if(aimingLine)aimingLine.visible=false;return;}
   aimingLine.visible=false;
-  const ad=new THREE.Vector3();camera.getWorldDirection(ad);ad.y=0;ad.normalize();
+  const ad=new THREE.Vector3().subVectors(cb.mesh.position,camera.position);ad.y=0;ad.normalize();
   const st=cb.mesh.position.clone();let nearest=null,nd=Infinity,hp=null;
   balls.forEach(t=>{if(t.number===0||!t.active)return;const tt=t.mesh.position.clone().sub(st);const pr=tt.dot(ad);if(pr<=0)return;
     const ps=tt.lengthSq()-pr*pr;if(ps<BALL_DIAMETER*BALL_DIAMETER){const d=pr-Math.sqrt(BALL_DIAMETER*BALL_DIAMETER-ps);if(d>0&&d<nd){nd=d;nearest=t;hp=st.clone().add(ad.clone().multiplyScalar(d));}}});
@@ -1613,7 +1613,7 @@ function updateCuePosition(){
     }
   } else if(currentTurnStatus==='AIMING'&&!(aiMode&&currentPlayer===2)){
     cueStick.visible=true;
-    const ad=new THREE.Vector3();camera.getWorldDirection(ad);ad.y=0;ad.normalize();
+    const ad=new THREE.Vector3().subVectors(cb.mesh.position,camera.position);ad.y=0;ad.normalize();
     aimingLine.visible=false; aimingLine.geometry.setFromPoints([cb.mesh.position.clone(),cb.mesh.position.clone().add(ad.clone().multiplyScalar(9.5))]);
     aimingLine.computeLineDistances();
     const pw=parseFloat(elPowerSlider.value);const pb=1+(pw/100)*1.65;
@@ -1767,7 +1767,7 @@ function strikeCueBall(){
   balls.forEach(b=>{b.cushionBounces=0;});
   shotData={cushionHits:0,ballsHit:new Set()};
   let power=parseFloat(elPowerSlider.value);
-  const ad=new THREE.Vector3();camera.getWorldDirection(ad);ad.y=0;ad.normalize();
+  const ad=new THREE.Vector3().subVectors(cb.mesh.position,camera.position);ad.y=0;ad.normalize();
   
   const spinRadius=Math.sqrt(spinOffset.x*spinOffset.x+spinOffset.y*spinOffset.y);
   const isEdgeShot=(spinRadius>0.62);

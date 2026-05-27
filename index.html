@@ -1257,6 +1257,7 @@ function init(){
   setupUIListeners();applyLanguage(currentLang);renderRivalList();
   window.addEventListener('resize',onResize);
   window.addEventListener('orientationchange', () => setTimeout(onResize, 100));
+  onResize();
   animate();
   setTimeout(()=>elGuideModal.classList.remove('hidden'),250);
 }
@@ -2262,7 +2263,7 @@ function onResize(){
   const aspect=innerWidth/innerHeight;
   camera.aspect=aspect;
   camera.fov=(aspect<1)?65:45;
-  if(innerWidth>768){camera.setViewOffset(innerWidth,innerHeight,160,0,innerWidth,innerHeight);}
+  if(innerWidth>768){camera.setViewOffset(innerWidth,innerHeight,180,0,innerWidth,innerHeight);}
   else{camera.clearViewOffset();}
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth,innerHeight);

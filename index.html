@@ -1576,25 +1576,31 @@ function updateCuePosition(){
   
   if(currentTurnStatus==='ANIMATING_STRIKE' && pendingShot){
     cueStick.visible=true;
-    const ad=new THREE.Vector3();camera.getWorldDirection(ad);ad.y=0;ad.normalize();
+    const ad=pendingShot.ad; // Lock to the original aim direction
     const pb=1+(pendingShot.power/100)*1.65;
-    const progress = (performance.now() - animationStart) / 300;
+    const t = performance.now() - animationStart;
     
-    // Stroke animation: pull back slightly, then thrust forward
     let offset = pb;
-    if (progress < 0.6) {
-      // Pull back phase
-      offset = pb + (Math.sin(progress * Math.PI / 0.6) * 0.5);
-    } else {
-      // Thrust phase (moves towards 0)
-      const thrustProgress = (progress - 0.6) / 0.4;
-      offset = pb * (1 - thrustProgress) + 0.1; // Ends close to ball
+    if (t < 400) {
+      // Warm up 1 (400ms): Pull back and return
+      offset = pb + Math.abs(Math.sin((t / 400) * Math.PI)) * 1.0;
+    } else if (t < 800) {
+      // Warm up 2 (400ms): Pull back and return
+      offset = pb + Math.abs(Math.sin(((t - 400) / 400) * Math.PI)) * 1.0;
+    } else if (t < 950) {
+      // Deep pull back before strike (150ms)
+      const p = (t - 800) / 150;
+      offset = pb + p * 2.0;
+    } else if (t < 1000) {
+      // Powerful thrust forward (50ms)
+      const p = (t - 950) / 50;
+      offset = (pb + 2.0) * (1 - p) + (-0.2) * p;
     }
     
     const sp=cb.mesh.position.clone().sub(ad.clone().multiplyScalar(offset+3.45));sp.y=BALL_RADIUS+0.38;
     cueStick.position.copy(sp);cueStick.lookAt(cb.mesh.position);
     
-    if (progress >= 1.0) {
+    if (t >= 1000) {
       // Animation complete, apply strike
       currentTurnStatus='MOVING';
       triggerAlert(T('shotInProgress'),T('shotInProgressDesc'));

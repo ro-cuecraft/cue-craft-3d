@@ -1253,7 +1253,7 @@ function init(){
   renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setClearColor(0x000000,0);renderer.setSize(container.clientWidth,container.clientHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;container.appendChild(renderer.domElement);
   controls=new THREE.OrbitControls(camera,renderer.domElement);
-  controls.enableDamping=true;controls.dampingFactor=0.05;controls.maxPolarAngle=Math.PI/2.15;controls.minDistance=30;controls.maxDistance=65;controls.target.set(0,0,0);
+  controls.enableDamping=false;controls.maxPolarAngle=Math.PI/2.15;controls.minDistance=30;controls.maxDistance=65;controls.target.set(0,0,0);
   createLighting();createTable();spawnBalls();createCueAndGuide();initPredictionLines();createCrosshairGrid();
   setupUIListeners();applyLanguage(currentLang);renderRivalList();
   window.addEventListener('resize',onResize);
@@ -1432,8 +1432,7 @@ function initPredictionLines(){
 
 function updatePredictionPaths(){
   const cb=balls[0];
-  if(!cb||!cb.active||currentTurnStatus!=='AIMING'||!togglePrediction.checked){predictionLines.forEach(l=>l.visible=false);if(aimingLine)aimingLine.visible=false;return;}
-  aimingLine.visible=false;
+  if(!cb||!cb.active||currentTurnStatus!=='AIMING'||!togglePrediction.checked){predictionLines.forEach(l=>l.visible=false);return;}
   const ad=new THREE.Vector3().subVectors(cb.mesh.position,camera.position);ad.y=0;ad.normalize();
   const st=cb.mesh.position.clone();let nearest=null,nd=Infinity,hp=null;
   balls.forEach(t=>{if(t.number===0||!t.active)return;const tt=t.mesh.position.clone().sub(st);const pr=tt.dot(ad);if(pr<=0)return;
@@ -1622,7 +1621,7 @@ function updateCuePosition(){
     }
     cueStick.visible=true;
     const ad=new THREE.Vector3().subVectors(cb.mesh.position,camera.position);ad.y=0;ad.normalize();
-    aimingLine.visible=false; 
+    aimingLine.visible=true; 
     aimingLine.geometry.setFromPoints([cb.mesh.position.clone(),cb.mesh.position.clone().add(ad.clone().multiplyScalar(9.5))]);
     aimingLine.computeLineDistances();
     

@@ -1312,7 +1312,7 @@ function createTable(){
   tableFelt=new THREE.Mesh(new THREE.BoxGeometry(TABLE_WIDTH,0.2,TABLE_LENGTH),feltMat);
   tableFelt.position.y=-0.1;tableFelt.receiveShadow=true;scene.add(tableFelt);
   const rT=0.8,rH=0.45,yR=rH/2-0.1;
-  const wM=new THREE.MeshStandardMaterial({color:'#2b1b10',roughness:0.22,metalness:0.1});
+  const wM=new THREE.MeshStandardMaterial({color:'#2b1b10',roughness:0.75,metalness:0.05});
   const rxG=new THREE.BoxGeometry(TABLE_WIDTH+rT*2,rH,rT);
   const rTop=new THREE.Mesh(rxG,wM);rTop.position.set(0,yR,-TABLE_LENGTH/2-rT/2);rTop.castShadow=rTop.receiveShadow=true;scene.add(rTop);
   const rBot=rTop.clone();rBot.position.z=TABLE_LENGTH/2+rT/2;scene.add(rBot);
@@ -1411,9 +1411,9 @@ function createCueAndGuide(){
   aimingLine=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3(0,0,10)]),new THREE.LineDashedMaterial({color:0xe2b744,dashSize:0.3,gapSize:0.2}));
   aimingLine.computeLineDistances();scene.add(aimingLine);
   
-  const cueGeom = new THREE.CylinderGeometry(0.04,0.08,12,32);
+  const cueGeom = new THREE.CylinderGeometry(0.06,0.12,6.5,32);
   cueGeom.rotateX(Math.PI/2);
-  cueStick=new THREE.Mesh(cueGeom,new THREE.MeshStandardMaterial({map:createCueTexture(),roughness:0.25,metalness:0.3}));
+  cueStick=new THREE.Mesh(cueGeom,new THREE.MeshStandardMaterial({map:createCueTexture(),roughness:0.4,metalness:0.15}));
   cueStick.castShadow=true;scene.add(cueStick);
 }
 
@@ -1578,7 +1578,7 @@ function updateCuePosition(){
     aimingLine.visible=false; aimingLine.geometry.setFromPoints([cb.mesh.position.clone(),cb.mesh.position.clone().add(ad.clone().multiplyScalar(9.5))]);
     aimingLine.computeLineDistances();
     const pw=parseFloat(elPowerSlider.value);const pb=1+(pw/100)*1.65;
-    const sp=cb.mesh.position.clone().sub(ad.clone().multiplyScalar(pb+6.2));sp.y=BALL_RADIUS+0.38;
+    const sp=cb.mesh.position.clone().sub(ad.clone().multiplyScalar(pb+3.45));sp.y=BALL_RADIUS+0.38;
     cueStick.position.copy(sp);cueStick.lookAt(cb.mesh.position);
   }else{cueStick.visible=false;aimingLine.visible=false;}
 }

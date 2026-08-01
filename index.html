@@ -1695,15 +1695,10 @@ function updateCuePosition(){
     const t = performance.now() - animationStart;
     
     let strokeOffset = 0;
-    if (t < 400) {
-      strokeOffset = Math.abs(Math.sin((t / 400) * Math.PI)) * 1.0;
-    } else if (t < 800) {
-      strokeOffset = Math.abs(Math.sin(((t - 400) / 400) * Math.PI)) * 1.0;
-    } else if (t < 950) {
-      const p = (t - 800) / 150;
-      strokeOffset = p * (1.0 + pb);
-    } else if (t < 1000) {
-      const p = (t - 950) / 50;
+    if (t < 120) {
+      strokeOffset = (t / 120) * (1.0 + pb);
+    } else if (t < 200) {
+      const p = (t - 120) / 80;
       strokeOffset = (1.0 + pb) * (1 - p) + (-0.1) * p;
     }
     
@@ -1713,7 +1708,7 @@ function updateCuePosition(){
     cueStick.position.copy(sp);
     cueStick.lookAt(cb.mesh.position);
     
-    if (t >= 1000) {
+    if (t >= 200) {
       currentTurnStatus='MOVING';
       triggerAlert(T('shotInProgress'),T('shotInProgressDesc'));
       cb.vel.copy(pendingShot.vel);
@@ -1780,6 +1775,13 @@ function handleCushionBounces(){
     else if(b.mesh.position.x>mxX){b.mesh.position.x=mxX;b.vel.x*=-0.72;bounced=true;}
     if(b.mesh.position.z<mnZ){b.mesh.position.z=mnZ;b.vel.z*=-0.72;bounced=true;}
     else if(b.mesh.position.z>mxZ){b.mesh.position.z=mxZ;b.vel.z*=-0.72;bounced=true;}
+    if(bounced && b.number === 0 && Math.abs(b.sidespin) > 0.01) {
+       if (b.mesh.position.x <= mnX) b.vel.z -= b.sidespin * Math.abs(b.vel.x) * 0.25;
+       else if (b.mesh.position.x >= mxX) b.vel.z += b.sidespin * Math.abs(b.vel.x) * 0.25;
+       if (b.mesh.position.z <= mnZ) b.vel.x += b.sidespin * Math.abs(b.vel.z) * 0.25;
+       else if (b.mesh.position.z >= mxZ) b.vel.x -= b.sidespin * Math.abs(b.vel.z) * 0.25;
+       b.sidespin *= 0.6;
+    }
     if(bounced&&sp>0.05){b.cushionBounces++;playSound('cushion',Math.min(sp*2,1),b.mesh.position.x,b.mesh.position.z);
       if(b.number===0)shotData.cushionHits++;
     }
@@ -1797,9 +1799,11 @@ function checkPockets(){
 
 function pocketBall(ball,pocket){
   ball.active=false;ball.vel.set(0,0,0);playSound('pocket',1,pocket.x,pocket.z);spawnParticles(pocket.x,pocket.z);
-  let f=0;(function drop(){if(f<18){ball.mesh.position.y-=.085;ball.mesh.scale.multiplyScalar(.9);f++;requestAnimationFrame(drop);}else scene.remove(ball.mesh);})();
+  const m = ball.mesh;
+  let f=0;(function drop(){if(f<18){m.position.y-=.085;m.scale.multiplyScalar(.9);f++;requestAnimationFrame(drop);}else scene.remove(m);})();
   if(ball.number===0){isCueBallPocketed=true;triggerAlert(T('cueBallScratched'),T('cueBallScratchDesc'));setTimeout(()=>elReviveModal.classList.remove('hidden'),900);}
   else{
+    if(isCueBallPocketed) return;
     if(currentPlayer===1){
       scores.p1++;elP1Score.textContent=scores.p1; if(typeof updatePracticeScore === 'function') updatePracticeScore();
       elP1Score.classList.remove('score-bump'); void elP1Score.offsetWidth; elP1Score.classList.add('score-bump');

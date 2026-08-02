@@ -1204,30 +1204,62 @@ function playSound(type,intensity,x,z){
     const n=audioCtx.currentTime;
     let p=null;
     if(x!==undefined && z!==undefined && audioCtx.createPanner){
-      p=audioCtx.createPanner();p.panningModel='HRTF';p.distanceModel='inverse';
-      p.refDistance=5;p.maxDistance=100;p.rolloffFactor=1.2;
+      p=audioCtx.createPanner();p.panningModel='equalpower';p.distanceModel='inverse';
+      p.refDistance=15;p.maxDistance=200;p.rolloffFactor=0.8;
       p.positionX.value=x;p.positionY.value=BALL_RADIUS;p.positionZ.value=z;
     }
     if(type==='ball'){
-      // Phenolic Resin Aramith "TAK!" – crisp, high-fidelity impact
-      const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-      if(p){ o.connect(g); g.connect(p); p.connect(audioCtx.destination); } else { o.connect(g); g.connect(audioCtx.destination); }
-      o.type='square';
-      const freq=800+vol*1200; // More dynamic pitch range for phenolic resin impact
-      o.frequency.setValueAtTime(freq*1.5,n);o.frequency.exponentialRampToValueAtTime(freq*0.4,n+.05);
-      g.gain.setValueAtTime(vol*1.2,n);g.gain.exponentialRampToValueAtTime(.001,n+.05);
-      o.start(n);o.stop(n+.05);
+      // Powerful realistic billiard ball impact (clack)
+      const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.015, audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < noiseBuffer.length; i++) {
+        output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.003));
+      }
+      const noiseSrc = audioCtx.createBufferSource();
+      noiseSrc.buffer = noiseBuffer;
+      const noiseFilter = audioCtx.createBiquadFilter();
+      noiseFilter.type = 'bandpass';
+      noiseFilter.frequency.value = 3500;
+      noiseFilter.Q.value = 3;
+      
+      const osc1 = audioCtx.createOscillator();
+      osc1.type = 'triangle';
+      osc1.frequency.setValueAtTime(3200 + vol * 1200, n);
+      osc1.frequency.exponentialRampToValueAtTime(900, n + 0.025);
+      
+      const osc2 = audioCtx.createOscillator();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(650 + vol * 300, n);
+      osc2.frequency.exponentialRampToValueAtTime(200, n + 0.035);
+
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(vol * 4.5, n);
+      g.gain.exponentialRampToValueAtTime(0.0001, n + 0.035);
+
+      if(p){ 
+         noiseSrc.connect(noiseFilter); noiseFilter.connect(g);
+         osc1.connect(g); osc2.connect(g);
+         g.connect(p); p.connect(audioCtx.destination); 
+      } else { 
+         noiseSrc.connect(noiseFilter); noiseFilter.connect(g);
+         osc1.connect(g); osc2.connect(g);
+         g.connect(audioCtx.destination); 
+      }
+      
+      noiseSrc.start(n);
+      osc1.start(n); osc1.stop(n + 0.025);
+      osc2.start(n); osc2.stop(n + 0.035);
     } else if(type==='cushion'){
       const o=audioCtx.createOscillator(),g=audioCtx.createGain();
       if(p){ o.connect(g); g.connect(p); p.connect(audioCtx.destination); } else { o.connect(g); g.connect(audioCtx.destination); }
       o.type='sine';o.frequency.setValueAtTime(180+vol*120,n);o.frequency.exponentialRampToValueAtTime(55,n+.14);
-      g.gain.setValueAtTime(vol*.68,n);g.gain.exponentialRampToValueAtTime(.001,n+.14);
+      g.gain.setValueAtTime(vol*2.2,n);g.gain.exponentialRampToValueAtTime(.001,n+.14);
       o.start(n);o.stop(n+.14);
     } else if(type==='pocket'){
       const o=audioCtx.createOscillator(),g=audioCtx.createGain();
       if(p){ o.connect(g); g.connect(p); p.connect(audioCtx.destination); } else { o.connect(g); g.connect(audioCtx.destination); }
       o.type='sine';o.frequency.setValueAtTime(225,n);o.frequency.exponentialRampToValueAtTime(48,n+.28);
-      g.gain.setValueAtTime(vol*.62,n);g.gain.exponentialRampToValueAtTime(.001,n+.28);
+      g.gain.setValueAtTime(vol*2.0,n);g.gain.exponentialRampToValueAtTime(.001,n+.28);
       o.start(n);o.stop(n+.28);
     } else if(type==='miscue'){
       // Dull "tok" thud – low frequency noise burst
@@ -1235,21 +1267,20 @@ function playSound(type,intensity,x,z){
       const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);
       const src=audioCtx.createBufferSource();src.buffer=buf;
       const lp=audioCtx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=280;
-      const g=audioCtx.createGain();g.gain.setValueAtTime(vol*.5,n);
+      const g=audioCtx.createGain();g.gain.setValueAtTime(vol*2.0,n);
       if(p){ src.connect(lp); lp.connect(g); g.connect(p); p.connect(audioCtx.destination); } else { src.connect(lp); lp.connect(g); g.connect(audioCtx.destination); } src.start(n);
     } else if(type==='chalk'){
       // Realistic chalk scrape (사각사각)
       const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*.35,audioCtx.sampleRate);
       const d=buf.getChannelData(0);
       for(let i=0;i<d.length;i++){
-        // Generate harsh abrasive friction
         let noise = Math.random()*2-1;
-        let envelope = Math.max(0, Math.sin(i/d.length * Math.PI * 4)); // two quick strokes
+        let envelope = Math.max(0, Math.sin(i/d.length * Math.PI * 4));
         d[i] = noise * envelope * (1-i/d.length) * 0.9;
       }
       const src=audioCtx.createBufferSource();src.buffer=buf;
       const bp=audioCtx.createBiquadFilter();bp.type='highpass';bp.frequency.value=4000;
-      const g=audioCtx.createGain();g.gain.setValueAtTime(.8,n);
+      const g=audioCtx.createGain();g.gain.setValueAtTime(1.5,n);
       if(p){ src.connect(bp); bp.connect(g); g.connect(p); p.connect(audioCtx.destination); } else { src.connect(bp); bp.connect(g); g.connect(audioCtx.destination); } src.start(n);
     }
   }catch(e){}
@@ -2226,7 +2257,7 @@ function animate(now=0){
   const dtFactor=dt/TARGET_DT;
   const frictionDt=Math.pow(FRICTION,dtFactor);
   const backspinDecayDt=Math.pow(0.970,dtFactor);
-  const sidespinDecayDt=Math.pow(0.998,dtFactor);
+  const sidespinDecayDt=Math.pow(0.920,dtFactor);
 
   if(audioCtx && audioCtx.listener && audioCtx.listener.positionX) {
     const fw = new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);
@@ -2284,7 +2315,7 @@ function animate(now=0){
         if (Math.abs(b.sidespin) > 0.000004) {
           b.mesh.rotateOnWorldAxis(
             new THREE.Vector3(0, 1, 0),
-            -b.sidespin * dtFactor * 40.0
+            -b.sidespin * dtFactor * 2.5
           );
         }
         if (Math.abs(b.backspin) > 0.000004 && sp > 0.0001) {
@@ -2318,11 +2349,8 @@ function animate(now=0){
         b.backspin*=backspinDecayDt;
         if(Math.abs(b.backspin)<0.000004)b.backspin=0;
       }
-      // Sidespin: lateral curve
+      // Sidespin: decay on cloth friction
       if(Math.abs(b.sidespin)>0.000004&&sp>0){
-        const ux=b.vel.x/sp,uz=b.vel.z/sp;
-        b.vel.x+=(-uz)*b.sidespin*dtFactor;
-        b.vel.z+=(ux)*b.sidespin*dtFactor;
         b.sidespin*=sidespinDecayDt;
         if(Math.abs(b.sidespin)<0.000004)b.sidespin=0;
       }
